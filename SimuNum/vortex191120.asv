@@ -52,7 +52,7 @@ Dcamp=0.15;% Coeff de diffusion du camphre
 
 %% Début de la simu
 
-cpt=0; list=round(linspace(1000,nt,200)); % Pour stocker les chps de vit utiles pour calculer les spectres
+cpt=0; list=linspace(1000,nt,200); % Pour stocker les chps de vit utiles pour calculer les spectres
 % profil source de camphre (centré en pi), qui correspond à un nageur
 source=exp(-((x-pi).^2+(y-pi).^2)/2/sig^2)/(2*pi*sig^2);% aire normalisée à 1
 % on centre la source en (0,0), translation de -pi en x et y
@@ -345,6 +345,6 @@ ma = ma.computeMSD; %Calcule le MSD
     
     
     %% On sauvegarde tout
-    save(strcat('E:\Clément\SimuNum\Resultats\v2N',num2str(npart),'ampec',num2str(amp_ec)),'ma','mx','my','muxp','muyp','mvsx','mvsy','npart','Dnag','inertie','taup','marangoni','asrc','advection','ecoulement','param_ecexterne','amp_ec','mvfx','mvfy','f','Spx','Spy')
+    save(strcat('E:\Clément\Mixing\SimuNum\Resultats\v2N',num2str(npart),'ampec',num2str(amp_ec)),'ma','mx','my','muxp','muyp','mvsx','mvsy','npart','Dnag','inertie','taup','marangoni','asrc','advection','ecoulement','param_ecexterne','amp_ec','mvfx','mvfy','f','Spx','Spy')
 
 

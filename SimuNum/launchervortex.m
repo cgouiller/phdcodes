@@ -1,9 +1,9 @@
 clear all;close all;run defaultfig;
-ncat=[1,7,15,30];
+ncat=[7,15,30];
 ampeccat=[0,3,6];
 
 for ii=1:length(ncat)
-    for jj=1:length(ampeccat)
+    for jj=2:length(ampeccat)
         %% Choix de simu
         npart=ncat(ii); %Nombre de nageurs
         amp_ec=ampeccat(jj);
@@ -11,7 +11,7 @@ for ii=1:length(ncat)
         
         
         
-        affichage=1; %1 si on veut tracer le champ, 0 si non
+        affichage=0; %1 si on veut tracer le champ, 0 si non
         %npart=30; %Nombre de nageurs
         
         Dnag=5; %En mm, le diamètre des nageurs voulus
