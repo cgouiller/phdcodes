@@ -25,7 +25,7 @@
 %% Initialisations de la simu
 L = 2*pi; %Taille de la boîte
 N=128;%Résolution de la grille de simu
-nt=5000;%40000;%Nombre de pas de temps à effectuer
+nt=40000;%Nombre de pas de temps à effectuer
 chopvec=5; %On affiche une toutes les chopvec images
 
 make_grid; %Initialise la grille de simu (N*N)
