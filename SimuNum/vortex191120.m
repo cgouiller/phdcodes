@@ -345,6 +345,6 @@ ma = ma.computeMSD; %Calcule le MSD
     
     
     %% On sauvegarde tout
-    save(strcat('E:\Clément\SimuNum\Resultats\testssmarangniinert',num2str(npart),'ampec',num2str(amp_ec)),'ma','mx','my','muxp','muyp','mvsx','mvsy','npart','Dnag','inertie','taup','marangoni','asrc','advection','ecoulement','param_ecexterne','amp_ec','mvfx','mvfy','f','Spx','Spy')
+    save(strcat('E:\Clément\SimuNum\Resultats\200318',num2str(npart)),'ma','mx','my','muxp','muyp','mvsx','mvsy','npart','Dnag','inertie','taup','marangoni','asrc','advection','ecoulement','param_ecexterne','amp_ec','mvfx','mvfy','f','Spx','Spy')
 
 

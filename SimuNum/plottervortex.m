@@ -67,17 +67,16 @@ grid
 varN=[7,15,30,40];
 varec=[0,3,6];
 tracks=[];
-for i=1:4%1:length(varN)
-    for ii=2%1:length(varec)
+for i=3%1:length(varN)
+    for ii=2%:length(varec)
         load(strcat('E:\Clément\SimuNum\Resultats\v2N',num2str(varN(i)),'ampec',num2str(varec(ii)),'.mat'));
         
-        if exist(strcat('E:\Clément\SimuNum\Resultats\v2N',num2str(varN(i)),'ampec',num2str(varec(ii)),'_analyze.mat'))==0
+        if exist(strcat('E:\Clément\SimuNum\Resultats\Analyse\v2N',num2str(varN(i)),'ampec',num2str(varec(ii)),'_analyze.mat'))==0
             calcEcandpdfs;
         else
-            load(strcat('E:\Clément\SimuNum\Resultats\v2N',num2str(varN(i)),'ampec',num2str(varec(ii)),'_analyze.mat'));
+            load(strcat('E:\Clément\SimuNum\Resultats\Analyse\v2N',num2str(varN(i)),'ampec',num2str(varec(ii)),'_analyze.mat'));
         end
-        i
-        ii
+       
         if npart==40
             col='g';
         else if npart==7
@@ -100,8 +99,15 @@ for i=1:4%1:length(varN)
             end
         end
         name=strcat(num2str(npart),' particules et amplitude vortex ',num2str(amp_ec));
-        figure(1);hold on;plot(dt(1:1000:length(dt)),Ec(1:1000:length(dt)),'Color',col,'Marker',mark,'MarkerSize',10,'LineWidth',1,'DisplayName',name);hold off;
+        %figure(1);hold on;plot(dt(1:1000:length(dt)),Ec(1:1000:length(dt)),'Color',col,'Marker',mark,'MarkerSize',10,'LineWidth',1,'DisplayName',name);hold off;
+        figure;
+       semilogy(binx,countx);hold on;semilogy(biny,county,'r');semilogy(binax,countax,'+');semilogy(binay,countay,'+r');
+       legend({'vx','vy','ax','ay'});
+       legend show
+       grid
+       xlabel('$(s-<s>)/\sigma_s$','Interpreter','latex')
+       ylabel('PDF')
+
     end
 end
-legend show
-%plot(binx,countx);hold on;plot(biny,county,'r');plot(binay,countay,'+r');plot(binax,countax,'+')
+%

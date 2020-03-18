@@ -25,4 +25,4 @@ dt=mamsd(:,1);
 [county,biny]=hist_maison((tracks(:,5)-nanmean2(tracks(:,5)))/nanstd(tracks(:,5)),-5,5,101,1);
 [countax,binax]=hist_maison((tracks(:,7)-nanmean2(tracks(:,7)))/nanstd(tracks(:,7)),-5,5,101,1);
 [countay,binay]=hist_maison((tracks(:,8)-nanmean2(tracks(:,8)))/nanstd(tracks(:,8)),-5,5,101,1);
-save(strcat('E:\Clément\SimuNum\Resultats\v2N',num2str(varN(i)),'ampec',num2str(varec(ii)),'_analyze.mat'),'dt','Ec','tracks','countx','county','countax','countay','binx','biny','binax','binay')
+save(strcat('E:\Clément\SimuNum\Resultats\Analyse\v2N',num2str(varN(i)),'ampec',num2str(varec(ii)),'_analyze.mat'),'dt','Ec','tracks','countx','county','countax','countay','binx','biny','binax','binay')
