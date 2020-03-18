@@ -1,12 +1,12 @@
 clear all;close all;run defaultfig;
 ncat=[7,15,30,40];
-ampeccat=[0,3,6];
+ampeccat=[0,2,4,6];
 
-for ii=1:length(ncat)
-    %for jj=1:length(ampeccat)
+%for ii=1%:length(ncat)
+    for jj=1:length(ampeccat)
         %% Choix de simu
-        npart=ncat(ii); %Nombre de nageurs
-        amp_ec=0;%ampeccat(jj);
+        npart=1;%ncat(ii); %Nombre de nageurs
+        amp_ec=ampeccat(jj);
         
         
         
@@ -28,6 +28,6 @@ for ii=1:length(ncat)
         param_ecexterne=1; %Choix du type d'écoulement : 1 pour Taylor-Green, 2 pour un écoulement en 1/r^2
         %amp_ec=6; %S'il y a un écoulement, son amplitude
         
-        vortex191120;
-   %end
-end
+        vortex_2;
+   end
+%end
