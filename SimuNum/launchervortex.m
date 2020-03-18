@@ -1,9 +1,9 @@
 clear all;close all;run defaultfig;
-ncat=[7,15,30];
+ncat=[7,15,30,40];
 ampeccat=[0,3,6];
 
-for ii=1:length(ncat)
-    for jj=2:length(ampeccat)
+for ii=4:length(ncat)
+    for jj=1:length(ampeccat)
         %% Choix de simu
         npart=ncat(ii); %Nombre de nageurs
         amp_ec=ampeccat(jj);

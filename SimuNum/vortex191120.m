@@ -25,7 +25,7 @@
 %% Initialisations de la simu
 L = 2*pi; %Taille de la boîte
 N=128;%Résolution de la grille de simu
-nt=40000;%10000;%Nombre de pas de temps à effectuer
+nt=5000;%40000;%Nombre de pas de temps à effectuer
 chopvec=5; %On affiche une toutes les chopvec images
 
 make_grid; %Initialise la grille de simu (N*N)
@@ -43,8 +43,8 @@ mvfy=cell(200,1);
 
 tv=zeros(1,nt);
 %% Paramètres physiques
-asrc=asrc*marangoni; %éteint la source de camphre si pas de Marangoni
-A=0.8; % Amplitude des effets Marangoni 
+A=0.8; % Amplitude des effets Marangoni
+A=A*marangoni;
 alpha=2; %Coefficient de sublimation
 sig=sqrt(4*pi*(Dnag/2)^2/(90)^2); %Calcule la largeur de gaussienne associée au diamètre des nageurs
 dt=taup/20;% Choix du pas de temps
@@ -345,6 +345,6 @@ ma = ma.computeMSD; %Calcule le MSD
     
     
     %% On sauvegarde tout
-    save(strcat('E:\Clément\SimuNum\Resultats\v2N',num2str(npart),'ampec',num2str(amp_ec)),'ma','mx','my','muxp','muyp','mvsx','mvsy','npart','Dnag','inertie','taup','marangoni','asrc','advection','ecoulement','param_ecexterne','amp_ec','mvfx','mvfy','f','Spx','Spy')
+    save(strcat('E:\Clément\SimuNum\Resultats\testssmarangniinert',num2str(npart),'ampec',num2str(amp_ec)),'ma','mx','my','muxp','muyp','mvsx','mvsy','npart','Dnag','inertie','taup','marangoni','asrc','advection','ecoulement','param_ecexterne','amp_ec','mvfx','mvfy','f','Spx','Spy')
 
 
