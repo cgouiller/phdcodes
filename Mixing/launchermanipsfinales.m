@@ -4,15 +4,22 @@ run('E:\Clément\Mixing\Matlab\manipsfinales.m');
 %%
 
 
-list=32;
-for i=1
+list=varRold;
+for i=1:length(list)
     numVid=list(i);
   
  
     load_param;
 
-    
+    load(strcat(directoryAnalyse,'positions.mat'))
+        load(strcat(directoryAnalyse,'trajectories.mat'))
 
+pos=zeros(1,length(c));
+for i=1:length(c)
+    pos(i)=length(c(i).x);
+end
+bonnombre(numVid)=sum(pos==NCat(numVid))/length(c)*100;
+totaltraj(numVid)=max(tracks(:,4))/NCat(numVid);
     
    %track_particles; % Création de l'image de background (im0) et tracking de particules (sauvegardé dans positions.mat)
   
@@ -23,7 +30,7 @@ for i=1
     % filtrage_traj;%Regarde dans trajectories.mat quelles particules sont assez éloignées des bords ainsi que des autres
    %  spectre; %Calcule avec pwelch le spectre moyen du champ de concentration réduit dans le carré, (C-CMoySq)/CstdSq
      % concmoyautournag; %Trace le champ de concentration moyen en bulles de verre autour des particules sélectionnees par le filtrage
-    calc_profil; %Calcule le profil longitudinal moyen dans la direction de nage, proflong, sauvegardé dans long_profil.mat
+   % calc_profil; %Calcule le profil longitudinal moyen dans la direction de nage, proflong, sauvegardé dans long_profil.mat
     % aire_ellipse%Calcul l'aire de la zone de déplétion avec seuil à -0.5 sur (C-<C>)/<C>
 %     etude_proflong%Trouve la valeur du max du profil et sa position
 %     PDF_Cfield_et_grad;
