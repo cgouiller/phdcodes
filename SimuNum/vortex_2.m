@@ -276,8 +276,8 @@ for in=2:nt
     
      if ismember(in,list)
          cpt=cpt+1;
-         mvfx{cpt,1}=real(ifft2((vxf+vxextf)));
-         mvfy{cpt,1}=real(ifft2((vyf+vyextf)));
+         mvfx{cpt,1}=real(ifft2((vxf)));
+         mvfy{cpt,1}=real(ifft2((vyf)));
      end
     %% Affichage des champs
     if round(in/chopvec)*chopvec==in && affichage==1
@@ -345,6 +345,6 @@ ma = ma.computeMSD; %Calcule le MSD
     
     
     %% On sauvegarde tout
-    save(manipCat{i},'ma','mx','my','muxp','muyp','mvsx','mvsy','npart','Dnag','inertie','taup','marangoni','asrc','advection','ecoulement','param_ecexterne','amp_ec','mvfx','mvfy','f','Spx','Spy');
+    save(manipCat{ii},'ma','mx','my','muxp','muyp','mvsx','mvsy','npart','Dnag','inertie','taup','marangoni','asrc','advection','ecoulement','param_ecexterne','amp_ec','mvfx','mvfy','f','Spx','Spy');
 
 
