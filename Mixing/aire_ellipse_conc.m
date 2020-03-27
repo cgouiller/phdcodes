@@ -4,7 +4,7 @@
 seuilmin=-0.006;
 seuil=-0.005;
 seuilmax=-0.004;
-load(strcat(directoryAnalyse,'meanTraillin2'));
+load(strcat(directoryAnalyse,'meanTrail'));
 immoy(isnan(immoy))=-50;
 immin=immoy;
 immax=immoy;
@@ -38,15 +38,16 @@ immax=immax(250:1200,944-300:944+300);
 % end
 % largeur=max(long);
 % longueur=max(larg);
-figure;imagesc(immoy);title(video);pause(3);
+%figure;imagesc(immoy);title(video);pause(3);
 
 aire=sum(sum(immoy))/(sizeim^2/(18^2));
 incplus=sum(sum(immax))/(sizeim^2/(18^2))-aire;
 incmoins=aire-sum(sum(immin))/(sizeim^2/(18^2));
  comment='seuillage sur meanTrail à -0.005 (+/-0.001 pour les incertitudes). Sans correction. Aire en cm^2';
+ zone_depl=immoy;
 %comment='avec correction autour des nageur et seuil à zéro sur C';
  %save(strcat(directoryAnalyse,'\aire_ell.mat'),'aire','comment','incplus','incmoins','longueur','largeur')
- save(strcat(directoryAnalyse,'\aire_ellipse3.mat'),'aire','comment','incplus','incmoins')
+ save(strcat(directoryAnalyse,'\aire_ellipse_conc.mat'),'aire','comment','incplus','incmoins','zone_depl')
 % 
 
 

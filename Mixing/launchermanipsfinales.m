@@ -4,22 +4,25 @@ run('E:\Clément\Mixing\Matlab\manipsfinales.m');
 %%
 
 
-list=varRold;
+list=varN;
 for i=1:length(list)
     numVid=list(i);
   
  
     load_param;
 
-    load(strcat(directoryAnalyse,'positions.mat'))
-        load(strcat(directoryAnalyse,'trajectories.mat'))
-
-pos=zeros(1,length(c));
-for i=1:length(c)
-    pos(i)=length(c(i).x);
-end
-bonnombre(numVid)=sum(pos==NCat(numVid))/length(c)*100;
-totaltraj(numVid)=max(tracks(:,4))/NCat(numVid);
+%     load(strcat(directoryAnalyse,'positions.mat'))
+       %  load(strcat(directoryAnalyse,'particules_selectionnees.mat'))
+% 
+% pos=zeros(1,length(c));
+% for ii=1:length(c)
+%     pos(ii)=length(c(ii).x);
+% end
+%  bonnombre(numVid)=sum(pos==NCat(numVid))/length(c)*100;
+% totaltraj(i)=max(tracks(:,4))/NCat(numVid);
+    %plot(totaltraj)
+    %samplen(numVid)=length(sample);
+    
     
    %track_particles; % Création de l'image de background (im0) et tracking de particules (sauvegardé dans positions.mat)
   
@@ -27,11 +30,13 @@ totaltraj(numVid)=max(tracks(:,4))/NCat(numVid);
    
    %  concentration; %Evolution des différents champs scalaires, obtenus à la fois par Beer-Lambert (ConcBL.mat) et par interpolation linéaire (Conclin.mat)
    %  constr_traject;%Se servant des positions obtenues par track_particles en déduit les trajectoires sauvegardées dans trajectories.mat
-    % filtrage_traj;%Regarde dans trajectories.mat quelles particules sont assez éloignées des bords ainsi que des autres
-   %  spectre; %Calcule avec pwelch le spectre moyen du champ de concentration réduit dans le carré, (C-CMoySq)/CstdSq
-     % concmoyautournag; %Trace le champ de concentration moyen en bulles de verre autour des particules sélectionnees par le filtrage
+  %   filtrage_traj;%Regarde dans trajectories.mat quelles particules sont assez éloignées des bords ainsi que des autres
+     spectre; %Calcule avec pwelch le spectre moyen du champ de concentration réduit dans le carré, (C-CMoySq)/CstdSq
+  %  concmoyautournag; %Trace le champ de concentration moyen en bulles de verre autour des particules sélectionnees par le filtrage
    % calc_profil; %Calcule le profil longitudinal moyen dans la direction de nage, proflong, sauvegardé dans long_profil.mat
-    % aire_ellipse%Calcul l'aire de la zone de déplétion avec seuil à -0.5 sur (C-<C>)/<C>
+    % aire_ellipse_conc%Calcul l'aire de la zone de déplétion avec seuil à -0.5 sur (C-<C>)/<C>
+ %   concmoyautournagbinarized;
+   % aire_ellipse_proba;
 %     etude_proflong%Trouve la valeur du max du profil et sa position
 %     PDF_Cfield_et_grad;
 %     calc_Rcc %Calcule S1, S2, S3 et S4

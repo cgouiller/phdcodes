@@ -71,17 +71,18 @@ for k=startImg:length(L)
     im=im(round(centerCellY-radiusCellPx):round(centerCellY+radiusCellPx),round(centerCellX-radiusCellPx):round(centerCellX+radiusCellPx));
     im=nanOutCircle(im,radiusCellPx,radiusCellPx,radiusCellPx);
     % Position of the camphor swimmers
-    [ctmp,rtmp] = imfindcircles(im,R_range,'ObjectPolarity','dark','Method','TwoStage');
+    [ctmp,rtmp] = imfindcircles(im,R_range,'ObjectPolarity','dark','Method','TwoStage'); % Sensi augmentée à 0.87 pour les R=1 mm
     c(k).x=ctmp(:,1)*calib;
     c(k).y=ctmp(:,2)*calib;
     c(k).r=rtmp*calib;
     c(k).t=str2double(fname(1:7))/fps;
-    
+        %imagesc(im);hold on;title(length(c(k).x));plot(c(k).x/calib,c(k).y/calib,'+w')
+
     % Avancement dans le traitement
     if mod(k,1)==0
         dispstat(sprintf('Progress %i%%',round((k-startImg)*100/(length(L)-startImg))),'timestamp');
     end
-
+pause(0.001)
 end
 
 % save the position of the camphor swimmers along the movie

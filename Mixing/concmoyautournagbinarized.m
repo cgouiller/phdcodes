@@ -23,7 +23,7 @@ fprintf('Video');
     a=load(strcat(directoryAnalyse,'positions.mat'));
     c=a.c;
   
-    aleat=round((rand(1,2000)*(length(sample)-1))+1);
+    aleat=round((rand(1,3000)*(length(sample)-1))+1);
     for ii=1:length(aleat)
         k=aleat(ii);
         %M�thode de background :
@@ -85,7 +85,7 @@ fprintf('Video');
         
     end
     probdepl=imtot./counttot;
-    probdepl=oneCircle(probdepl,round(length(Cfield)/2),round(length(Cfield)/2),round(pos(1,3))+13);
+    probdepl=oneCircle(probdepl,round(length(Cfield)/2),round(length(Cfield)/2),round(pos(1,3))+10);
      save(strcat(directoryAnalyse,'meanTrailbin'),'probdepl');
 %     
 

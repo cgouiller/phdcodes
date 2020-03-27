@@ -2,7 +2,7 @@
 
 
 fprintf('Video');
-    fprintf(video);
+    fprintf(video(1:length(video)-1));
     fprintf('\n');
     dispstat('','init');
     dispstat(sprintf('Begining the mean trail calculation...'),'keepthis','timestamp');
@@ -23,13 +23,13 @@ fprintf('Video');
     
     a=load(strcat(directoryAnalyse,'positions.mat'));
     c=a.c;
-  
-    aleat=round((rand(1,10000)*(length(sample)-1))+1);
+
+    aleat=round((rand(1,3000)*(length(sample)-1))+1);
     for ii=1:length(aleat)
         k=aleat(ii);
         %M�thode de background :
         %Chemins o� r�cup�rer/enregistrer les donn�es.
-        ctmp=[];w
+        ctmp=[];
         
         if mod(ii,10)==0
             dispstat(sprintf('Progress %d%%',round(ii*100/length(aleat))),'timestamp');
@@ -81,7 +81,7 @@ fprintf('Video');
         
     end
     immoy=imtot./counttot;
-    save(strcat(directoryAnalyse,'meanTraillin2'),'immoy');
+    save(strcat(directoryAnalyse,'meanTrail'),'immoy');
     
 %     load(strcat(directoryAnalyse,'nagcor.mat'));
 % 

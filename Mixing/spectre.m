@@ -1,10 +1,9 @@
 
-load(strcat(directoryAnalyse,'ConcBL.mat'))
+load(strcat(directoryAnalyse,'Conc.mat'))
 % start timer
 dispstat('','init');
 dispstat(sprintf('Begining the calculation of direct spectra...'),'keepthis','timestamp');
-count=0;
-   %load('E:\Clément\Mixing\Analyse\cornageur');
+
 
           load(strcat(directoryAnalyse,'directory.mat'));
 %Load position of the swimmers
@@ -46,11 +45,12 @@ N=round(length(line));
 %get the size of the result and initialize
 SpMean=zeros(length(SpLine),1);
 %mkdir(strcat(directoryAnalyse,'sauv\'))
+aleat=round((rand(1,3000)*(find(time==65*60)-find(time==55*60)-1))+find(time==55*60));
 
-%% La boucle de calcul
-
-for k=round(linspace(find(time==55*60),find(time==65*60),3000))
-    count=count+1;
+%% Measure of all quantities for each image with Beer-Lambert
+for kk=1:length(aleat)
+    k=aleat(kk);
+ 
     
     %get image
     fname=L(k).name;
@@ -66,7 +66,7 @@ for k=round(linspace(find(time==55*60),find(time==65*60),3000))
     CfieldSq=Cfield(ceil(sizeim/2-sqrt(2)*sizeim/4):floor(sizeim/2+sqrt(2)*sizeim/4),ceil(sizeim/2-sqrt(2)*sizeim/4):floor(sizeim/2+sqrt(2)*sizeim/4));
             
     
-    CfieldSq(isnan(CfieldSq))=0; % Nécessaire parce que pwelch prend pas de NaN. On affecte donc la concentration en bdv adéquate : 0 puisqu'il y a le nageur
+    CfieldSq(isnan(CfieldSq))=-0.04; % Nécessaire parce que pwelch prend pas de NaN. On affecte donc la concentration en bdv adéquate : 0 puisqu'il y a le nageur
   %  CfieldSq=(CfieldSq-CMoySq(k))/CstdSq(k);
     
     
@@ -96,24 +96,24 @@ for k=round(linspace(find(time==55*60),find(time==65*60),3000))
     
     
     % timer
-    if mod(k,1)==0
-    dispstat(sprintf('Progress %d%%',round((k-find(time==55*60))*100/(find(time==65*60)-find(time==55*60)))),'timestamp');
+    if mod(kk,50)==0
+    dispstat(sprintf('Progress %d%%',round((kk*100/length(aleat)))),'timestamp');
     end
     
 end
 
 
-Sp=SpMean/count;
+Sp=SpMean/length(aleat);
 
 
-
+quefairedesnan='remplacé par -0.04 qui est à peu près la valeur dans la zone de depl';
 
 % Save results !!!
 
 
 
-ppath=strcat(directoryAnalyse,'SpectreDirectBL.mat');
-save(ppath,'f','Sp');
+
+save(strcat(directoryAnalyse,'Spectre.mat'),'f','Sp','quefairedesnan');
 
 
 dispstat('Finished.','keepprev');

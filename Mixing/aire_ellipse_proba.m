@@ -51,7 +51,7 @@ incmoins=aire-sum(sum(immin))/(sizeim^2/(18^2));
  comment='seuillage sur probdepl à 75% (+/-5% pour les incertitudes). Sans correction';
 %comment='avec correction autour des nageur et seuil à zéro sur C';
  %save(strcat(directoryAnalyse,'\aire_ell.mat'),'aire','comment','incplus','incmoins','longueur','largeur')
- save(strcat(directoryAnalyse,'\aire_ell2.mat'),'aire','comment','incplus','incmoins')
+ save(strcat(directoryAnalyse,'\aire_ellipse_proba.mat'),'aire','comment','incplus','incmoins','probdepl')
 % 
 
 

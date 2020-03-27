@@ -20,7 +20,7 @@ C2Moy=zeros(length(L),1);
 time=zeros(length(L),1);
 %Initialize the clock
 dispstat('','init'); % One time only initialization
-dispstat(sprintf('Begining the process for the movie with Beer-Lambert...'),'keepthis','timestamp');
+dispstat(sprintf('Begining the concentration calculus...'),'keepthis','timestamp');
 
 %Load position of the swimmers
 a=load(strcat(directoryAnalyse,'positions.mat'));
@@ -50,7 +50,7 @@ for k=startImg:length(L)
     end
   %  figure;
     
-    Cfield=calc_CfieldBL(im,imbg,pos,immask);
+    Cfield=calc_Cfield2(im,imbg,pos,immask);
 %     imagesc(Cfield,[-0.1 0.1]);axis square; colorbar;colormap parula(256)
 %     pause(0.1);
     time(k)=str2double(fname(1:7))/fps;
@@ -86,7 +86,7 @@ Cstd=sqrt(C2Moy - CMoy.^2);
 param='sans aucune correction';
 
 
-save(strcat(directoryAnalyse,'ConcBL.mat'),'time','CMoy','C2Moy','Cstd','param')
+save(strcat(directoryAnalyse,'Conc.mat'),'time','CMoy','C2Moy','Cstd','param')
 
 
 % %% Initializations
