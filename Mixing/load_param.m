@@ -12,6 +12,7 @@
 
     directoryBg=strcat(basePathVid,date,sete,video,'bg\');
     directoryAnalyse=strcat(basePathAnalyse,date,sete,video);
+    directoryAnalysePyt=strcat('E:\Clément\MyCore\Analyse\Mixing\',date,sete,video);
     if exist(directoryAnalyse)==0
         mkdir(directoryAnalyse);
         fprintf('Répertoire d\''analyse créé')
