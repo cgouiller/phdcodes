@@ -1,15 +1,16 @@
 clear all;close all;run defaultfig;
-ncat=[7,15,30,40,1,1,1,1];
-ampeccat=[0,0,0,0,0,2,4,6];
-manipCat={strcat('E:\Clément\SimuNum\Resultats\200318\varN\7.mat'),strcat('E:\Clément\SimuNum\Resultats\200318\varN\15.mat'),strcat('E:\Clément\SimuNum\Resultats\200318\varN\30.mat'),strcat('E:\Clément\SimuNum\Resultats\200318\varN\40.mat'),strcat('E:\Clément\SimuNum\Resultats\200318\varamp\0.mat'),strcat('E:\Clément\SimuNum\Resultats\200318\varamp\2.mat'),strcat('E:\Clément\SimuNum\Resultats\200318\varamp\4.mat'),strcat('E:\Clément\SimuNum\Resultats\200318\varamp\6.mat')};
-manipCat200320.save={strcat('E:\Clément\SimuNum\Resultats\200320\tests\1.mat'),strcat('E:\Clément\SimuNum\Resultats\200320\tests\2.mat'),strcat('E:\Clément\SimuNum\Resultats\200320\tests\3.mat'),strcat('E:\Clément\SimuNum\Resultats\200320\tests\4.mat'),strcat('E:\Clément\SimuNum\Resultats\200320\tests\5.mat'),strcat('E:\Clément\SimuNum\Resultats\200320\tests\6.mat'),strcat('E:\Clément\SimuNum\Resultats\200320\tests\7.mat'),strcat('E:\Clément\SimuNum\Resultats\200320\tests\8.mat'),strcat('E:\Clément\SimuNum\Resultats\200320\tests\9.mat'),strcat('E:\Clément\SimuNum\Resultats\200320\tests\10.mat'),strcat('E:\Clément\SimuNum\Resultats\200320\varN\7.mat'),strcat('E:\Clément\SimuNum\Resultats\200320\varN\15.mat'),strcat('E:\Clément\SimuNum\Resultats\200320\varN\30.mat'),strcat('E:\Clément\SimuNum\Resultats\200320\varN\40.mat'),strcat('E:\Clément\SimuNum\Resultats\200320\varamp\0.mat'),strcat('E:\Clément\SimuNum\Resultats\200320\varamp\2.mat'),strcat('E:\Clément\SimuNum\Resultats\200320\varamp\4.mat'),strcat('E:\Clément\SimuNum\Resultats\200320\varamp\6.mat'),strcat('E:\Clément\SimuNum\Resultats\200320\varA\2.mat'),strcat('E:\Clément\SimuNum\Resultats\200320\varA\4.mat'),strcat('E:\Clément\SimuNum\Resultats\200320\varA\6.mat')};  
-manipCat200320.taup=[0,0,0.1,0.2,0.4,0.1,0.2,0.4,0,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2];
-manipCat200320.inertie=[0,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1];
-manipCat200320.amp_ec=[1,5,1,1,1,5,5,5,0,0,0,0,0,0,0,2,4,6,3,3,3];
-manipCat200320.npart=[1,1,1,1,1,1,1,1,10,10,7,15,30,45,1,1,1,1,1,1,1];
-manipCat200320.A=[0,0,0,0,0,0,0,0,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.2,0.4,0.6];
-
-for ii=2:21
+manipCat200320.taup=[0,0,0.1,0.2,0.4,0.1,0.2,0.4,0,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2];
+manipCat200320.inertie=[0,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1];
+manipCat200320.amp_ec=[1,5,1,1,1,5,5,5,0,0,0,0,0,0,0,2,4,6,3,3,3,0];
+manipCat200320.npart=[1,1,1,1,1,1,1,1,10,10,7,15,30,45,1,1,1,1,1,1,1,10];
+manipCat200320.A=[0,0,0,0,0,0,0,0,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.2,0.4,0.6,0.8];
+manipCat200320.set={'test','test','test','test','test','test','test','test','test','test','varN','varN','varN','varN','varV','varV','varV','varV','varA','varA','varA','test'};
+manipCat200320.video={'01','02','03','04','05','06','07','08','09','10','07','15','30','40','00','02','04','06','02','04','06','11'};
+manipCat200320.advection=ones(1,22);
+manipCat200320.asrc=0.1*ones(1,22);
+manipCat200320.nt=1e4*[ones(1,21),4];
+manipCat200320.date={'200320','200320','200320','200320','200320','200320','200320','200320','200320','200320','200320','200320','200320','200320','200320','200320','200320','200320','200320','200320','200320','200320'};
+for ii=22%:length(manipCat200320.save)
    % for jj=1:length(ampeccat)
         %% Choix de simu
        % npart=ncat(ii); %Nombre de nageurs
@@ -19,6 +20,7 @@ for ii=2:21
         amp_ec=manipCat200320.amp_ec(ii);
         npart=manipCat200320.npart(ii);
         A=manipCat200320.A(ii);
+        nt=manipCat200320.nt(ii);
         ecoulement=1;
         marangoni=1;
         if amp_ec==0

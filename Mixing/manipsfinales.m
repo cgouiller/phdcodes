@@ -39,7 +39,7 @@ setCatalogue{31}='varMass\';setCatalogue{32}='varSize\';setCatalogue{33}='varSiz
 setCatalogue{41}='varSize\';setCatalogue{42}='varSize\';setCatalogue{43}='varSize\';setCatalogue{44}='varSize\';setCatalogue{45}='varSize\';setCatalogue{46}='varSize\';setCatalogue{47}='varSize\';setCatalogue{48}='varSize\';setCatalogue{49}='varSize\';setCatalogue{50}='varSize\';
 setCatalogue{51}='varSize\';setCatalogue{52}='varSize\';setCatalogue{53}='varSize\';setCatalogue{54}='varSize\';setCatalogue{55}='test\';
 
-varM=[1:16,29:31];
+varM=[1:3,7,8,10:13,15,16,29:31];
 %varM=[29,31,30,3,5,15,11,2,8,16,12,25,10,13,7];  %[1:21,23,25:27]; ajouter 25
 varMpiv=[3,15,11,16,10,7];
 varRold=[23,33,21,25,24,32,27];   %[16,21,23,24,27];

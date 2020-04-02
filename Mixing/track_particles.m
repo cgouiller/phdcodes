@@ -5,6 +5,8 @@ fprintf('\n');
 
 
 %%
+    directoryBg=strcat(basePathVid,date,sete,'bg\');
+
 % get all files in the background directory
 Lbg=dir(strcat(directoryBg,format));
 % a typical image to get its size

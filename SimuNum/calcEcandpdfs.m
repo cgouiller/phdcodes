@@ -1,4 +1,5 @@
-load(manipCat{ii});
+ii
+load(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'));
 N=128;L=2*pi;sig=sqrt(4*pi*(Dnag/2)^2/(90)^2); %Calcule la largeur de gaussienne associée au diamètre des nageurs
 make_grid;
 tracks=[];
@@ -14,6 +15,7 @@ vyfilt=real(ifft2((vyextf).*gfilt_f));
 vxfiltpad=padarray(vxfilt,[Npad Npad],'circular','both');
 vyfiltpad=padarray(vyfilt,[Npad Npad],'circular','both');
 for j=1:npart
+    round(100*j/npart)
     newpart=ma.tracks{j};
     for k=2:length(newpart)-1
         newpart(k,4)=(newpart(k+1,2)-newpart(k-1,2))/(newpart(k+1,1)-newpart(k-1,1))-interp2(xpad,ypad,vxfiltpad,mod(newpart(k,2),2*pi),mod(newpart(k,3),2*pi));
@@ -25,7 +27,8 @@ for j=1:npart
     newpart(length(newpart),4)=NaN;
     newpart(length(newpart),5)=NaN;
     newpart(:,6)=sqrt(newpart(:,4).^2+newpart(:,5).^2);
-    
+    newpart(:,9)=j*ones(length(newpart),1);
+
     tracks=[tracks;newpart];
     
 end
@@ -33,6 +36,7 @@ for k=1:length(newpart)
     Ec(k)=1/2*sum(tracks(tracks(:,1)==tracks(k,1),6).^2);
 end
 Ec=Ec/npart;
+'msd'
 mamsd=ma.getMeanMSD;
 dt=mamsd(:,1);
 %
@@ -40,4 +44,6 @@ dt=mamsd(:,1);
 [county,biny]=hist_maison((tracks(:,5)-nanmean2(tracks(:,5)))/nanstd(tracks(:,5)),-5,5,101,1);
 [countax,binax]=hist_maison((tracks(:,7)-nanmean2(tracks(:,7)))/nanstd(tracks(:,7)),-5,5,101,1);
 [countay,binay]=hist_maison((tracks(:,8)-nanmean2(tracks(:,8)))/nanstd(tracks(:,8)),-5,5,101,1);
-save(strcat(manipCat{ii}(1:end-4),'_analyze.mat'),'dt','Ec','tracks','countx','county','countax','countay','binx','biny','binax','binay')
+bin=binx;
+fname=strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat');
+save(strcat(fname(1:end-4),'_analyze.mat'),'dt','mamsd','Ec','tracks','countx','county','countax','countay','bin')

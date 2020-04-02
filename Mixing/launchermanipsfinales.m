@@ -1,18 +1,18 @@
 clear all;
 
-run('E:\Clément\Mixing\Matlab\manipsfinales.m');
+run('E:\Clément\phdcodes\Mixing\manips180913.m');
 %%
 
 
-list=varM;
-for i=1:3%1:length(list)
-    numVid=i;%list(i);
+%list=varM;
+%for i=1:length(list)
+for numVid=1:14;
   
  
     load_param;
 %      load(strcat(directoryAnalyse,'positions.mat'))
-%          load(strcat(directoryAnalyse,'trajectories.mat'))
-% % 
+% % %          load(strcat(directoryAnalyse,'trajectories.mat'))
+% % % % 
 %  pos=zeros(1,length(c));
 %  for ii=1:length(c)
 %      pos(ii)=length(c(ii).x);
@@ -23,11 +23,11 @@ for i=1:3%1:length(list)
     %samplen(numVid)=length(sample);
     
     
-   %track_particles; % Création de l'image de background (im0) et tracking de particules (sauvegardé dans positions.mat)
+  % track_particles; % Création de l'image de background (im0) et tracking de particules (sauvegardé dans positions.mat)
   
     %   corautournag;
    
-     concentration; %Evolution des différents champs scalaires, obtenus à la fois par Beer-Lambert (ConcBL.mat) et par interpolation linéaire (Conclin.mat)
+    concentration; %Evolution des différents champs scalaires, obtenus à la fois par Beer-Lambert (ConcBL.mat) et par interpolation linéaire (Conclin.mat)
   %  constr_traject;%Se servant des positions obtenues par track_particles en déduit les trajectoires sauvegardées dans trajectories.mat
   %   filtrage_traj;%Regarde dans trajectories.mat quelles particules sont assez éloignées des bords ainsi que des autres
     % spectre; %Calcule avec pwelch le spectre moyen du champ de concentration réduit dans le carré, (C-CMoySq)/CstdSq

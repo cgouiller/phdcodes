@@ -32,12 +32,13 @@ imbg=imbg.im0;
 
 immask=nanOutCircle(ones(length(imbg)),round(length(imbg)/2),round(length(imbg)/2),round(length(imbg)/2));
 time=[];
-
+CMoy=[];
+C2Moy=[];
 %% Measure of all quantities for each image with Beer-Lambert
 for k=startImg:length(L)
     % Open the image and calculate the concentration field
     fname=L(k).name;
-    if mod(str2double(fname(1:7))/fps,1)==0
+    %if mod(str2double(fname(1:7))/fps,1)==0
         fnamecompl=strcat(directoryVid,fname);
         im=double(imread(fnamecompl));
         im=im(round(centerCellY-radiusCellPx):round(centerCellY+radiusCellPx),round(centerCellX-radiusCellPx):round(centerCellX+radiusCellPx));
@@ -65,16 +66,16 @@ for k=startImg:length(L)
         % CfieldSq=Cfield(ceil(sizecf/2-sqrt(2)*sizecf/4):floor(sizecf/2+sqrt(2)*sizecf/4),ceil(sizecf/2-sqrt(2)*sizecf/4):floor(sizecf/2+sqrt(2)*sizecf/4));
         
         
-        CMoy(k)=nanmean2(Cfield);
+        CMoy=[CMoy,nanmean2(Cfield)];
         % CMoySq(k)=nanmean2(CfieldSq);
-        C2Moy(k)=nanmean2(Cfield.*Cfield);
+        C2Moy=[C2Moy,nanmean2(Cfield.*Cfield)];
         % C2MoySq(k)=nanmean2(CfieldSq.*CfieldSq);
         
         % timer
         if (mod(k-1,100)==0)
             dispstat(sprintf('Progress %d%%',round((k-startImg)*100/(length(L)-startImg))),'timestamp');
         end
-    end
+   % end
     
 end
 

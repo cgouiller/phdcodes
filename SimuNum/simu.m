@@ -25,7 +25,7 @@
 %% Initialisations de la simu
 L = 2*pi; %Taille de la boîte
 N=128;%Résolution de la grille de simu
-nt=10000;%Nombre de pas de temps à effectuer
+%nt=10000;%Nombre de pas de temps à effectuer
 chopvec=5; %On affiche une toutes les chopvec images
 
 make_grid; %Initialise la grille de simu (N*N)
@@ -347,6 +347,6 @@ ma = ma.computeMSD; %Calcule le MSD
     
     
     %% On sauvegarde tout
-    save(manipCat200320.save{ii},'ma','mx','my','npart','Dnag','A','inertie','taup','marangoni','asrc','advection','ecoulement','param_ecexterne','amp_ec','mvfx','mvfy','f','Spx','Spy');
+    save(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'),'ma','mx','my','npart','Dnag','A','inertie','taup','marangoni','asrc','advection','ecoulement','param_ecexterne','amp_ec','mvfx','mvfy','f','Spx','Spy');
 
 
