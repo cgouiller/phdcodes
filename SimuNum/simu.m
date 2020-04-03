@@ -1,3 +1,6 @@
+if old_nt~=1
+        ff=k; %Pour éviter le conflit entre fréquence du spectre et k utilisé comme variable pour boucle for
+end
 
 %% Initialisations de la simu
 L = 2*pi; %Taille de la boîte
@@ -63,9 +66,13 @@ source0_f=asrc*source0_f; % Linéarité de la TF
 
 if old_nt==1
     % Positions aléatoires des nageurs
+   if rdomstart==1
     xp=2*pi*rand(1,npart);
     yp=2*pi*rand(1,npart);
-
+   elseif rdomstart==0
+       xp=pi/4*ones(1,npart);
+       yp=pi/4*ones(1,npart);
+   end
 
 % vitesse initiale = vitesse locale de l'écoulement
 if ecoulement==1
@@ -214,7 +221,7 @@ for in=old_nt+1:nt
     
     % Affichage du pourcentage d'avancée de la simu
     if (mod(in,100)==0)
-        dispstat(sprintf('Progress %d%%',round((in-(old_nt+1))*100/(nt-1))),'timestamp');
+        dispstat(sprintf('Progress %d%%',round((in-(old_nt+1))*100/(nt-old_nt+1))),'timestamp');
     end
     
     
@@ -343,10 +350,10 @@ if old_nt==1
     Spx=Spaddx/(128*200); %Normalisation
     Spy=Spaddy/(128*200);
     Sp=(Spx+Spy)/2;
-    [aaa,k]=pwelch(vfy(k,:),hanning(128),round(128/2),128,1/(2*pi)); % juste pour récupérer le vecteur fréquence
+    [aaa,ff]=pwelch(vfy(k,:),hanning(128),round(128/2),128,1/(2*pi)); % juste pour récupérer le vecteur fréquence
 end
 
-
+k=ff;
 %% On sauvegarde tout
 mkdir(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\'));
 save(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'),'Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','k','Spx','Spy','dt','uxp','uyp','uxp_old','uyp_old','vsx_old','vsx','vsy_old','vsy','xs','xs_old','ys','ys_old','Sfcamp_old');

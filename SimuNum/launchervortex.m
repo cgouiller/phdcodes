@@ -1,6 +1,6 @@
 clear all;close all;run defaultfig;
-run manips.m
-for ii=1:length(manipCat200320.nt)
+run manips
+for ii=1:nombreVid
     if exist(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'))~=0
         load(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'));
         old_nt=nt;
@@ -17,6 +17,7 @@ for ii=1:length(manipCat200320.nt)
     npart=manipCat200320.npart(ii);
     A=manipCat200320.A(ii);
     nt=manipCat200320.nt(ii);
+    rdomstart=manipCat200320.randomstart(ii);
     ecoulement=1;
     marangoni=1;
     if amp_ec==0
@@ -47,6 +48,7 @@ for ii=1:length(manipCat200320.nt)
         ii
         simu;
     end
-    % calcEcandpdfs;
+        calcEcandpdfs;
+
     %end
 end
