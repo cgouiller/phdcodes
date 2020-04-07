@@ -34,9 +34,9 @@ for j=1:npart
     newpart(:,9)=j*ones(length(newpart),1);
 
     tracks=[tracks;newpart];
-    
+    newpart=[];
 end
-for k=1:length(newpart)
+for k=1:nt
     Ec(k)=1/2*sum(tracks(tracks(:,1)==tracks(k,1),6).^2);
 end
 Ec=Ec/npart;
@@ -60,4 +60,4 @@ bin=binx;
 
 %% Sauvegarde
 fname=strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat');
-save(strcat(fname(1:end-4),'_analyze.mat'),'dt','MeanSD','Ec','countx','county','countax','countay','bin')
+save(strcat(fname(1:end-4),'_analyze.mat'),'dt','MeanSD','tau','Ec','countx','county','countax','countay','bin')
