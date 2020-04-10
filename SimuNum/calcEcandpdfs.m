@@ -57,7 +57,15 @@ end
 [countax,binax]=hist_maison((tracks(:,7)-nanmean2(tracks(:,7)))/nanstd(tracks(:,7)),-5,5,101,1);
 [countay,binay]=hist_maison((tracks(:,8)-nanmean2(tracks(:,8)))/nanstd(tracks(:,8)),-5,5,101,1);
 bin=binx;
+fname=strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat');
+
+%load(strcat(fname(1:end-4),'_analyze.mat'))
+Ec(isnan(Ec))=0;
+[SpEc,fEc]=pwelch(Ec,hanning(length(Ec)),round(length(Ec)/2),length(Ec),1/(dt));
+
+
+
 
 %% Sauvegarde
 fname=strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat');
-save(strcat(fname(1:end-4),'_analyze.mat'),'dt','MeanSD','tau','Ec','countx','county','countax','countay','bin')
+save(strcat(fname(1:end-4),'_analyze.mat'),'dt','MeanSD','tau','Ec','countx','county','countax','countay','bin','fEc','SpEc')

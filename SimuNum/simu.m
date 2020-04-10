@@ -41,8 +41,8 @@ if old_nt~=1
     mvsy=zeros(nt-old_nt+1,npart);
     mxb=zeros(nt,npart);
     myb=zeros(nt,npart);
-    mxb(1:old_nt,npart)=mx;
-    myb(1:old_nt,npart)=my;
+    mxb(1:old_nt,1:npart)=mx;
+    myb(1:old_nt,1:npart)=my;
     mx=mxb;
     my=myb;
     

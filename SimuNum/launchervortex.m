@@ -28,7 +28,7 @@ for ii=1:nombreVid
     end
     
     
-    affichage=1; %1 si on veut tracer le champ, 0 si non
+    affichage=0; %1 si on veut tracer le champ, 0 si non
     %npart=30; %Nombre de nageurs
     
     Dnag=5; %En mm, le diamètre des nageurs voulus
@@ -47,9 +47,9 @@ for ii=1:nombreVid
     if nt~=old_nt
         ii
         simu;
+        calcEcandpdfs;
 
     end
-        calcEcandpdfs;
 
     %end
 end
