@@ -1,4 +1,6 @@
-
+x0=((0:127)+0.5)*2*pi/128;
+y0=((0:127)+0.5)*2*pi/128;
+[x,y]=meshgrid(x0,y0);
 R=zeros(size(x));
 T=zeros(size(x));
 Vr=zeros(size(x));
@@ -43,3 +45,7 @@ for i=length(x)/2+1:length(x)
         
     end
 end
+T=flipud(T);
+T=fliplr(T);
+T=T+3*pi/2;
+%figure;imagesc(x0,y0,T);set(gca,'YDir','normal')

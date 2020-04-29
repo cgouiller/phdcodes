@@ -17,6 +17,10 @@ if onoff==1
         vx(33,33)=0;
         vy(33,33)=0;
     end
+    if choix==3
+        vx=amplitude*sin(y);
+        vy=0;
+    end
 end
 
 

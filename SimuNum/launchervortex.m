@@ -44,6 +44,9 @@ for ii=1:nombreVid
     advection=1; %1 si avec advection, 0 si non
     
     param_ecexterne=1; %Choix du type d'écoulement : 1 pour Taylor-Green, 2 pour un écoulement en 1/r^2
+    if ii==140
+        param_ecexterne=3;
+    end
     if nt~=old_nt
         ii
         simu;

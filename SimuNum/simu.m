@@ -1,5 +1,5 @@
 if old_nt~=1
-        ff=k; %Pour éviter le conflit entre fréquence du spectre et k utilisé comme variable pour boucle for
+    ff=k; %Pour éviter le conflit entre fréquence du spectre et k utilisé comme variable pour boucle for
 end
 
 %% Initialisations de la simu
@@ -35,10 +35,20 @@ if old_nt==1
     mvfy=cell(200,1);
 end
 if old_nt~=1
-    muxp=zeros(nt-old_nt+1,npart);
-    muyp=zeros(nt-old_nt+1,npart);
-    mvsx=zeros(nt-old_nt+1,npart);
-    mvsy=zeros(nt-old_nt+1,npart);
+    muxpb=zeros(nt,npart);
+    muypb=zeros(nt,npart);
+    mvsxb=zeros(nt,npart);
+    mvsyb=zeros(nt,npart);
+    muxpb(1:old_nt,1:npart)=muxp;
+    muypb(1:old_nt,1:npart)=muyp;
+    mvsxb(1:old_nt,1:npart)=mvsx;
+    mvsyb(1:old_nt,1:npart)=mvsy;
+    muxp=muxpb;
+    muyp=muypb;
+    mvsx=mvsxb;
+    mvsy=mvsyb;
+    
+    
     mxb=zeros(nt,npart);
     myb=zeros(nt,npart);
     mxb(1:old_nt,1:npart)=mx;
@@ -66,25 +76,28 @@ source0_f=asrc*source0_f; % Linéarité de la TF
 
 if old_nt==1
     % Positions aléatoires des nageurs
-   if rdomstart==1
-    xp=2*pi*rand(1,npart);
-    yp=2*pi*rand(1,npart);
-   elseif rdomstart==0
-       xp=pi/4*ones(1,npart);
-       yp=pi/4*ones(1,npart);
-   end
-
-% vitesse initiale = vitesse locale de l'écoulement
-if ecoulement==1
-    vxfilt=real(ifft2(vxextf.*gfilt_f)); %On filtre l'écoulement externe à la taille du nageur
-    vyfilt=real(ifft2(vyextf.*gfilt_f));
-    vsx=interp2(x,y,vxfilt,xp,yp,'spline'); %On interpole la vitesse filtrée à la position du nageur
-    vsy=interp2(x,y,vyfilt,xp,yp,'spline');
-elseif ecoulement==0
-    vsx=zeros(1,npart);
-    vsy=zeros(1,npart);
-end
-
+    if rdomstart==1
+        xp=2*pi*rand(1,npart);
+        yp=2*pi*rand(1,npart);
+    elseif rdomstart==2
+        xp=0.1*ones(1,npart);
+        yp=pi/4*ones(1,npart);
+    elseif rdomstart==0
+        xp=pi/4*ones(1,npart);
+        yp=pi/4*ones(1,npart);
+    end
+    
+    % vitesse initiale = vitesse locale de l'écoulement
+    if ecoulement==1
+        vxfilt=real(ifft2(vxextf.*gfilt_f)); %On filtre l'écoulement externe à la taille du nageur
+        vyfilt=real(ifft2(vyextf.*gfilt_f));
+        vsx=interp2(x,y,vxfilt,xp,yp,'spline'); %On interpole la vitesse filtrée à la position du nageur
+        vsy=interp2(x,y,vyfilt,xp,yp,'spline');
+    elseif ecoulement==0
+        vsx=zeros(1,npart);
+        vsy=zeros(1,npart);
+    end
+    
     % stockage de la position initiale
     xs=xp;
     ys=yp;
@@ -224,14 +237,15 @@ for in=old_nt+1:nt
         dispstat(sprintf('Progress %d%%',round((in-(old_nt+1))*100/(nt-old_nt+1))),'timestamp');
     end
     
+    %% On garde en mémoire pour l'itération adams-bashforth
+    uxp_old=uxp;
+    uyp_old=uyp;
+    vsx_old=vsx;
+    vsy_old=vsy;
+    xs_old=xs;
+    ys_old=ys;
     
-    % On écrit dans les tableaux
-    muxp(in-old_nt+1,1:npart)=uxp(1,1:npart);
-    muyp(in-old_nt+1,1:npart)=uyp(1,1:npart);
-    mvsx(in-old_nt+1,1:npart)=vsx(1,1:npart);
-    mvsy(in-old_nt+1,1:npart)=vsy(1,1:npart);
-    mx(in,1:npart)=xs(1,1:npart);% position x
-    my(in,1:npart)=ys(1,1:npart);% position y
+   
     
     % TF du champ de vitesse Marangoni en t
     [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A);
@@ -274,13 +288,16 @@ for in=old_nt+1:nt
     
     
     
-    %% On garde en mémoire pour l'itération adams-bashforth
-    uxp_old=uxp;
-    uyp_old=uyp;
-    vsx_old=vsx;
-    vsy_old=vsy;
-    xs_old=xs;
-    ys_old=ys;
+    
+    
+     % On écrit dans les tableaux
+    muxp(in,1:npart)=uxp(1,1:npart);
+    muyp(in,1:npart)=uyp(1,1:npart);
+    mvsx(in,1:npart)=vsx(1,1:npart);
+    mvsy(in,1:npart)=vsy(1,1:npart);
+    mx(in,1:npart)=xs(1,1:npart);% position x
+    my(in,1:npart)=ys(1,1:npart);% position y
+    
     if old_nt==1
         if ismember(in,list)
             cpt=cpt+1;
@@ -311,23 +328,23 @@ end
 %% Mise en forme pour la mesure de MSD
 % Formatage des trajectoires pour l'utilisation de msdanalyzer
 % tracks = cell(npart, 1);
-% 
+%
 % for i = 1 : npart
-%     
+%
 %     % Time
 %     time = (0 : nt-1)' * dt;
-%     
+%
 %     X=mx(1:nt,i);
 %     Y=my(1:nt,i);
-%     
+%
 %     % Store
 %     tracks{i} = [time X Y];
-%     
+%
 % end
 % ma = msdanalyzer(2, 'space unit', 'time'); % Crée la classe nécessaire à l'utilisation de msd analyzer
-% 
+%
 % ma = ma.addAll(tracks); %Ajoute les trajectoires à la classe
-% 
+%
 % %ma.plotTracks;
 % ma = ma.computeMSD; %Calcule le MSD
 
@@ -356,6 +373,6 @@ end
 k=ff;
 %% On sauvegarde tout
 mkdir(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\'));
-save(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'),'Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','k','Spx','Spy','dt','uxp','uyp','uxp_old','uyp_old','vsx_old','vsx','vsy_old','vsy','xs','xs_old','ys','ys_old','Sfcamp_old');
+save(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'),'muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','k','Spx','Spy','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old');
 
 
