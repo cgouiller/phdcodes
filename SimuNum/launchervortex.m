@@ -1,6 +1,7 @@
 clear all;close all;run defaultfig;
 run manips
-for ii=1:nombreVid
+commit='cf420d2d538cc9ff0cd30b175761d51482902418';
+for ii=134:nombreVid
     if exist(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'))~=0
         load(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'));
         old_nt=nt;
@@ -43,17 +44,16 @@ for ii=1:nombreVid
     
     advection=1; %1 si avec advection, 0 si non
     
-    param_ecexterne=1; %Choix du type d'écoulement : 1 pour Taylor-Green, 2 pour un écoulement en 1/r^2
-    if ii==140
-        param_ecexterne=3;
-    end
+    
+        param_ecexterne=manipCat200320.paramec(ii); %Choix du type d'écoulement : 1 pour Taylor-Green, 2 pour un écoulement en 1/r^2
+    
     if nt~=old_nt
         ii
         simu;
-        calcEcandpdfs;
+        %calcEcandpdfs;
 
     end
 
     %end
 end
-transfer;
+%transfer;

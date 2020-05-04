@@ -64,42 +64,42 @@ fname=strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipC
 Ec(isnan(Ec))=0;
 [SpEc,fEc]=pwelch(Ec,hanning(length(Ec)),round(length(Ec)/2),length(Ec),1/(dt));
 
-%% Dans quel sens ça nage ?
-%cylindric_coord;
-tl=[tracks((tracks(:,2)<pi & tracks(:,3)<pi) | (tracks(:,2)>pi & tracks(:,3)>pi),1);tracks((tracks(:,2)<pi & tracks(:,3)>pi) | (tracks(:,2)>pi & tracks(:,3)<pi),1)];
-xl=[tracks((tracks(:,2)<pi & tracks(:,3)<pi) | (tracks(:,2)>pi & tracks(:,3)>pi),2);tracks((tracks(:,2)<pi & tracks(:,3)>pi) | (tracks(:,2)>pi & tracks(:,3)<pi),2)];
-yl=[tracks((tracks(:,2)<pi & tracks(:,3)<pi) | (tracks(:,2)>pi & tracks(:,3)>pi),3);tracks((tracks(:,2)<pi & tracks(:,3)>pi) | (tracks(:,2)>pi & tracks(:,3)<pi),3)];
-vxl=[tracks((tracks(:,2)<pi & tracks(:,3)<pi) | (tracks(:,2)>pi & tracks(:,3)>pi),4);-tracks((tracks(:,2)<pi & tracks(:,3)>pi) | (tracks(:,2)>pi & tracks(:,3)<pi),4)];
-vyl=[tracks((tracks(:,2)<pi & tracks(:,3)<pi) | (tracks(:,2)>pi & tracks(:,3)>pi),5);tracks((tracks(:,2)<pi & tracks(:,3)>pi) | (tracks(:,2)>pi & tracks(:,3)<pi),5)];
-rl=sqrt((mod(xl,pi)-pi/2).^2+(mod(yl,pi)-pi/2).^2);
-thetal=[];
-for kk=1:length(xl)
-    if mod(yl(kk),pi)==pi/2 
-        if mod(xl(kk),pi)>=pi/2
-            thetal(kk)=0;
-        else
-            thetal(kk)=pi;
-        end
-    else
-        thetal(kk)=atan((mod(yl(kk),pi)-pi/2)/(mod(xl(kk),pi)-pi/2));
-        if mod(xl(kk),pi)<pi/2
-            thetal(kk)=thetal(kk)+pi;
-        end
-    end
-end
-vtl=zeros(length(xl),1);
-for kk=2:length(thetal)-1
-    choix=[thetal(kk+1)-thetal(kk-1),2*pi+thetal(kk+1)-thetal(kk-1),-2*pi+thetal(kk+1)-thetal(kk-1)];
-    if ~isempty(find(choix==min(abs(choix))))
-        vtl(kk)=rl(kk)*choix(find(choix==min(abs(choix))))/2;
-    else
-        vtl(kk)=rl(kk)*choix(find(choix==-min(abs(choix))))/2;
-    end
-end
-
-vxextl=amp_ec.*sin(xl).*cos(yl);
-vyextl=-amp_ec.*cos(xl).*sin(yl);
-vtextl=vxextl.*cos(thetal')+vyextl.*sin(thetal');
+% %% Dans quel sens ça nage ?
+% %cylindric_coord;
+% tl=[tracks((tracks(:,2)<pi & tracks(:,3)<pi) | (tracks(:,2)>pi & tracks(:,3)>pi),1);tracks((tracks(:,2)<pi & tracks(:,3)>pi) | (tracks(:,2)>pi & tracks(:,3)<pi),1)];
+% xl=[tracks((tracks(:,2)<pi & tracks(:,3)<pi) | (tracks(:,2)>pi & tracks(:,3)>pi),2);tracks((tracks(:,2)<pi & tracks(:,3)>pi) | (tracks(:,2)>pi & tracks(:,3)<pi),2)];
+% yl=[tracks((tracks(:,2)<pi & tracks(:,3)<pi) | (tracks(:,2)>pi & tracks(:,3)>pi),3);tracks((tracks(:,2)<pi & tracks(:,3)>pi) | (tracks(:,2)>pi & tracks(:,3)<pi),3)];
+% vxl=[tracks((tracks(:,2)<pi & tracks(:,3)<pi) | (tracks(:,2)>pi & tracks(:,3)>pi),4);-tracks((tracks(:,2)<pi & tracks(:,3)>pi) | (tracks(:,2)>pi & tracks(:,3)<pi),4)];
+% vyl=[tracks((tracks(:,2)<pi & tracks(:,3)<pi) | (tracks(:,2)>pi & tracks(:,3)>pi),5);tracks((tracks(:,2)<pi & tracks(:,3)>pi) | (tracks(:,2)>pi & tracks(:,3)<pi),5)];
+% rl=sqrt((mod(xl,pi)-pi/2).^2+(mod(yl,pi)-pi/2).^2);
+% thetal=[];
+% for kk=1:length(xl)
+%     if mod(yl(kk),pi)==pi/2 
+%         if mod(xl(kk),pi)>=pi/2
+%             thetal(kk)=0;
+%         else
+%             thetal(kk)=pi;
+%         end
+%     else
+%         thetal(kk)=atan((mod(yl(kk),pi)-pi/2)/(mod(xl(kk),pi)-pi/2));
+%         if mod(xl(kk),pi)<pi/2
+%             thetal(kk)=thetal(kk)+pi;
+%         end
+%     end
+% end
+% vtl=zeros(length(xl),1);
+% for kk=2:length(thetal)-1
+%     choix=[thetal(kk+1)-thetal(kk-1),2*pi+thetal(kk+1)-thetal(kk-1),-2*pi+thetal(kk+1)-thetal(kk-1)];
+%     if ~isempty(find(choix==min(abs(choix))))
+%         vtl(kk)=rl(kk)*choix(find(choix==min(abs(choix))))/2;
+%     else
+%         vtl(kk)=rl(kk)*choix(find(choix==-min(abs(choix))))/2;
+%     end
+% end
+% 
+% vxextl=amp_ec.*sin(xl).*cos(yl);
+% vyextl=-amp_ec.*cos(xl).*sin(yl);
+% vtextl=vxextl.*cos(thetal')+vyextl.*sin(thetal');
 
 %%
 % figure(1);
