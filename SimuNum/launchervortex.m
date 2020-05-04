@@ -1,7 +1,7 @@
 clear all;close all;run defaultfig;
 run manips
-commit='cf420d2d538cc9ff0cd30b175761d51482902418';
-for ii=134:nombreVid
+commit='a5a5f2dbb5287826a6f5ef98f662dba13d8a5d0e';
+for ii=120:nombreVid
     if exist(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'))~=0
         load(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'));
         old_nt=nt;
@@ -50,10 +50,10 @@ for ii=134:nombreVid
     if nt~=old_nt
         ii
         simu;
-        %calcEcandpdfs;
+        calcEcandpdfs;
 
     end
-
+calcEcandpdfs;
     %end
 end
 %transfer;

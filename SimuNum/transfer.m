@@ -97,7 +97,7 @@ for i=1:nombreVid
     directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat200320.date{i},'\',manipCat200320.set{i},'\');
     mkdir(directoryPyt);
     
-    save(strcat(directoryPyt,manipCat200320.video{i},'.mat'),'mx','my','k','Spx','Spy','dt','tau','MeanSD','Ec','countx','county','countax','countay','bin','fEc','SpEc')
+    save(strcat(directoryPyt,manipCat200320.video{i},'.mat'),'mx','my','dt','tau','MeanSD')
     
     
     Date=[Date;manipCat200320.date{i}];
