@@ -1,5 +1,5 @@
 ii
-% load(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'));
+load(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'));
 % N=128;L=2*pi;sig=sqrt(4*pi*(Dnag/2)^2/(90)^2); %Calcule la largeur de gaussienne associée au diamètre des nageurs
 % make_grid;
 % tracks=[];
@@ -47,7 +47,7 @@ ii
 
 d=zeros(npart,length(mx)/2);
 for j=1:npart
-d(j,:)=sqrt((mx(length(mx)/2:length(mx),j)-mx(1,j)).^2+(my(length(mx)/2:length(mx),j)-my(1,j)).^2)';
+d(j,:)=sqrt((mx(length(mx)/2+1:length(mx),j)-mx(length(mx)/2,j)).^2+(my(length(my)/2+1:length(my),j)-my(length(my)/2,j)).^2)';
 end
 [MeanSD,mdx,tau]=msd(d,dt,1:20:round(length(d)/3));
 
@@ -124,4 +124,4 @@ end
 %% Sauvegarde
 fname=strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat');
 %save(strcat(fname(1:end-4),'_analyze.mat'),'dt','MeanSD','tau','Ec','countx','county','countax','countay','bin','fEc','SpEc','SHA')
-save(strcat(fname(1:end-4),'_analyze.mat'),'dt','MeanSD','tau','SHA')
+save(strcat(fname(1:end-4),'_analyze.mat'),'dt','MeanSD','tau','commit')

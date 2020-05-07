@@ -94,8 +94,9 @@ if old_nt==1
         vsx=interp2(x,y,vxfilt,xp,yp,'spline'); %On interpole la vitesse filtrée à la position du nageur
         vsy=interp2(x,y,vyfilt,xp,yp,'spline');
     elseif ecoulement==0
-        vsx=zeros(1,npart);
-        vsy=zeros(1,npart);
+        thetap=2*pi*rand(1,npart);
+        vsx=-5*ones(1,npart);
+        vsy=-5*ones(1,npart);
     end
     
     % stockage de la position initiale

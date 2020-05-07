@@ -1,7 +1,7 @@
 clear all;close all;run defaultfig;
 run manips
-commit='a5a5f2dbb5287826a6f5ef98f662dba13d8a5d0e';
-for ii=120:nombreVid
+commit='33086047ecf24b66ec8af9d22efa9305248c20d9';
+for ii=1:nombreVid
     if exist(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'))~=0
         load(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'));
         old_nt=nt;
@@ -46,14 +46,19 @@ for ii=120:nombreVid
     
     
         param_ecexterne=manipCat200320.paramec(ii); %Choix du type d'écoulement : 1 pour Taylor-Green, 2 pour un écoulement en 1/r^2
-    
-    if nt~=old_nt
-        ii
-        simu;
-        calcEcandpdfs;
-
-    end
-calcEcandpdfs;
+    load(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'))
+    Ccamp=real(ifft2(Ccamp_f));
+    imagesc(Ccamp);colorbar;title(num2str(ii));pause;
+%     if nt~=old_nt
+%         ii
+%         simu;
+%         %calcEcandpdfs;
+% 
+%     end
+%     if exist(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'_analyze.mat'))==0
+%         ii
+% calcEcandpdfs;
+%     end
     %end
 end
 %transfer;

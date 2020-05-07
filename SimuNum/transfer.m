@@ -92,13 +92,14 @@ run manips
 for i=1:nombreVid
     
     fname=strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{i},'\',manipCat200320.set{i},'\',manipCat200320.video{i},'.mat');
-    load(fname)
-    load(strcat(fname(1:end-4),'_analyze.mat'))  
-    directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat200320.date{i},'\',manipCat200320.set{i},'\');
-    mkdir(directoryPyt);
+    if exist(fname) && exist(strcat(fname(1:end-4),'_analyze.mat'))
+        load(fname)
+     load(strcat(fname(1:end-4),'_analyze.mat'))  
+        directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat200320.date{i},'\',manipCat200320.set{i},'\');
+         mkdir(directoryPyt);
     
-    save(strcat(directoryPyt,manipCat200320.video{i},'.mat'),'mx','my','dt','tau','MeanSD')
-    
+        save(strcat(directoryPyt,manipCat200320.video{i},'.mat'),'mx','my','dt','tau','MeanSD')
+    end
     
     Date=[Date;manipCat200320.date{i}];
     Rayon=[Rayon,2.5];
