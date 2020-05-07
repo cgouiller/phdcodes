@@ -9,7 +9,6 @@ chopvec=5; %On affiche une toutes les chopvec images
 
 make_grid; %Initialise la grille de simu (N*N)
 [vxext,vyext,vxextf,vyextf]=ec_extern(ecoulement,param_ecexterne,N,amp_ec,x,y); % Donne l'écoulement externe et sa TF en fonction des choix de simu.
-cylindric_coord; % Initialise une grille utile pour passer les trajectoires en coord cylindriques
 
 %% Paramètres physiques
 
@@ -85,6 +84,10 @@ if old_nt==1
     elseif rdomstart==0
         xp=pi/4*ones(1,npart);
         yp=pi/4*ones(1,npart);
+    elseif rdomstart==3
+        xp=linspace(0.1,2*pi-0.1,npart)+0.01;
+        yp=linspace(0.1,2*pi-0.1,npart)+0.01;
+
     end
     
     % vitesse initiale = vitesse locale de l'écoulement
@@ -94,9 +97,8 @@ if old_nt==1
         vsx=interp2(x,y,vxfilt,xp,yp,'spline'); %On interpole la vitesse filtrée à la position du nageur
         vsy=interp2(x,y,vyfilt,xp,yp,'spline');
     elseif ecoulement==0
-        thetap=2*pi*rand(1,npart);
-        vsx=-5*ones(1,npart);
-        vsy=-5*ones(1,npart);
+        vsx=zeros(1,npart);
+        vsy=zeros(1,npart);
     end
     
     % stockage de la position initiale
@@ -322,6 +324,19 @@ for in=old_nt+1:nt
     
     
     t=t+dt;
+    
+    
+    if autosaves==1 && mod(in*10/nt,1)==0
+        if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\'))==0
+            mkdir(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\'));
+        end
+        nts=nt;
+        nt=in;
+        save(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'),'commit','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old');
+        nt=nts;
+    end
+
+        
 end
 
 
@@ -373,7 +388,9 @@ end
 
 k=ff;
 %% On sauvegarde tout
-mkdir(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\'));
-save(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'),'commit','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','k','Spx','Spy','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old');
+if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\'))==0
+    mkdir(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\'));
+end
+save(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'),'commit','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','k','Spx','Spy','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old');
 
 
