@@ -1,6 +1,6 @@
-if old_nt~=1
-    ff=k; %Pour éviter le conflit entre fréquence du spectre et k utilisé comme variable pour boucle for
-end
+% if old_nt~=1 && exist('k')~=0
+%     ff=k; %Pour éviter le conflit entre fréquence du spectre et k utilisé comme variable pour boucle for
+% end
 
 %% Initialisations de la simu
 L = 2*pi; %Taille de la boîte
@@ -38,10 +38,10 @@ if old_nt~=1
     muypb=zeros(nt,npart);
     mvsxb=zeros(nt,npart);
     mvsyb=zeros(nt,npart);
-    muxpb(1:old_nt,1:npart)=muxp;
-    muypb(1:old_nt,1:npart)=muyp;
-    mvsxb(1:old_nt,1:npart)=mvsx;
-    mvsyb(1:old_nt,1:npart)=mvsy;
+    muxpb(1:old_nt,1:npart)=muxp(1:old_nt,1:npart);
+    muypb(1:old_nt,1:npart)=muyp(1:old_nt,1:npart);
+    mvsxb(1:old_nt,1:npart)=mvsx(1:old_nt,1:npart);
+    mvsyb(1:old_nt,1:npart)=mvsy(1:old_nt,1:npart);
     muxp=muxpb;
     muyp=muypb;
     mvsx=mvsxb;
@@ -50,8 +50,8 @@ if old_nt~=1
     
     mxb=zeros(nt,npart);
     myb=zeros(nt,npart);
-    mxb(1:old_nt,1:npart)=mx;
-    myb(1:old_nt,1:npart)=my;
+    mxb(1:old_nt,1:npart)=mx(1:old_nt,1:npart);
+    myb(1:old_nt,1:npart)=my(1:old_nt,1:npart);
     mx=mxb;
     my=myb;
     
@@ -367,30 +367,31 @@ end
 
 
 %% Calcul du spectre du champ de vitesse
-if old_nt==1
-    j=1;
-    Spaddx=zeros(65,1);
-    Spaddy=zeros(65,1);
-    for j=1:200 %vf contient 200 champs de vitesse répartis sur la simu dont on va moyenner les spectres
-        vfx=mvfx{j}; %On en garde qu'un à chaque fois (le numéro j)
-        vfy=mvfy{j};
-        for k=1:128 %Somme de chaque ligne de chaque champ de vitesse
-            Spaddx=Spaddx+pwelch(vfx(k,:),hanning(128),round(128/2),128,1/(2*pi));
-            Spaddy=Spaddy+pwelch(vfy(k,:),hanning(128),round(128/2),128,1/(2*pi));
-        end
-        
-    end
-    Spx=Spaddx/(128*200); %Normalisation
-    Spy=Spaddy/(128*200);
-    Sp=(Spx+Spy)/2;
-    [aaa,ff]=pwelch(vfy(k,:),hanning(128),round(128/2),128,1/(2*pi)); % juste pour récupérer le vecteur fréquence
-end
-
-k=ff;
+% if old_nt==1
+%     j=1;
+%     Spaddx=zeros(65,1);
+%     Spaddy=zeros(65,1);
+%     for j=1:200 %vf contient 200 champs de vitesse répartis sur la simu dont on va moyenner les spectres
+%         vfx=mvfx{j}; %On en garde qu'un à chaque fois (le numéro j)
+%         vfy=mvfy{j};
+%         for k=1:128 %Somme de chaque ligne de chaque champ de vitesse
+%             Spaddx=Spaddx+pwelch(vfx(k,:),hanning(128),round(128/2),128,1/(2*pi));
+%             Spaddy=Spaddy+pwelch(vfy(k,:),hanning(128),round(128/2),128,1/(2*pi));
+%         end
+%         
+%     end
+%     Spx=Spaddx/(128*200); %Normalisation
+%     Spy=Spaddy/(128*200);
+%     Sp=(Spx+Spy)/2;
+%     [aaa,ff]=pwelch(vfy(k,:),hanning(128),round(128/2),128,1/(2*pi)); % juste pour récupérer le vecteur fréquence
+% end
+% 
+% k=ff;
 %% On sauvegarde tout
 if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\'))==0
     mkdir(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\'));
 end
-save(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'),'commit','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','k','Spx','Spy','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old');
+%save(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'),'commit','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','k','Spx','Spy','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old');
+save(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'),'commit','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old');
 
 

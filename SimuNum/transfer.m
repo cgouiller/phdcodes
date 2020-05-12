@@ -91,7 +91,7 @@ RandomStart=[];
 run manips
 for i=1:nombreVid
     
-    fname=strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{i},'\',manipCat200320.set{i},'\',manipCat200320.video{i},'.mat');
+    fname=strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{i},'\',manipCat200320.set{i},'\',manipCat200320.video{i},'.mat');
     if exist(fname) && exist(strcat(fname(1:end-4),'_analyze.mat'))
         load(fname)
      load(strcat(fname(1:end-4),'_analyze.mat'))  
