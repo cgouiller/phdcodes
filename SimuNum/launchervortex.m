@@ -2,13 +2,28 @@ clear all;close all;run defaultfig;
 run manips
 commit='33086047ecf24b66ec8af9d22efa9305248c20d9';
 autosaves=1;
-for ii=140:nombreVid
+globalcount=0;
+videocount=0;
+for ii=1:nombreVid
     if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'))~=0
         load(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'));
         old_nt=nt;
     else
         old_nt=1;
     end
+    nt=manipCat200320.nt(ii);
+
+    globalcount=globalcount+nt-old_nt;
+end
+for ii=1:nombreVid
+    if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'))~=0
+        load(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'));
+        old_nt=nt;
+    else
+        old_nt=1;
+    end
+    
+   % figure;plot(mx);hold on;plot(my,'r');title(num2str(ii));
     % for jj=1:length(ampeccat)
     %% Choix de simu
     % npart=ncat(ii); %Nombre de nageurs
@@ -53,9 +68,11 @@ for ii=140:nombreVid
    if nt~=old_nt
         ii
         simu;
-        calcEcandpdfs;
+     %   calcEcandpdfs;
 
    end
+   
+   videocount=videocount+nt-old_nt;
 %     if exist(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'_analyze.mat'))==0
 %         ii
 % calcEcandpdfs;

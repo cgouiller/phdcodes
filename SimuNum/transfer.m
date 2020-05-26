@@ -96,8 +96,9 @@ for i=1:nombreVid
         load(fname)
      load(strcat(fname(1:end-4),'_analyze.mat'))  
         directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat200320.date{i},'\',manipCat200320.set{i},'\');
-         mkdir(directoryPyt);
-    
+         if exist(directoryPyt)==0
+             mkdir(directoryPyt);
+         end
         save(strcat(directoryPyt,manipCat200320.video{i},'.mat'),'mx','my','dt','tau','MeanSD')
     end
     

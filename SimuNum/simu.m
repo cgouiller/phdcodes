@@ -236,8 +236,9 @@ for in=old_nt+1:nt
     
     
     % Affichage du pourcentage d'avancée de la simu
-    if (mod(in,100)==0)
-        dispstat(sprintf('Progress %d%%',round((in-(old_nt+1))*100/(nt-old_nt+1))),'timestamp');
+    if (mod(in,1000)==0)
+        prcent=[round((in-(old_nt+1))*100/(nt-old_nt+1)),round(100*(videocount+in-old_nt)/globalcount)];
+        dispstat(sprintf('Progress video %d%% Progress total %d%%',prcent),'timestamp');
     end
     
     %% On garde en mémoire pour l'itération adams-bashforth
