@@ -1,6 +1,6 @@
 clear all;close all;run defaultfig;
 run manips
-commit='33086047ecf24b66ec8af9d22efa9305248c20d9';
+commit='03402046d845ecbdbb62e173f83e13e2f1c7808c';
 autosaves=1;
 globalcount=0;
 videocount=0;
