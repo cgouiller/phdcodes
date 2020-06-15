@@ -327,7 +327,7 @@ for in=old_nt+1:nt
     t=t+dt;
     
     
-    if autosaves==1 && mod(in*10/nt,1)==0
+    if autosaves==1 && mod(in*1000/nt,1)==0
         if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\'))==0
             mkdir(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\'));
         end

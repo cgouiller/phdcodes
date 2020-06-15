@@ -7,7 +7,7 @@ fprintf('\n');
 % get the list of images in the movie
 load(strcat(directoryAnalyse,'directory.mat'));
 
-%c=struct(); % a structure to get the positions of the camphors
+c=struct(); % a structure to get the positions of the camphors
 
 
 %%
@@ -22,14 +22,11 @@ dispstat(sprintf('Begining the process for the movie...'),'keepthis','timestamp'
 % bubbles)
 for k=startImg:length(L)
     if k>length(c)
-        c(k).x=[];
-        c(k).y=[];
-        c(k).t=[];
-        c(k).r=[];
+        
         l(k)=0;
     end
-    s=0.6;
-   
+    s=0.8;
+    
     while l(k)<1 && s<1
         
         
@@ -40,11 +37,11 @@ for k=startImg:length(L)
     
   
     % Position of the camphor swimmers
-    [ctmp,rtmp] = imfindcircles(im>250,R_range,'ObjectPolarity','bright','Method','TwoStage','Sensitivity',s); 
+    [ctmp,rtmp] = imfindcircles(im>250,R_range,'ObjectPolarity','bright','Method','TwoStage','Sensitivity',0.9); 
     if isempty(ctmp)==0
-        c(k).x=ctmp(:,1);
-        c(k).y=ctmp(:,2);
-        c(k).r=rtmp;
+        c(k).x=ctmp(:,1)*calib;
+        c(k).y=ctmp(:,2)*calib;
+        c(k).r=rtmp*calib;
         c(k).t=str2double(fname(1:7))/fps;
          
    
@@ -55,7 +52,7 @@ for k=startImg:length(L)
         dispstat(sprintf('Progress %i%%',round((k-startImg)*100/(length(L)-startImg))),'timestamp');
     end
     l(k)=length(c(k).x);
-    s=s+0.05;
+    s=s+0.03;
     end
 end
 
