@@ -15,12 +15,12 @@ for k=startImg:length(L)
           
 end
 %%
-maxdist=100/fps;
-[tracks]=camphre_struct2pos(a,maxdist,50);
+maxdist=150/fps;
+[tracks]=camphre_struct2pos(a,maxdist/calib,50);
 
 
-x=tracks(:,1);
-y=tracks(:,2);
+
+
 frame=tracks(:,3);
 particle=tracks(:,4);
 tracks = sortrows(tracks,4);
