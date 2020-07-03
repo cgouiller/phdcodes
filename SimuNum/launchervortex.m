@@ -23,7 +23,7 @@ for ii=1:nombreVid
         old_nt=1;
     end
     
-   % figure;plot(mx);hold on;plot(my,'r');title(num2str(ii));
+   % figure;plot(mx(1:100:end));hold on;plot(my(1:100:end),'r');title(num2str(ii));
     % for jj=1:length(ampeccat)
     %% Choix de simu
     % npart=ncat(ii); %Nombre de nageurs

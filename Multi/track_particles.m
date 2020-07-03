@@ -7,7 +7,7 @@ fprintf('\n');
 % get the list of images in the movie
 load(strcat(directoryAnalyse,'directory.mat'));
 
-%c=struct(); % a structure to get the positions of the camphors
+c=struct(); % a structure to get the positions of the camphors
 
 
 %%
@@ -28,7 +28,7 @@ for k=startImg:length(L)
         c(k).r=[];
         l(k)=0;
     end
-    s=0.6;
+    s=0.75;
    
     while l(k)<1 && s<1
         

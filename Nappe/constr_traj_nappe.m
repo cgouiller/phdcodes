@@ -8,10 +8,10 @@ fprintf('\n');
 
 load(strcat(directoryVid,'positions.mat'));
 
-
 %%
 maxdist=10;
-[tracks]=camphre_struct2pos(c,maxdist,50);
+clear tracks
+[tracks]=camphre_struct2pos(c(1:length(L)),maxdist,50);
 
 
 x=tracks(:,1);
@@ -34,10 +34,10 @@ tracks(:,8)=nan(length(tracks(:,1)),1);
 tracks(:,9)=nan(length(tracks(:,1)),1);
 
 
-for i=9:(length(L)-8)
+for i=9:(length(tracks)-8)
     %Repérer toutes les images correspondant à une particule
     
-    if tracks(i+1,3)==tracks(i,3)+1 && tracks(i-1,3)+1==tracks(i,3)
+    if tracks(i+8,3)==tracks(i,3)+8 && tracks(i-8,3)+8==tracks(i,3) && tracks(i+8,4)==tracks(i-8,4)
         tracks(i,6)=(tracks(i+8,1)-tracks(i-8,1))/16;
         tracks(i,7)=(tracks(i+8,2)-tracks(i-8,2))/16;
         tracks(i,8)=sqrt(tracks(i,6)*tracks(i,6)+tracks(i,7)*tracks(i,7));
@@ -53,7 +53,7 @@ end
 
 
 
-save(strcat(directoryVid,'trajectories.mat'),'tracks')
+save(strcat(directoryVid,'trajectories_2.mat'),'tracks')
 
 
 

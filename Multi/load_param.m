@@ -29,4 +29,4 @@
     calib=calibCat(numVid);
     %R_range contient les tailles min et max des cercles qui seront
     %détectés dans camphre_findpos_rom
-    R_range=[floor(Rdetect(numVid)*0.9/calib) ceil(Rdetect(numVid)*1.1/calib)];
+    R_range=[floor(Rdetect(numVid)*0.85/calib) ceil(Rdetect(numVid)*1.1/calib)];

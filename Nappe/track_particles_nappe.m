@@ -1,4 +1,6 @@
-
+clear c
+dispstat('','init');
+dispstat(sprintf('Beginning the particle detection...'),'keepthis','timestamp');
 for k=1:length(L)
    % disp(round(100*k/length(L)))
     %get current image
@@ -25,11 +27,13 @@ for k=1:length(L)
     c(k).t=str2double(fname(4:7))/fps;
     
     % Avancement dans le traitement
-   
+    if mod(k,10)==0
+   dispstat(sprintf('Progress %d%%',round(k*100/length(L))),'timestamp');
+    end
 
 end
 
 % save the position of the camphor swimmers along the movie
-save(strcat(directoryVid,'\','positions.mat'),'c')
+save(strcat(directoryVid,'\','positions_2.mat'),'c')
 % 
 

@@ -109,10 +109,12 @@ ylim([-0.005 0.045])
 
 %% Cstd=f(N)
 
-list=varNold;
+list=varN;
 XCat=NCat(list);
 CstdCat=[];
 CstdEt=[];
+CstdCatNorm=[];
+
 for i=1:length(list)
     numVid=list(i);
     %determine the current video/set/parameters
@@ -120,6 +122,8 @@ for i=1:length(list)
     
             load(strcat(directoryAnalyse,'Conclin.mat'));
 CstdCat=[CstdCat,mean(Cstd(time>55*60&time<65*60))];
+CstdCatNorm=[CstdCatNorm,mean(Cstd(time>55*60&time<65*60))/mean(CMoy(time>55*60&time<65*60))];
+
 CstdEt=[CstdEt,std((Cstd(time>55*60&time<65*60)))];
 
     
@@ -135,9 +139,10 @@ ylim([0 0.06])
 
 %% Cstd=f(R)
 
-list=varRold;
+list=varR;
 XCat=RCat(list);
 CstdCat=[];
+CstdCatNorm=[];
 CstdEt=[];
 for i=1:length(list)
     numVid=list(i);
@@ -146,6 +151,8 @@ for i=1:length(list)
     
             load(strcat(directoryAnalyse,'Conclin.mat'));
 CstdCat=[CstdCat,mean(Cstd(time>55*60&time<65*60))];
+CstdCatNorm=[CstdCatNorm,mean(Cstd(time>55*60&time<65*60))/mean(CMoy(time>55*60&time<65*60))];
+
 CstdEt=[CstdEt,std((Cstd(time>55*60&time<65*60)))];
 
     
