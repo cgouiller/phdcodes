@@ -32,7 +32,7 @@ piv10=cell(1,32);
 piv15=cell(1,49);
 piv5=cell(1,16);
 
-for numVid=[401:410,711:720,761,770]
+for numVid=[410,720,770]
     numVid
     calib=diamtrue(numVid)/diamvid(numVid);
     if numVid<731
@@ -94,27 +94,27 @@ for numVid=[401:410,711:720,761,770]
 %     end
    % if exist(strcat(baseDir,'PIV_mean.mat'))==2
      %cpt=cpt+1;
-           L=dir(strcat(directoryVid,format));
-            if length(L)>0
-                alea=9+round(rand(1,no_fields/10)*(length(L)-18));
-                while length(alea) ~= length(unique(alea))
-                    alea=9+round(rand(1,no_fields/10)*(length(L)-18));
-                end
-                save(strcat(directoryVid,'alea.mat'),'alea');
-                %track_particles_nappe;
-                %constr_traj_nappe;
-    
-                PIV_pretreatment_nappe;
-    
-                if numPassage(numVid)==10
-                    dpiv_nappe;
-                    PIV_treatment_nappe2;
-                end
-            %end
-    end
+%            L=dir(strcat(directoryVid,format));
+%             if length(L)>0
+%                 alea=9+round(rand(1,no_fields/10)*(length(L)-18));
+%                 while length(alea) ~= length(unique(alea))
+%                     alea=9+round(rand(1,no_fields/10)*(length(L)-18));
+%                 end
+%                 save(strcat(directoryVid,'alea.mat'),'alea');
+%                 %track_particles_nappe;
+%                 %constr_traj_nappe;
+%     
+%                 PIV_pretreatment_nappe;
+%     
+%                 if numPassage(numVid)==10
+%                     dpiv_nappe;
+%                     PIV_treatment_nappe2;
+%                 end
+%             end
+    %end
     
 %     imchampcorresp;
-%save_masked_fields;
+save_masked_fields;
 %track_particles_nappe;
 %constr_traj_nappe;
 end
