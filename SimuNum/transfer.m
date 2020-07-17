@@ -101,13 +101,24 @@ for i=1:nombreVid
          end
          mx=mx(1:10:end);
          my=my(1:10:end);
+         if strcmp(manipCat200320.set{i},'pieg')
+             frenet;
+             save(strcat(directoryPyt,manipCat200320.video{i},'.mat'),'mx','my','dt','prodscal','tau','MeanSD')
+         else
          save(strcat(directoryPyt,manipCat200320.video{i},'.mat'),'mx','my','dt','tau','MeanSD')
+         end
     elseif exist(fname)~=0 
                 load(fname)
         directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat200320.date{i},'\',manipCat200320.set{i},'\');
         mx=mx(1:10:end);
          my=my(1:10:end);
-        save(strcat(directoryPyt,manipCat200320.video{i},'.mat'),'mx','my','dt')
+         if strcmp(manipCat200320.set{i},'pieg')
+             frenet;
+             save(strcat(directoryPyt,manipCat200320.video{i},'.mat'),'mx','my','dt','prodscal')
+         else
+                     save(strcat(directoryPyt,manipCat200320.video{i},'.mat'),'mx','my','dt')
+
+         end
 
     end
     

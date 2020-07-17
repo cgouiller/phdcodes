@@ -1,23 +1,23 @@
 clear all;close all;run defaultfig;
 run manips
 commit='03402046d845ecbdbb62e173f83e13e2f1c7808c';
-autosaves=1;
+autosaves=0;
 globalcount=0;
 videocount=0;
 for ii=1:nombreVid
-    if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'))~=0
-        load(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'));
+    if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))~=0
+        load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
         old_nt=nt;
     else
         old_nt=1;
     end
-    nt=manipCat200320.nt(ii);
+    nt=manipCat.nt(ii);
 
     globalcount=globalcount+nt-old_nt;
 end
 for ii=1:nombreVid
-    if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'))~=0
-        load(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'));
+    if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))~=0
+        load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
         old_nt=nt;
     else
         old_nt=1;
@@ -28,13 +28,13 @@ for ii=1:nombreVid
     %% Choix de simu
     % npart=ncat(ii); %Nombre de nageurs
     %amp_ec=ampeccat(ii);
-    taup=manipCat200320.taup(ii);
-    inertie=manipCat200320.inertie(ii);
-    amp_ec=manipCat200320.amp_ec(ii);
-    npart=manipCat200320.npart(ii);
-    A=manipCat200320.A(ii);
-    nt=manipCat200320.nt(ii);
-    rdomstart=manipCat200320.randomstart(ii);
+    taup=manipCat.taup(ii);
+    inertie=manipCat.inertie(ii);
+    amp_ec=manipCat.amp_ec(ii);
+    npart=manipCat.npart(ii);
+    A=manipCat.A(ii);
+    nt=manipCat.nt(ii);
+    rdomstart=manipCat.randomstart(ii);
     ecoulement=1;
     marangoni=1;
     if amp_ec==0
@@ -54,15 +54,15 @@ for ii=1:nombreVid
     %taup=0.2;%s'il y a de l'inertie, choix du temps caractéristique
     
     %marangoni=1; % allume ou éteint le coef v=-marangoni*A*gradC - 1 si camphre source d'écoulement Marangoni, 0 si non
-    asrc=manipCat200320.asrc(ii); % Amplitude du flux de camphre libéré
+    asrc=manipCat.asrc(ii); % Amplitude du flux de camphre libéré
     %A=0.8; % Amplitude des effets Marangoni
     %A=A*marangoni;
     
     advection=1; %1 si avec advection, 0 si non
     
     
-        param_ecexterne=manipCat200320.paramec(ii); %Choix du type d'écoulement : 1 pour Taylor-Green, 2 pour un écoulement en 1/r^2
-%     load(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'))
+        param_ecexterne=manipCat.paramec(ii); %Choix du type d'écoulement : 1 pour Taylor-Green, 2 pour un écoulement en 1/r^2
+%     load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))
 %     Ccamp=real(ifft2(Ccamp_f));
 %     figure;imagesc(Ccamp);colorbar;title(num2str(ii));
    if nt~=old_nt
@@ -73,7 +73,7 @@ for ii=1:nombreVid
    end
    
    videocount=videocount+nt-old_nt;
-%     if exist(strcat('E:\Clément\SimuNum\Resultats2\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'_analyze.mat'))==0
+%     if exist(strcat('E:\Clément\SimuNum\Resultats2\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_analyze.mat'))==0
 %         ii
 % calcEcandpdfs;
 %     end

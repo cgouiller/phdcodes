@@ -21,7 +21,7 @@
     for field=1:length(Lpiv)/2
         image_filename_1(field)={strcat(directoryPiv,Lpiv(2*field-1).name)};
         image_filename_2(field)={strcat(directoryPiv,Lpiv(2*field).name)};
-        sav_filename(field)={strcat(pathname_sav,num2str(field),'.',sav_index)};
+        sav_filename(field)={strcat(pathname_sav,num2str(field),'_bis.',sav_index)};
     end
     pos = get(gcf,'Position');close;pause(.1)
     Automaticprocess_3;

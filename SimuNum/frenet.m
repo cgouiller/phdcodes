@@ -1,9 +1,9 @@
-clear all 
-run manips
-ii=118;
-load(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'));
+% clear all 
+% run manips
+% ii=118;
+% load(strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{ii},'\',manipCat200320.set{ii},'\',manipCat200320.video{ii},'.mat'));
 
-amp_ec=manipCat200320.amp_ec(ii);
+amp_ec=manipCat200320.amp_ec(i);
 
 L = 2*pi; %Taille de la boîte
 N=128;%Résolution de la grille de simu
@@ -46,6 +46,6 @@ if param_ecexterne==1
 end
 
 prodscal=ufr.*tanvx+vfr.*tanvy;
-figure;
-plot(1:nt,prodscal);hold on;plot(1:nt,mx,'r');plot(1:nt,my,'k');
-legend({'vm.t','x','y'},'Location','best')
+% figure;
+% plot(1:nt,prodscal);hold on;plot(1:nt,mx,'r');plot(1:nt,my,'k');
+% legend({'vm.t','x','y'},'Location','best')
