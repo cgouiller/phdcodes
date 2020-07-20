@@ -60,12 +60,15 @@ load(strcat(directoryPiv,Lpivbis(1).name))
         for j=1:length(v)
             ul=ucat(:,i,j);
             vl=vcat(:,i,j);
-            stdcat(i,j)=sqrt(var(ul(ul~=0))+var(vl(vl~=0)));
-            if sqrt(Udata(i,j).^2+Vdata(i,j).^2)<stdcat(i,j)
-                Udata(i,j)=0;
-                Vdata(i,j)=0;
-            end
+            Udata(i,j)=median(ul(ul~=0));
+            Vdata(i,j)=median(vl(vl~=0));
+
+%            stdcat(i,j)=sqrt(var(ul(ul~=0))+var(vl(vl~=0)));
+%             if sqrt(Udata(i,j).^2+Vdata(i,j).^2)<stdcat(i,j)
+%                 Udata(i,j)=0;
+%                 Vdata(i,j)=0;
+%             end
         end
     end
     
-    save(strcat(baseDir,'PIV_mean_uncert'),'x','y','Udata','Vdata','no_fields')
+    save(strcat(baseDir,'PIV_mean_median'),'x','y','Udata','Vdata','no_fields','countsu','countsv')
