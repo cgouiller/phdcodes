@@ -57,19 +57,27 @@ for numVid=10:10:nombreVid
         baseDir=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\');
     end
 %     
-%      load(strcat(baseDir,'PIV_mean_bis.mat'))
-%           load(strcat(baseDir,'PIV_mean_uncert.mat'))
-% U=Udata;
-% V=Vdata;
-%     U=U/8.09*fps/4; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
-%     V=V/8.09*fps/4; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
+%      load(strcat(baseDir,'PIV_mean_all.mat'))
+%    
+% 
+%     Umoy=Umoy/8.09*fps/4; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
+%     Vmoy=Vmoy/8.09*fps/4; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
+%     Umed=Umed/8.09*fps/4; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
+%     Vmed=Vmed/8.09*fps/4; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
+%     Uvar=Uvar*(1/8.09*fps/4)^2; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
+%     Vvar=Vvar*(1/8.09*fps/4)^2; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
 %     X=(x-mean(mean(x)))/8.09;
 %     Y=-(y-mean(mean(y)))/8.09;
-%     U(countsu<50)=0;
-%     V(countsv<50)=0;
+%    
 %     if numVid<321
-%         piv10{1,33-numProf{numVid}}.u=U;
-%         piv10{1,33-numProf{numVid}}.v=V;
+%         piv10{1,33-numProf{numVid}}.umoy=Umoy;
+%         piv10{1,33-numProf{numVid}}.vmoy=Vmoy;
+%         piv10{1,33-numProf{numVid}}.cu=countsu;
+%         piv10{1,33-numProf{numVid}}.cv=countsv;
+%         piv10{1,33-numProf{numVid}}.umed=Umed;
+%         piv10{1,33-numProf{numVid}}.vmed=Vmed;
+%         piv10{1,33-numProf{numVid}}.uvar=Uvar;
+%         piv10{1,33-numProf{numVid}}.vvar=Vvar;
 %         piv10{1,33-numProf{numVid}}.x=X;
 %         piv10{1,33-numProf{numVid}}.y=Y;
 %         piv10{1,33-numProf{numVid}}.prof=prof(numVid);
@@ -77,16 +85,28 @@ for numVid=10:10:nombreVid
 %         
 %         
 %     else if numVid>320 && numVid<811
-%             piv15{1,50-numProf{numVid}}.u=U;
-%             piv15{1,50-numProf{numVid}}.v=V;
+%             piv15{1,50-numProf{numVid}}.umoy=Umoy;
+%             piv15{1,50-numProf{numVid}}.vmoy=Vmoy;
+%             piv15{1,50-numProf{numVid}}.cu=countsu;
+%             piv15{1,50-numProf{numVid}}.cv=countsv;
+%             piv15{1,50-numProf{numVid}}.umed=Umed;
+%             piv15{1,50-numProf{numVid}}.vmed=Vmed;
+%             piv15{1,50-numProf{numVid}}.uvar=Uvar;
+%             piv15{1,50-numProf{numVid}}.vvar=Vvar;
 %             piv15{1,50-numProf{numVid}}.x=X;
 %             piv15{1,50-numProf{numVid}}.y=Y;
 %             piv15{1,50-numProf{numVid}}.prof=prof(numVid);
 %             piv15{1,50-numProf{numVid}}.haut=15;
 %             
 %         else if numVid>810
-%                 piv5{1,17-numProf{numVid}}.u=U;
-%                 piv5{1,17-numProf{numVid}}.v=V;
+%                 piv5{1,17-numProf{numVid}}.umoy=Umoy;
+%                 piv5{1,17-numProf{numVid}}.vmoy=Vmoy;
+%                 piv5{1,17-numProf{numVid}}.cu=countsu;
+%                 piv5{1,17-numProf{numVid}}.cv=countsv;
+%                 piv5{1,17-numProf{numVid}}.umed=Umed;
+%                 piv5{1,17-numProf{numVid}}.vmed=Vmed;
+%                 piv5{1,17-numProf{numVid}}.uvar=Uvar;
+%                 piv5{1,17-numProf{numVid}}.vvar=Vvar;
 %                 piv5{1,17-numProf{numVid}}.x=X;
 %                 piv5{1,17-numProf{numVid}}.y=Y;
 %                 piv5{1,17-numProf{numVid}}.prof=prof(numVid);
@@ -123,7 +143,7 @@ for numVid=10:10:nombreVid
 %track_particles_nappe;
 %constr_traj_nappe;
 end
-   %  save('E:\Clément\Julie\PIVnagseuluncert.mat','piv5','piv10','piv15')
+   %  save('E:\Clément\Julie\PIVnagseulall.mat','piv5','piv10','piv15')
 
 %%DPivsoft
 %

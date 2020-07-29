@@ -23,6 +23,9 @@ load(strcat(directoryPiv,Lpivbis(1).name))
     stdcat=zeros(size(u));
     ucat=zeros(no_fields,length(u),length(u));
     vcat=zeros(no_fields,length(v),length(v));
+    umpas=zeros(10,length(u),length(v));
+    vmpas=zeros(10,length(u),length(v));
+    pascount=zeros(10,length(u),length(v));
     for field=1:no_fields
         
         load(strcat(sav_filename{field}(1:end-4),'.mat'));
@@ -50,25 +53,32 @@ load(strcat(directoryPiv,Lpivbis(1).name))
         countsv=countsv+(ones(size(v))-isnan(v));
         
     end
-    U=U_tot./countsu;
-    V=-V_tot./countsv; %sinon c'est dans le mauvais sens...
+    Umoy=U_tot./countsu;
+    Vmoy=-V_tot./countsv; %sinon c'est dans le mauvais sens...
     
-    Udata=U;
-    Vdata=V;
     
+    Umed=zeros(size(Umoy));
+    Vmed=zeros(size(Vmoy));
+    Uvar=zeros(size(Umoy));
+    Vvar=zeros(size(Vmoy));
     for i=1:length(u)
         for j=1:length(v)
             ul=ucat(:,i,j);
             vl=vcat(:,i,j);
-            Udata(i,j)=median(ul(ul~=0));
-            Vdata(i,j)=median(vl(vl~=0));
-
-%            stdcat(i,j)=sqrt(var(ul(ul~=0))+var(vl(vl~=0)));
-%             if sqrt(Udata(i,j).^2+Vdata(i,j).^2)<stdcat(i,j)
-%                 Udata(i,j)=0;
-%                 Vdata(i,j)=0;
-%             end
+            Umed(i,j)=median(ul(ul~=0));
+            Vmed(i,j)=median(vl(vl~=0));
+            Uvar=var(ul(ul~=0));
+            Vvar=var(vl(vl~=0));
+    
         end
     end
-    
-    save(strcat(baseDir,'PIV_mean_median'),'x','y','Udata','Vdata','no_fields','countsu','countsv')
+    for kkk=1:10
+        incu=ucat(1+50*(kkk-1):50*kkk,:,:);
+        incu(incu==0)=NaN;
+        incv=vcat(1+50*(kkk-1):50*kkk,:,:);
+        incv(incv==0)=NaN;
+        umpas(kkk,:,:)=nanmean(incu);
+        vmpas(kkk,:,:)=nanmean(incv);
+        pascount(kkk,:,:)=50-max(sum(isnan(incu),1),sum(isnan(incv),1));
+    end
+    save(strcat(baseDir,'PIV_mean_all_avec incert'),'x','y','Umoy','Vmoy','no_fields','countsu','countsv','Umed','Vmed','Uvar','Vvar','umpas','vmpas','pascount')
