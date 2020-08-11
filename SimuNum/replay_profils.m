@@ -1,8 +1,8 @@
-old_nt=1;
 nt=10e4;
 nb=500;
-list=round(linspace(nt/2,nt,nb));
 profs=zeros(nb,200);
+nbderepet=10;
+liste=zeros(nbderepet,nb/nbderepet);
 %% Initialisations de la simu
 L = 2*pi; %Taille de la boîte
 N=128;%Résolution de la grille de simu
@@ -24,45 +24,25 @@ Dcamp=0.15;% Coeff de diffusion du camphre
 
 
 %% Initialisation des tableaux de stockage de valeurs
-if old_nt==1
-    mx=zeros(nt,npart);
-    my=zeros(nt,npart);
-    muxp=zeros(nt,npart);
-    muyp=zeros(nt,npart);
-    mvsx=zeros(nt,npart);
-    mvsy=zeros(nt,npart);
-    mvfx=cell(200,1);
-    mvfy=cell(200,1);
-end
-if old_nt~=1
-    muxpb=zeros(nt,npart);
-    muypb=zeros(nt,npart);
-    mvsxb=zeros(nt,npart);
-    mvsyb=zeros(nt,npart);
-    muxpb(1:old_nt,1:npart)=muxp(1:old_nt,1:npart);
-    muypb(1:old_nt,1:npart)=muyp(1:old_nt,1:npart);
-    mvsxb(1:old_nt,1:npart)=mvsx(1:old_nt,1:npart);
-    mvsyb(1:old_nt,1:npart)=mvsy(1:old_nt,1:npart);
-    muxp=muxpb;
-    muyp=muypb;
-    mvsx=mvsxb;
-    mvsy=mvsyb;
-    
-    
-    mxb=zeros(nt,npart);
-    myb=zeros(nt,npart);
-    mxb(1:old_nt,1:npart)=mx(1:old_nt,1:npart);
-    myb(1:old_nt,1:npart)=my(1:old_nt,1:npart);
-    mx=mxb;
-    my=myb;
-    
-    t=old_nt*dt;
-end
+
+mx=zeros(nt,npart);
+my=zeros(nt,npart);
+muxp=zeros(nt,npart);
+muyp=zeros(nt,npart);
+mvsx=zeros(nt,npart);
+mvsy=zeros(nt,npart);
+mvfx=cell(200,1);
+mvfy=cell(200,1);
+
 
 %% Début de la simu
-if old_nt==1
-    cpt=0; 
-end
+    
+%Initialize the clock
+dispstat('','init'); % One time only initialization
+dispstat(sprintf('Begining the simulation loop...'),'keepthis','timestamp');
+    
+cpt=0;
+
 % profil source de camphre (centré en pi), qui correspond à un nageur
 source=exp(-((x-pi).^2+(y-pi).^2)/2/sig^2)/(2*pi*sig^2);% aire normalisée à 1
 % on centre la source en (0,0), translation de -pi en x et y
@@ -73,53 +53,54 @@ gfilt_f=source0_f/sum(sum(source));
 
 source=asrc*source; % permet de l'annuler si pas de Marangoni en ayant quand même défini le filtre.
 source0_f=asrc*source0_f; % Linéarité de la TF
-
-if old_nt==1
-    % Positions aléatoires des nageurs
-    if rdomstart==1
-        xp=2*pi*rand(1,npart);
-        yp=2*pi*rand(1,npart);
-    elseif rdomstart==2
-        xp=0.1*ones(1,npart);
-        yp=pi/4*ones(1,npart);
-    elseif rdomstart==0
-        xp=pi/4*ones(1,npart);
-        yp=pi/4*ones(1,npart);
-    elseif rdomstart==3
-        xp=linspace(0.1,2*pi-0.1,npart)+0.01;
-        yp=linspace(0.1,2*pi-0.1,npart)+0.01;
-
+for iii=1:nbderepet
+    
+    list=randi([nt/2/nbderepet,nt/nbderepet],[nb/nbderepet,1]);
+    liste(iii,:)=list';
+    if 1==1
+        % Positions aléatoires des nageurs
+        if rdomstart==1
+            xp=2*pi*rand(1,npart);
+            yp=2*pi*rand(1,npart);
+        elseif rdomstart==2
+            xp=0.1*ones(1,npart);
+            yp=pi/4*ones(1,npart);
+        elseif rdomstart==0
+            xp=pi/4*ones(1,npart);
+            yp=pi/4*ones(1,npart);
+        elseif rdomstart==3
+            xp=linspace(0.1,2*pi-0.1,npart)+0.01;
+            yp=linspace(0.1,2*pi-0.1,npart)+0.01;
+            
+        end
+        
+        % vitesse initiale = vitesse locale de l'écoulement
+        if ecoulement==1
+            vxfilt=real(ifft2(vxextf.*gfilt_f)); %On filtre l'écoulement externe à la taille du nageur
+            vyfilt=real(ifft2(vyextf.*gfilt_f));
+            vsx=interp2(x,y,vxfilt,xp,yp,'spline'); %On interpole la vitesse filtrée à la position du nageur
+            vsy=interp2(x,y,vyfilt,xp,yp,'spline');
+            
+        end
+        if amp_ec==0 && npart==1
+            vsx=0.001;
+            vsy=0;
+        end
+        % stockage de la position initiale
+        xs=xp;
+        ys=yp;
+        t=0;
     end
     
-    % vitesse initiale = vitesse locale de l'écoulement
-    if ecoulement==1
-        vxfilt=real(ifft2(vxextf.*gfilt_f)); %On filtre l'écoulement externe à la taille du nageur
-        vyfilt=real(ifft2(vyextf.*gfilt_f));
-        vsx=interp2(x,y,vxfilt,xp,yp,'spline'); %On interpole la vitesse filtrée à la position du nageur
-        vsy=interp2(x,y,vyfilt,xp,yp,'spline');
-   
-    end
-    if amp_ec==0 && npart==1
-        vsx=0.001;
-        vsy=0;
-    end
-    % stockage de la position initiale
-    xs=xp;
-    ys=yp;
-    t=0;
-end
-
-
-%% Pas de temps 0
-
-% en fourier d_t TF[s] = -(Dcamp*k2+alpha)*TF[s] + B k2 TF[s.^2] + TF[source]
-
-k2=(kx.^2+ky.^2);
-expdt=exp(-alpha*dt)*exp(-Dcamp*dt*k2);% on a mis la reaction dedans
-expdt05=exp(-alpha*dt/2)*exp(-Dcamp*dt*k2/2);
-expdt2=exp(-2*alpha*dt)*exp(-2*Dcamp*dt*k2);
-
-if old_nt==1
+    
+    %% Pas de temps 0
+    
+    % en fourier d_t TF[s] = -(Dcamp*k2+alpha)*TF[s] + B k2 TF[s.^2] + TF[source]
+    
+    k2=(kx.^2+ky.^2);
+    expdt=exp(-alpha*dt)*exp(-Dcamp*dt*k2);% on a mis la reaction dedans
+    expdt05=exp(-alpha*dt/2)*exp(-Dcamp*dt*k2/2);
+    expdt2=exp(-2*alpha*dt)*exp(-2*Dcamp*dt*k2);
     
     % initialisation t=0 du champ de camphre (une source à la position de
     % chaque nageur)
@@ -222,100 +203,102 @@ if old_nt==1
     
     
     
-    compteur=1; %Pour sauvegarder les champs de vitesse
-    
-end
-%% Début de la boucle
-
-%Initialize the clock
-dispstat('','init'); % One time only initialization
-dispstat(sprintf('Begining the simulation loop...'),'keepthis','timestamp');
-
-
-
-
-for in=old_nt+1:nt
-    
-    
-    % Affichage du pourcentage d'avancée de la simu
-    if (mod(in,1000)==0)
-        prcent=[round((in-(old_nt+1))*100/(nt-old_nt+1)),round(100*(videocount+in-old_nt)/globalcount)];
-        dispstat(sprintf('Progress video %d%% Progress total %d%%',prcent),'timestamp');
-    end
-    
-    %% On garde en mémoire pour l'itération adams-bashforth
-    uxp_old=uxp;
-    uyp_old=uyp;
-    vsx_old=vsx;
-    vsy_old=vsy;
-    xs_old=xs;
-    ys_old=ys;
-    
-   
-    
-    % TF du champ de vitesse Marangoni en t
-    [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A);
-    
-    % Calcul du champ de camphre en t
-    Ccamp=real(ifft2(Ccamp_f));% init en dt
-    
-    
-    % Champ de vitesse filtré et interpolé en t
-    % filtrage en fourier, interp dans l'espace physique
-    [vxfilt,vyfilt]=ec_filtre(marangoni,ecoulement,vxf,vxextf,vyf,vyextf,gfilt_f);
-    
-    
-    %Donne la vitesse filtrée sur chacun des nageurs
-    [uxp,uyp]=vfiltnag(vxfilt,vyfilt,Npad,xs,ys,xpad,ypad);
-    
-    % Calcul de la source de camphre à l'instant t, en Fourier
-    %source_f=source0_f.*exp(-1i*xs*kx-1i*ys*ky);
-    source_f=zeros(size(source0_f));
-    for nn=1:npart
-        source_f=source_f+source0_f.*exp(-1i*xs(nn)*kx-1i*ys(nn)*ky);
-    end
-    
-    % calcul des termes source
-    Sfcamp = Sscal_adams(advection,Ccamp_f,vxext,vyext,kx,ky,alias); %advection est l'interrupteur on/off
-    Sfcamp=Sfcamp+source_f;
-    Sfcamp=Sfcamp.*alias;
-    
-    vx=real(ifft2(vxf));
-    vy=real(ifft2(vyf));
-    
-    Ccamp_f=expdt.*(Ccamp_f + 3/2*dt*Sfcamp)-1/2*dt*expdt2.*Sfcamp_old;% Evolution de l'équa diff
-    Ccamp_f=Ccamp_f.*alias;%Eviter l'aliasing
-    Sfcamp_old=Sfcamp;
-    
-    
-    % Adams-Bashforth pour v et x
-    % cas purement lagrangien
-    [xs,ys,vsx,vsy]=eval_posvit(1,inertie,dt,xs_old,ys_old,vsx,vsy,uxp,uyp,gfilt_f,vxextf,vyextf,Npad,xpad,ypad,uxp_old,vsx_old,uyp_old,vsy_old,vx,vy,taup); %1 car adams-bashforth
-    
-    
-    
-    
-    
-     % On écrit dans les tableaux
-    muxp(in,1:npart)=uxp(1,1:npart);
-    muyp(in,1:npart)=uyp(1,1:npart);
-    mvsx(in,1:npart)=vsx(1,1:npart);
-    mvsy(in,1:npart)=vsy(1,1:npart);
-    mx(in,1:npart)=xs(1,1:npart);% position x
-    my(in,1:npart)=ys(1,1:npart);% position y
-    
-   
-    if ismember(in,list)
-        cpt=cpt+1;
-        profs(cpt,:)=improfile(padarray(Ccamp,[120 120],'circular','both'),round(120+64/pi*[mod(xs,2*pi)-(mx(in,1)-mx(in-1,1))/sqrt((mx(in,1)-mx(in-1,1))^2+(my(in,1)-my(in-1,1))^2)*3 mod(xs,2*pi)+(mx(in,1)-mx(in-1,1))/sqrt((mx(in,1)-mx(in-1,1))^2+(my(in,1)-my(in-1,1))^2)*3]),round(120+64/pi*[mod(ys,2*pi)-(my(in,1)-my(in-1,1))/sqrt((mx(in,1)-mx(in-1,1))^2+(my(in,1)-my(in-1,1))^2)*3 mod(ys,2*pi)+(my(in,1)-my(in-1,1))/sqrt((mx(in,1)-mx(in-1,1))^2+(my(in,1)-my(in-1,1))^2)*3]),200);
-    end
     
   
+    
+    
+    
+    for in=1+1:nt/nbderepet
+        
+        
+        % Affichage du pourcentage d'avancée de la simu
+        if (mod(in,1000)==0)
+            prcent=[round(((iii-1)*nt/nbderepet+in)*100/nt),round(100*(videocount+in-1)/globalcount)];
+            dispstat(sprintf('Progress video %d%% Progress total %d%%',prcent),'timestamp');
+        end
+        
+        %% On garde en mémoire pour l'itération adams-bashforth
+        uxp_old=uxp;
+        uyp_old=uyp;
+        vsx_old=vsx;
+        vsy_old=vsy;
+        xs_old=xs;
+        ys_old=ys;
+        
+        
+        
+        % TF du champ de vitesse Marangoni en t
+        [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A);
+        
+        % Calcul du champ de camphre en t
+        Ccamp=real(ifft2(Ccamp_f));% init en dt
+        
+        
+        % Champ de vitesse filtré et interpolé en t
+        % filtrage en fourier, interp dans l'espace physique
+        [vxfilt,vyfilt]=ec_filtre(marangoni,ecoulement,vxf,vxextf,vyf,vyextf,gfilt_f);
+        
+        
+        %Donne la vitesse filtrée sur chacun des nageurs
+        [uxp,uyp]=vfiltnag(vxfilt,vyfilt,Npad,xs,ys,xpad,ypad);
+        
+        % Calcul de la source de camphre à l'instant t, en Fourier
+        %source_f=source0_f.*exp(-1i*xs*kx-1i*ys*ky);
+        source_f=zeros(size(source0_f));
+        for nn=1:npart
+            source_f=source_f+source0_f.*exp(-1i*xs(nn)*kx-1i*ys(nn)*ky);
+        end
+        
+        % calcul des termes source
+        Sfcamp = Sscal_adams(advection,Ccamp_f,vxext,vyext,kx,ky,alias); %advection est l'interrupteur on/off
+        Sfcamp=Sfcamp+source_f;
+        Sfcamp=Sfcamp.*alias;
+        
+        vx=real(ifft2(vxf));
+        vy=real(ifft2(vyf));
+        
+        Ccamp_f=expdt.*(Ccamp_f + 3/2*dt*Sfcamp)-1/2*dt*expdt2.*Sfcamp_old;% Evolution de l'équa diff
+        Ccamp_f=Ccamp_f.*alias;%Eviter l'aliasing
+        Sfcamp_old=Sfcamp;
+        
+        
+        % Adams-Bashforth pour v et x
+        % cas purement lagrangien
+        [xs,ys,vsx,vsy]=eval_posvit(1,inertie,dt,xs_old,ys_old,vsx,vsy,uxp,uyp,gfilt_f,vxextf,vyextf,Npad,xpad,ypad,uxp_old,vsx_old,uyp_old,vsy_old,vx,vy,taup); %1 car adams-bashforth
+        
+        
+        
+        
+        
+        % On écrit dans les tableaux
+        muxp((iii-1)*nt/nbderepet+in,1:npart)=uxp(1,1:npart);
+        muyp((iii-1)*nt/nbderepet+in,1:npart)=uyp(1,1:npart);
+        mvsx((iii-1)*nt/nbderepet+in,1:npart)=vsx(1,1:npart);
+        mvsy((iii-1)*nt/nbderepet+in,1:npart)=vsy(1,1:npart);
+        mx((iii-1)*nt/nbderepet+in,1:npart)=xs(1,1:npart);% position x
+        my((iii-1)*nt/nbderepet+in,1:npart)=ys(1,1:npart);% position y
+        
+        
+        if ismember(in,list)
+            cpt=cpt+1;
+            if sqrt((mx(in,1)-mx(in-1,1))^2+(my(in,1)-my(in-1,1))^2)~=0
+            profs(cpt,:)=improfile(padarray(Ccamp,[120 120],'circular','both'),round(120+64/pi*[mod(xs,2*pi)-(mx(in,1)-mx(in-1,1))/sqrt((mx(in,1)-mx(in-1,1))^2+(my(in,1)-my(in-1,1))^2)*3 mod(xs,2*pi)+(mx(in,1)-mx(in-1,1))/sqrt((mx(in,1)-mx(in-1,1))^2+(my(in,1)-my(in-1,1))^2)*3]),round(120+64/pi*[mod(ys,2*pi)-(my(in,1)-my(in-1,1))/sqrt((mx(in,1)-mx(in-1,1))^2+(my(in,1)-my(in-1,1))^2)*3 mod(ys,2*pi)+(my(in,1)-my(in-1,1))/sqrt((mx(in,1)-mx(in-1,1))^2+(my(in,1)-my(in-1,1))^2)*3]),200);
+            end
+        end
+        
+        
+    end
 end
+vxfilt=real(ifft2((vxextf).*gfilt_f));
+vyfilt=real(ifft2((vyextf).*gfilt_f));
+vxfiltp=padarray(vxfilt,[10 10],'circular','both');
+vyfiltp=padarray(vyfilt,[10 10],'circular','both');
+xsm=modulo(mx,2*pi);
+ysm=modulo(my,2*pi);
+umar=uxp-interp2(xpad,ypad,vxfiltp,xsm,ysm,'spline');
+vmar=uyp-interp2(xpad,ypad,vyfiltp,xsm,ysm,'spline');
 
 
-
-
-save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_profiles.mat'),'profs');
+save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_profiles.mat'),'profs','mx','my','umar','vmar','liste');
 
 
