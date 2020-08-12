@@ -59,4 +59,4 @@ load(strcat(directoryPiv,Lpivbis(1).name))
         end
     end
 
-    save(strcat(directoryVid,'PIV_mean'),'x','y','Umoy','Vmoy','countsu','countsv','Umed','Vmed','Uvar','Vvar')
+    save(strcat(directoryPiv,'PIV_mean'),'x','y','Umoy','Vmoy','countsu','countsv','Umed','Vmed','Uvar','Vvar')

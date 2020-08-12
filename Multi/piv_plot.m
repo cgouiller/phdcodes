@@ -9,21 +9,34 @@ angles(4)=angles(4)-pi/2;
 angles(xs<0)=angles(xs<0)+pi;
 angle=-mean(angles); %- parce qu'on veut tourner dans l'autre sens que celui qu'on a mesuré!
 figure;
+L=dir(strcat(directoryVid,'*.tif'));
 
-hgx=hgxcat(numVid);
-hgy=hgycat(numVid);
-hdx=hdxcat(numVid);
-hdy=hdycat(numVid);
-bgx=bgxcat(numVid);
-bgy=bgycat(numVid);
-bdx=bdxcat(numVid);
-bdy=bdycat(numVid);
-xedge=[hgx,hdx,bdx,bgx]-centerXCat(numVid);
-yedge=[hgy,hdy,bdy,bgy]-centerYCat(numVid);
-xedger=cos(angle)*xedge-sin(angle)*yedge;
-yedger=sin(angle)*xedge+cos(angle)*yedge;
-xedge2=xedger+centerXCat(numVid);
-yedge2=yedger+centerYCat(numVid);
+reshval=round(min([2048-centerXCat(numVid),centerXCat(numVid),centerYCat(numVid),2048-centerYCat(numVid)])-5);
+fname=L(1).name;
+    fnamesave=fname;
+    fnamecompl=strcat(directoryVid,fname);
+    im=double(imread(fnamecompl));
+    im=im(centerYCat(numVid)-reshval:centerYCat(numVid)+reshval,centerXCat(numVid)-reshval:centerXCat(numVid)+reshval);
+    centerval=(length(im)+1)/2;
+
+% hgx=hgxcat(numVid);
+% hgy=hgycat(numVid);
+% hdx=hdxcat(numVid);
+% hdy=hdycat(numVid);
+% bgx=bgxcat(numVid);
+% bgy=bgycat(numVid);
+% bdx=bdxcat(numVid);
+% bdy=bdycat(numVid);
+% xlist=[hgx,hdx,bdx,bgx];
+% ylist=[hgy,hdy,bdy,bgy];
+% xedge=xlist-centerval;
+% yedge=ylist-centerval;
+% xedger=cos(angle)*xedge+sin(angle)*yedge;
+% yedger=-sin(angle)*xedge+cos(angle)*yedge;
+% xedge2=xedger+centerval;
+% yedge2=yedger+centerval;
+xedge2=[centerval-coteCarre(numVid)/2,centerval+coteCarre(numVid)/2,centerval+coteCarre(numVid)/2,centerval-coteCarre(numVid)/2];
+yedge2=[centerval-coteCarre(numVid)/2,centerval-coteCarre(numVid)/2,centerval+coteCarre(numVid)/2,centerval+coteCarre(numVid)/2];
 in=inpolygon(x,y,xedge2,yedge2);
 Umoy=Umoy.*in;
 Vmoy=Vmoy.*in;
@@ -40,9 +53,9 @@ if trueCarre(numVid)==120.5
     for i=1:4
         for j=1:4
             if mod(i,2)==mod(j,2)
-                plot(i*pas,j*pas,'+r','MarkerSize',10,'LineWidth',2)
+                plot(j*pas,i*pas,'+r','MarkerSize',10,'LineWidth',2)
             else
-                plot(i*pas,j*pas,'xk','MarkerSize',10,'LineWidth',2)
+                plot(j*pas,i*pas,'xk','MarkerSize',10,'LineWidth',2)
             end
         end
     end
@@ -52,9 +65,9 @@ elseif trueCarre(numVid)==96.4
     for i=1:4
         for j=1:4
             if mod(i,2)==mod(j,2)
-                plot((0.5+(i-1))*pas,(0.5+(j-1))*pas,'+r','MarkerSize',10,'LineWidth',2)
+                plot((0.5+(j-1))*pas,(0.5+(i-1))*pas,'+r','MarkerSize',10,'LineWidth',2)
             else
-                plot((0.5+(i-1))*pas,(0.5+(j-1))*pas,'xk','MarkerSize',10,'LineWidth',2)
+                plot((0.5+(j-1))*pas,(0.5+(i-1))*pas,'xk','MarkerSize',10,'LineWidth',2)
             end
         end
     end

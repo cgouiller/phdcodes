@@ -73,8 +73,8 @@ bgycat=[1777;1722;1962]; % y bas droit
 % bgxcat=[254;349;118]; % x bas droit
 % bgycat=[1778;1724;1958]; % y bas droit
 
-centerXCat=(hgxcat+hdxcat+bgxcat+bdxcat)/4;
-centerYCat=(hgycat+hdycat+bgycat+bdycat)/4;
+centerXCat=round((hgxcat+hdxcat+bgxcat+bdxcat)/4);
+centerYCat=round((hgycat+hdycat+bgycat+bdycat)/4);
 
 coteCarre=mean([sqrt((hgxcat-hdxcat).^2+(hgycat-hdycat).^2),sqrt((hdxcat-bdxcat).^2+(hdycat-bdycat).^2),sqrt((bdxcat-bgxcat).^2+(bdycat-bgycat).^2),sqrt((bgxcat-hgxcat).^2+(bgycat-hgycat).^2)]'); %#ok<UDIM> % On fait le moyenne des 4 longueurs du carré pour chaque manip
 trueCarre=[96.4,96.4,120.5];
