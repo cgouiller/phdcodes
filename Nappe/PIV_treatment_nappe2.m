@@ -66,7 +66,7 @@ load(strcat(directoryPiv,Lpivbis(1).name))
             ul=ucat(:,i,j);
             vl=vcat(:,i,j);
             Umed(i,j)=median(ul(ul~=0));
-            Vmed(i,j)=median(vl(vl~=0));
+            Vmed(i,j)=-median(vl(vl~=0));
             Uvar=var(ul(ul~=0));
             Vvar=var(vl(vl~=0));
     

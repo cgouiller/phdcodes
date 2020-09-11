@@ -77,17 +77,19 @@ CMoyEt=[];
 c=parula(256);
 %figure;
 list=[1:3,5,7,8,10:16,29:31];%[varR,varRold];
+list=[6,9,11];
 XCat=MCat(list);
 for i=1:length(list)
     numVid=list(i);
     %determine the current video/set/parameters
     load_param;
     
-            load(strcat(directoryAnalyse,'Conclin.mat'));
+            load(strcat(directoryAnalyse,'Conc.mat'));
+            %load(strcat(directoryAnalyse,'Conclin.mat'));
 
 time=time(CMoy~=0);
 CMoy=CMoy(CMoy~=0);
-   
+   CMoyMean=mean(CMoy(time>55*60&time<65*60));
     if numVid==29
          CMoyCat=[CMoyCat,mean(CMoy)];
         CMoyEt=[CMoyEt,std(CMoy)];
@@ -95,7 +97,9 @@ CMoy=CMoy(CMoy~=0);
         CMoyCat=[CMoyCat,mean(CMoy(time>55*60&time<65*60))];
         CMoyEt=[CMoyEt,std(CMoy(time>55*60&time<65*60))];
     end
-    
+    if MCat(numVid)>12
+        figure;plot(time/60,CMoy/CMoyMean,'+');ylim([0 1.3]);xlabel('temps [min]');ylabel('<I>_{x,y}(t)/<I>_{x,y,t}')
+    end
 end
 
 %errorbar(XCat,CMoyCat,CMoyEt,'LineStyle','none')

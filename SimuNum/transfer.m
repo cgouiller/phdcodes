@@ -70,8 +70,8 @@
 % end
 % 
 % save('E:\Clément\MyCore\Analyse\Mixing\manips.mat','Date','Rayon','Nombre','MasseBbg','Sets','Projet','NomDoss','RadiusPx','CenterX','CenterY','StartIm','Param')
-%%
-% 
+%% Pour le premier set de manips:
+
 % Date=[];
 % Rayon=[];
 % Nombre=[];
@@ -88,7 +88,7 @@
 % TauP=[];
 % Duree=[];
 % RandomStart=[];
-% run manips
+% run manips200320
 % for i=1:nombreVid
 %     
 %     fname=strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{i},'\',manipCat200320.set{i},'\',manipCat200320.video{i},'.mat');
@@ -139,9 +139,9 @@
 %     RandomStart=[RandomStart,manipCat200320.randomstart(i)];
 % end
 % save('E:\Clément\MyCore\Analyse\SimuNum\manips.mat','Nombre','AmpVortex','CoefMarangoni','TauP','Date','Set','Duree','Rayon','MasseBbg','Projet','Video','Inertie','Advection','AmpSourceCamphre')
+% 
 
-
-
+%% Pour le deuxième set de manips:
 Date=[];
 Rayon=[];
 Nombre=[];

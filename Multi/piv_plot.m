@@ -43,10 +43,18 @@ Vmoy=Vmoy.*in;
 xedge3=(xedge2-xedge2(1))*calibCat(numVid);
 yedge3=(yedge2-yedge2(1))*calibCat(numVid);
 %plot([xedge3,xedge3(1)],[yedge3,yedge3(1)],'-k','LineWidth',2)
-quiverC2D((x-xedge2(1))*calibCat(numVid),(y-yedge2(1))*calibCat(numVid),Umoy*calibCat(numVid)*30,Vmoy*calibCat(numVid)*30)
+vmax=18;
+Umoy=Umoy*calibCat(numVid)*30;
+Vmoy=Vmoy*calibCat(numVid)*30;
+normv=sqrt(Umoy.^2+Vmoy.^2);
+Umoy(normv>vmax)=Umoy(normv>vmax)*vmax./normv(normv>vmax);
+Vmoy(normv>vmax)=Vmoy(normv>vmax)*vmax./normv(normv>vmax);
+
+quiverC2D((x-xedge2(1))*calibCat(numVid),(y-yedge2(1))*calibCat(numVid),Umoy,Vmoy);colorbar;
 axis square;
 xlabel('x [mm]')
 ylabel('y [mm]')
+title(strcat(sete,num2str(max(max(sqrt((Umoy).^2+(Vmoy).^2))))))
 hold on;
 if trueCarre(numVid)==120.5
     pas=coteCarre(numVid)*calibCat(numVid)/5;
@@ -75,3 +83,4 @@ elseif trueCarre(numVid)==96.4
 end
 xlim([-5,trueCarre(numVid)+5])
 ylim([-5,trueCarre(numVid)+5])
+colormap parula(256);colorbar
