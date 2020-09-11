@@ -21,20 +21,24 @@ load(strcat(directoryPiv,Lpivbis(1).name))
     countsu=zeros(size(u));
     countsv=zeros(size(v));
     stdcat=zeros(size(u));
-    ucat=zeros(no_fields,length(u),length(u));
-    vcat=zeros(no_fields,length(v),length(v));
+    ucat=zeros(length(Lpiv)/2,length(u),length(u));
+    vcat=zeros(length(Lpiv)/2,length(v),length(v));
     umpas=zeros(10,length(u),length(v));
     vmpas=zeros(10,length(u),length(v));
     pascount=zeros(10,length(u),length(v));
-    for field=1:no_fields
+    
+    kg=fspecial('gaussian',[9 9],6);
+
+    for field=1:length(Lpiv)/2
         
         load(strcat(sav_filename{field}(1:end-4),'.mat'));
+        
         im=imread(image_filename_1{field});
         im2=imread(image_filename_2{field});
         imf=imfilter(im,kg);
         imf2=imfilter(im2,kg);
 
-        mask=imf<75 & imf2<75 & imf>12 & imf2>12;
+        mask=imf<200 & imf2<200 & imf>55 & imf2>55;
         for ii=1:length(x)
             for jj=1:length(y)
                 if mask(x(1,ii),y(end+1-jj,1))==0
@@ -43,19 +47,22 @@ load(strcat(directoryPiv,Lpivbis(1).name))
                 end
             end
         end
+        
+        
         ucat(field,:,:)=u;
         vcat(field,:,:)=v;
         U_tot=U_tot+u;
         V_tot=V_tot+v;
-        u(u==0)=NaN;
-        v(v==0)=NaN;
-        countsu=countsu+(ones(size(u))-isnan(u));
-        countsv=countsv+(ones(size(v))-isnan(v));
-        
+       u(u==0)=NaN;
+       v(v==0)=NaN;
+         countsu=countsu+(ones(size(u))-isnan(u));
+         countsv=countsv+(ones(size(v))-isnan(v));
+%         
     end
     Umoy=U_tot./countsu;
     Vmoy=-V_tot./countsv; %sinon c'est dans le mauvais sens...
-    
+    Umoy(countsu<20)=0;
+    Vmoy(countsv<20)=0;
     
     Umed=zeros(size(Umoy));
     Vmed=zeros(size(Vmoy));
@@ -66,19 +73,11 @@ load(strcat(directoryPiv,Lpivbis(1).name))
             ul=ucat(:,i,j);
             vl=vcat(:,i,j);
             Umed(i,j)=median(ul(ul~=0));
-            Vmed(i,j)=-median(vl(vl~=0)); %idem, pour le bon sens
+            Vmed(i,j)=-median(vl(vl~=0));
             Uvar=var(ul(ul~=0));
             Vvar=var(vl(vl~=0));
     
         end
     end
-    for kkk=1:10
-        incu=ucat(1+50*(kkk-1):50*kkk,:,:);
-        incu(incu==0)=NaN;
-        incv=vcat(1+50*(kkk-1):50*kkk,:,:);
-        incv(incv==0)=NaN;
-        umpas(kkk,:,:)=nanmean(incu);
-        vmpas(kkk,:,:)=nanmean(incv);
-        pascount(kkk,:,:)=50-max(sum(isnan(incu),1),sum(isnan(incv),1));
-    end
-    save(strcat(baseDir,'PIV_mean_all_avec incert'),'x','y','Umoy','Vmoy','no_fields','countsu','countsv','Umed','Vmed','Uvar','Vvar','umpas','vmpas','pascount')
+
+    save(strcat(directoryPiv,'PIV_mean_mask'),'x','y','Umoy','Vmoy','countsu','countsv','Umed','Vmed','Uvar','Vvar')
