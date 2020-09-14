@@ -1,12 +1,12 @@
 
     
-load(strcat(directoryVid,'trajectories.mat'));
+load(strcat(directoryVid,'trajectories_2.mat'));
 mkdir(directoryPiv);
 tracks=sortrows(tracks,4);
 tracks(:,2)=tracks(:,2)+200;
 
-for kk=1:length(alea) %696Juste pour être sûr que ça dépasse pas
-    k=alea(kk);
+for k=9:length(L)-18 %696Juste pour être sûr que ça dépasse pas
+   % k=alea(kk);
    % disp(round(100*(k-startpretr)/(endpretr-startpretr)))
     number=int2str(tracks(k,3));
     for j=1:4-length(number)

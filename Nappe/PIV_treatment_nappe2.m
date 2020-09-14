@@ -1,4 +1,4 @@
-Lpivbis=dir(strcat(directoryPiv,'*_bis.mat'));
+Lpivbis=dir(strcat(directoryPiv,'.mat'));
     Lpiv=dir(strcat(directoryPiv,'*.tif'));
 
     index = 'tif';
@@ -11,7 +11,7 @@ Lpivbis=dir(strcat(directoryPiv,'*_bis.mat'));
     for field=1:length(Lpiv)/2
         image_filename_1(field)={strcat(directoryPiv,Lpiv(2*field-1).name)};
         image_filename_2(field)={strcat(directoryPiv,Lpiv(2*field).name)};
-        sav_filename(field)={strcat(pathname_sav,num2str(field),'_bis.',sav_index)};
+        sav_filename(field)={strcat(pathname_sav,num2str(field),'.',sav_index)};
     end
 
 load(strcat(directoryPiv,Lpivbis(1).name))
