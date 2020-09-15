@@ -32,7 +32,7 @@ piv10=cell(1,32);
 piv15=cell(1,49);
 piv5=cell(1,16);
 
-for numVid=[751,722,796,517,530,714,536,492,648,487];%10:10:nombreVid
+for numVid=[722,796,517,530,714,536,492,648,487]%[751,722,796,517,530,714,536,492,648,487];%10:10:nombreVid
     numVid
     calib=diamtrue(numVid)/diamvid(numVid);
     if numVid<731

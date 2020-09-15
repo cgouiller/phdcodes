@@ -1,4 +1,4 @@
-Lpivbis=dir(strcat(directoryPiv,'.mat'));
+Lpivbis=dir(strcat(directoryPiv,'*.mat'));
     Lpiv=dir(strcat(directoryPiv,'*.tif'));
 
     index = 'tif';
@@ -23,9 +23,9 @@ load(strcat(directoryPiv,Lpivbis(1).name))
     stdcat=zeros(size(u));
     ucat=zeros(no_fields,length(u),length(u));
     vcat=zeros(no_fields,length(v),length(v));
-    umpas=zeros(10,length(u),length(v));
-    vmpas=zeros(10,length(u),length(v));
-    pascount=zeros(10,length(u),length(v));
+    umpas=zeros(length(u),length(v));
+    vmpas=zeros(length(u),length(v));
+    pascount=zeros(length(u),length(v));
     for field=1:no_fields
         
         load(strcat(sav_filename{field}(1:end-4),'.mat'));
@@ -72,13 +72,21 @@ load(strcat(directoryPiv,Lpivbis(1).name))
     
         end
     end
-    for kkk=1:10
-        incu=ucat(1+50*(kkk-1):50*kkk,:,:);
+    %for kkk=1:10
+        %incu=ucat(1+50*(kkk-1):50*kkk,:,:);
+        incu=ucat;
         incu(incu==0)=NaN;
-        incv=vcat(1+50*(kkk-1):50*kkk,:,:);
+        %incv=vcat(1+50*(kkk-1):50*kkk,:,:);
+        incv=vcat;
         incv(incv==0)=NaN;
-        umpas(kkk,:,:)=nanmean(incu);
-        vmpas(kkk,:,:)=nanmean(incv);
-        pascount(kkk,:,:)=50-max(sum(isnan(incu),1),sum(isnan(incv),1));
-    end
-    save(strcat(baseDir,'PIV_mean_all_avec incert'),'x','y','Umoy','Vmoy','no_fields','countsu','countsv','Umed','Vmed','Uvar','Vvar','umpas','vmpas','pascount')
+        %umpas(kkk,:,:)=nanmean(incu);
+        %vmpas(kkk,:,:)=nanmean(incv);
+        umpas=nanmean(incu);
+        umpas=reshape(umpas,[120,120]);
+        vmpas=nanmean(incv);
+        vmpas=reshape(vmpas,[120,120]);
+
+        %pascount(kkk,:,:)=50-max(sum(isnan(incu),1),sum(isnan(incv),1));
+        pascount=no_fields*ones(size(umpas))-reshape(max(sum(isnan(incu),1),sum(isnan(incv),1)),[120,120]);
+   % end
+    save(strcat(baseDir,'PIV_unpasparprof'),'x','y','Umoy','Vmoy','no_fields','countsu','countsv','Umed','Vmed','Uvar','Vvar','umpas','vmpas','pascount')
