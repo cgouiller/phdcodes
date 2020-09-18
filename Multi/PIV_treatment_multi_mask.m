@@ -1,4 +1,4 @@
-Lpivbis=dir(strcat(directoryPiv,'*_bis.mat'));
+Lpivbis=dir(strcat(directoryPiv,'*.mat'));
     Lpiv=dir(strcat(directoryPiv,'*.tif'));
 
     index = 'tif';
@@ -27,7 +27,7 @@ load(strcat(directoryPiv,Lpivbis(1).name))
     vmpas=zeros(10,length(u),length(v));
     pascount=zeros(10,length(u),length(v));
     
-    kg=fspecial('gaussian',[9 9],6);
+    kg=fspecial('gaussian',[10 10],6);
 
     for field=1:length(Lpiv)/2
         
@@ -38,7 +38,7 @@ load(strcat(directoryPiv,Lpivbis(1).name))
         imf=imfilter(im,kg);
         imf2=imfilter(im2,kg);
 
-        mask=imf<200 & imf2<200 & imf>55 & imf2>55;
+        mask=imf<250 & imf2<250 & imf>8 & imf2>8;
         for ii=1:length(x)
             for jj=1:length(y)
                 if mask(x(1,ii),y(end+1-jj,1))==0
@@ -61,8 +61,8 @@ load(strcat(directoryPiv,Lpivbis(1).name))
     end
     Umoy=U_tot./countsu;
     Vmoy=-V_tot./countsv; %sinon c'est dans le mauvais sens...
-    Umoy(countsu<20)=0;
-    Vmoy(countsv<20)=0;
+    %Umoy(countsu<20)=0;
+    %Vmoy(countsv<20)=0;
     
     Umed=zeros(size(Umoy));
     Vmed=zeros(size(Vmoy));
