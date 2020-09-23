@@ -73,6 +73,25 @@ for numVid=[751,722,796,517,530,714,536,492,648,487]%[751,722,796,517,530,714,53
      Umoycat(cpt,:,:)=Umoy;
      Vmoycat(cpt,:,:)=Vmoy;
      cpt=cpt+1;
+     
+     Lpivbis=dir(strcat(directoryPiv,'*.mat'));
+         Lpiv=dir(strcat(directoryPiv,'*.tif'));
+    index = 'tif';
+    
+    
+    sav_index='mat';
+    pathname_sav=directoryPiv;
+    filename_sav='result';
+    for field=1:length(Lpiv)/2
+        image_filename_1(field)={strcat(directoryPiv,Lpiv(2*field-1).name)};
+        image_filename_2(field)={strcat(directoryPiv,Lpiv(2*field).name)};
+        sav_filename(field)={strcat(pathname_sav,num2str(field),'.',sav_index)};
+    end
+    
+    Umoy(countsu<length(sav_filename)/10)=NaN;
+    Vmoy(countsv<length(sav_filename)/10)=NaN;
+
+    
 %    
 %     if numVid<321
 %         piv10{1,33-numProf{numVid}}.umoy=Umoy;
@@ -247,7 +266,7 @@ end
          piv15.vmoy7=reshape(Vmoycat(8,:,:),120,120);
          piv15.vmoy8=reshape(Vmoycat(9,:,:),120,120);
          piv15.vmoy9=reshape(Vmoycat(10,:,:),120,120);
-        save('E:\Clément\Nappe\unpasparprof.mat','X','Y','Umoycat','Vmoycat')
+save('E:\Clément\Nappe\unpasparprof.mat','X','Y','piv15')
 %%DPivsoft
 %
 
