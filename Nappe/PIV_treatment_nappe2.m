@@ -26,15 +26,18 @@ load(strcat(directoryPiv,Lpivbis(1).name))
     umpas=zeros(length(u),length(v));
     vmpas=zeros(length(u),length(v));
     pascount=zeros(length(u),length(v));
-    for field=1:no_fields
+    for field=1:length(sav_filename)
         
         load(strcat(sav_filename{field}(1:end-4),'.mat'));
         im=imread(image_filename_1{field});
         im2=imread(image_filename_2{field});
         imf=imfilter(im,kg);
         imf2=imfilter(im2,kg);
-
-        mask=imf<75 & imf2<75 & imf>12 & imf2>12;
+        if numProf{numVid}>44
+            mask=imf<75 & imf2<75 & imf>20 & imf2>20;
+        else
+            mask=imf<75 & imf2<75 & imf>12 & imf2>12;
+        end
         for ii=1:length(x)
             for jj=1:length(y)
                 if mask(x(1,ii),y(end+1-jj,1))==0

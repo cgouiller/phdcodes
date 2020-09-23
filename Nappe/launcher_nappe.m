@@ -25,7 +25,7 @@ end
 
 c=struct(); % a structure to get the positions of the camphors
 fps=200;
-kg=fspecial('gaussian',[6 6],3);
+kg=fspecial('gaussian',[9 9],6);
 cpt=0;
 %
 piv10=cell(1,32);
@@ -59,9 +59,9 @@ for numVid=[751,722,796,517,530,714,536,492,648,487]%[751,722,796,517,530,714,53
         baseDir=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\');
     end
 %     
-      load(strcat(baseDir,'PIV_unpasparprof.mat'))
-%    
-% 
+       load(strcat(baseDir,'PIV_unpasparprof.mat'))
+% %    
+% % 
     Umoy=Umoy/8.09*fps/4; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
     Vmoy=Vmoy/8.09*fps/4; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
 %     Umed=Umed/8.09*fps/4; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
@@ -215,7 +215,7 @@ for numVid=[751,722,796,517,530,714,536,492,648,487]%[751,722,796,517,530,714,53
     
                % if numPassage(numVid)==10
                  %   dpiv_nappe;
-                   % PIV_treatment_nappe2;
+                %    PIV_treatment_nappe2;
               %  end
            % end
    % end
@@ -226,28 +226,28 @@ for numVid=[751,722,796,517,530,714,536,492,648,487]%[751,722,796,517,530,714,53
 %constr_traj_nappe;
 end
  %    save('E:\Clément\Julie\PIVnagseulall_incert.mat','piv5','piv10','piv15')
-   piv15.umoy0=reshape(Umoycat(1,:,:),120,120);
-        piv15.umoy1=reshape(Umoycat(2,:,:),120,120);
-        piv15.umoy2=reshape(Umoycat(3,:,:),120,120);
-        piv15.umoy3=reshape(Umoycat(4,:,:),120,120);
-        piv15.umoy4=reshape(Umoycat(5,:,:),120,120);
-        piv15.umoy5=reshape(Umoycat(6,:,:),120,120);
-        piv15.umoy6=reshape(Umoycat(7,:,:),120,120);
-        piv15.umoy7=reshape(Umoycat(8,:,:),120,120);
-        piv15.umoy8=reshape(Umoycat(9,:,:),120,120);
-        piv15.umoy9=reshape(Umoycat(10,:,:),120,120);
-        
-        piv15.vmoy0=reshape(Vmoycat(1,:,:),120,120);
-        piv15.vmoy1=reshape(Vmoycat(2,:,:),120,120);
-        piv15.vmoy2=reshape(Vmoycat(3,:,:),120,120);
-        piv15.vmoy3=reshape(Vmoycat(4,:,:),120,120);
-        piv15.vmoy4=reshape(Vmoycat(5,:,:),120,120);
-        piv15.vmoy5=reshape(Vmoycat(6,:,:),120,120);
-        piv15.vmoy6=reshape(Vmoycat(7,:,:),120,120);
-        piv15.vmoy7=reshape(Vmoycat(8,:,:),120,120);
-        piv15.vmoy8=reshape(Vmoycat(9,:,:),120,120);
-        piv15.vmoy9=reshape(Vmoycat(10,:,:),120,120);
-        
+         piv15.umoy0=reshape(Umoycat(1,:,:),120,120);
+         piv15.umoy1=reshape(Umoycat(2,:,:),120,120);
+         piv15.umoy2=reshape(Umoycat(3,:,:),120,120);
+         piv15.umoy3=reshape(Umoycat(4,:,:),120,120);
+         piv15.umoy4=reshape(Umoycat(5,:,:),120,120);
+         piv15.umoy5=reshape(Umoycat(6,:,:),120,120);
+         piv15.umoy6=reshape(Umoycat(7,:,:),120,120);
+         piv15.umoy7=reshape(Umoycat(8,:,:),120,120);
+         piv15.umoy8=reshape(Umoycat(9,:,:),120,120);
+         piv15.umoy9=reshape(Umoycat(10,:,:),120,120);
+ 
+         piv15.vmoy0=reshape(Vmoycat(1,:,:),120,120);
+         piv15.vmoy1=reshape(Vmoycat(2,:,:),120,120);
+         piv15.vmoy2=reshape(Vmoycat(3,:,:),120,120);
+         piv15.vmoy3=reshape(Vmoycat(4,:,:),120,120);
+         piv15.vmoy4=reshape(Vmoycat(5,:,:),120,120);
+         piv15.vmoy5=reshape(Vmoycat(6,:,:),120,120);
+         piv15.vmoy6=reshape(Vmoycat(7,:,:),120,120);
+         piv15.vmoy7=reshape(Vmoycat(8,:,:),120,120);
+         piv15.vmoy8=reshape(Vmoycat(9,:,:),120,120);
+         piv15.vmoy9=reshape(Vmoycat(10,:,:),120,120);
+        save('E:\Clément\Nappe\unpasparprof.mat','X','Y','Umoycat','Vmoycat')
 %%DPivsoft
 %
 
