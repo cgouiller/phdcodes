@@ -62,7 +62,7 @@ for numVid=[751,601,591,441]
     mkdir(directoryPiv);
     tracks=sortrows(tracks,4);
     tracks(:,2)=tracks(:,2)+200;
-    k=50;
+    k=150;
     %for k=9:length(L)-18 %696Juste pour être sûr que ça dépasse pas
     % k=alea(kk);
     % disp(round(100*(k-startpretr)/(endpretr-startpretr)))
@@ -70,7 +70,7 @@ for numVid=[751,601,591,441]
     for j=1:4-length(number)
         number=['0' number];
     end
-    for n=[1,2,3,5,7,10,12,15,20,30,40,50,75,100]
+    for n=[1,2,3,5,7,10,12,15,20,30,40,50]
         
         fname=L(tracks(k,3)).name;
         fnamesave=fname;
