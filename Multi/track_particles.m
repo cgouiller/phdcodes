@@ -21,14 +21,14 @@ dispstat(sprintf('Begining the process for the movie...'),'keepthis','timestamp'
 % loop over the images to be considered (after the insertion of the glass
 % bubbles)
 for k=startImg:length(L)
-    if k>length(c)
+    if k>=length(c)
         c(k).x=[];
         c(k).y=[];
         c(k).t=[];
         c(k).r=[];
         l(k)=0;
     end
-    s=0.75;
+    s=0.84;
    
     while l(k)<1 && s<1
         

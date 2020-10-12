@@ -23,9 +23,9 @@
       fprintf('L calculé et sauvegardé')
     end
 
-    x0=[hgxcat(numVid),hdxcat(numVid),bdxcat(numVid),bgxcat(numVid)];
-    y0=[hgycat(numVid),hdycat(numVid),bdycat(numVid),bgycat(numVid)];
-    
+%     x0=[hgxcat(numVid),hdxcat(numVid),bdxcat(numVid),bgxcat(numVid)];
+%     y0=[hgycat(numVid),hdycat(numVid),bdycat(numVid),bgycat(numVid)];
+    fps=fpscat(numVid);
     calib=calibCat(numVid);
     %R_range contient les tailles min et max des cercles qui seront
     %détectés dans camphre_findpos_rom
