@@ -32,13 +32,13 @@ piv10=cell(1,32);
 piv15=cell(1,49);
 piv5=cell(1,16);
 
-for numVid=[410,720,770]
+for numVid=320:810
     numVid
     calib=diamtrue(numVid)/diamvid(numVid);
     if numVid<731
        % mkdir(strcat('Y:\cgouiller\Nappe2\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\'));
         directoryVid=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\',num2str(numPassage(numVid)),'\');
-        directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\Piv\');
+        directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\Piv3\');
         baseDir=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\');
         
         
@@ -46,14 +46,14 @@ for numVid=[410,720,770]
     if numVid>730 && numVid<811
         %mkdir(strcat('Y:\cgouiller\Nappe2\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\'));
         directoryVid=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\',num2str(numPassage(numVid)),'\');
-        directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\Piv\');
+        directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\Piv3\');
         baseDir=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\');
         
     end
     if numVid>810
        % mkdir(strcat('Y:\cgouiller\Nappe2\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\'));
         directoryVid=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\',num2str(numPassage(numVid)),'\');
-        directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\Piv\');
+        directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\Piv3\');
         baseDir=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\');
     end
 %     
@@ -94,17 +94,19 @@ for numVid=[410,720,770]
 %     end
    % if exist(strcat(baseDir,'PIV_mean.mat'))==2
      %cpt=cpt+1;
-%            L=dir(strcat(directoryVid,format));
-%             if length(L)>0
-%                 alea=9+round(rand(1,no_fields/10)*(length(L)-18));
-%                 while length(alea) ~= length(unique(alea))
-%                     alea=9+round(rand(1,no_fields/10)*(length(L)-18));
-%                 end
-%                 save(strcat(directoryVid,'alea.mat'),'alea');
+            L=dir(strcat(directoryVid,format));
+             if length(L)>0
+                 n=round(-0.333*numProf{numVid}+20.3333);
+                 finalea=max([n,18]);
+                 alea=9+round(rand(1,no_fields/10)*(length(L)-finalea));
+                 while length(alea) ~= length(unique(alea))
+                     alea=9+round(rand(1,no_fields/10)*(length(L)-finalea));
+                 end
+                 save(strcat(directoryVid,'alea.mat'),'alea');
 %                 %track_particles_nappe;
 %                 %constr_traj_nappe;
 %     
-%                 PIV_pretreatment_nappe;
+                 PIV_pretreatment_nappe;
 %     
 %                 if numPassage(numVid)==10
 %                     dpiv_nappe;
@@ -114,11 +116,11 @@ for numVid=[410,720,770]
     %end
     
 %     imchampcorresp;
-save_masked_fields;
+%save_masked_fields;
 %track_particles_nappe;
 %constr_traj_nappe;
 end
-
+end
 %%DPivsoft
 %
 
