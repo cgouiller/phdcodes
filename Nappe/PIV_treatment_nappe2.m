@@ -1,4 +1,23 @@
 
+    Lpiv=dir(strcat(directoryPiv,'*.tif'));
+  
+    
+    
+    index = 'tif';
+    
+    
+    sav_index='mat';
+    pathname_sav=directoryPiv;
+    filename_sav='result';
+    
+    for field=1:length(Lpiv)/2
+        image_filename_1(field)={strcat(directoryPiv,Lpiv(2*field-1).name)};
+        image_filename_2(field)={strcat(directoryPiv,Lpiv(2*field).name)};
+        sav_filename(field)={strcat(pathname_sav,num2str(field),'.',sav_index)};
+    end
+    
+            load(sav_filename{1});
+
     U_tot=zeros(size(u));
     V_tot=zeros(size(v));
     countsu=zeros(size(u));

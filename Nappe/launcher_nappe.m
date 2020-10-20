@@ -9,7 +9,7 @@ diamvid=[65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65
 nbImg(81)=310;
 nbImg(766)=200;
 format='*.tif';
-no_fields=500;
+no_fields=200;
 prof=zeros(1,nombreVid);
 for i=1:nombreVid
     if i<321
@@ -32,7 +32,7 @@ piv10=cell(1,32);
 piv15=cell(1,49);
 piv5=cell(1,16);
 
-for numVid=320:810
+for numVid=330:10:810
     numVid
     calib=diamtrue(numVid)/diamvid(numVid);
     if numVid<731
@@ -57,61 +57,61 @@ for numVid=320:810
         baseDir=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\');
     end
 %     
-%     load(strcat(baseDir,'PIV_mean.mat'))
-%     U=U/8.09*fps/4; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
-%     V=V/8.09*fps/4; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
-%     X=(x-mean(mean(x)))/8.09;
-%     Y=-(y-mean(mean(y)))/8.09;
-%     U(countsu<25)=0;
-%     V(countsv<25)=0;
-%     if numVid<321
-%         piv10{1,33-numProf{numVid}}.u=U;
-%         piv10{1,33-numProf{numVid}}.v=V;
-%         piv10{1,33-numProf{numVid}}.x=X;
-%         piv10{1,33-numProf{numVid}}.y=Y;
-%         piv10{1,33-numProf{numVid}}.prof=prof(numVid);
-%         piv10{1,33-numProf{numVid}}.haut=10;
-%         
-%         
-%     else if numVid>320 && numVid<811
-%             piv15{1,50-numProf{numVid}}.u=U;
-%             piv15{1,50-numProf{numVid}}.v=V;
-%             piv15{1,50-numProf{numVid}}.x=X;
-%             piv15{1,50-numProf{numVid}}.y=Y;
-%             piv15{1,50-numProf{numVid}}.prof=prof(numVid);
-%             piv15{1,50-numProf{numVid}}.haut=15;
-%             
-%         else if numVid>810
-%                 piv5{1,17-numProf{numVid}}.u=U;
-%                 piv5{1,17-numProf{numVid}}.v=V;
-%                 piv5{1,17-numProf{numVid}}.x=X;
-%                 piv5{1,17-numProf{numVid}}.y=Y;
-%                 piv5{1,17-numProf{numVid}}.prof=prof(numVid);
-%                 piv5{1,17-numProf{numVid}}.haut=5;
-%                 
-%             end
-%         end
-%     end
+    load(strcat(baseDir,'PIV_mean.mat'))
+    n=round(-0.333*numProf{numVid}+20.3333);
+    U=U/8.09*fps/n; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
+    V=V/8.09*fps/n; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
+    X=(x-mean(mean(x)))/8.09;
+    Y=-(y-mean(mean(y)))/8.09;
+    U(countsu<25)=0;
+    V(countsv<25)=0;
+    if numVid<321
+        piv10{1,33-numProf{numVid}}.u=U;
+        piv10{1,33-numProf{numVid}}.v=V;
+        piv10{1,33-numProf{numVid}}.x=X;
+        piv10{1,33-numProf{numVid}}.y=Y;
+        piv10{1,33-numProf{numVid}}.prof=prof(numVid);
+        piv10{1,33-numProf{numVid}}.haut=10;
+        
+        
+    else if numVid>320 && numVid<811
+            piv15{1,50-numProf{numVid}}.u=U;
+            piv15{1,50-numProf{numVid}}.v=V;
+            piv15{1,50-numProf{numVid}}.x=X;
+            piv15{1,50-numProf{numVid}}.y=Y;
+            piv15{1,50-numProf{numVid}}.prof=prof(numVid);
+            piv15{1,50-numProf{numVid}}.haut=15;
+            
+        else if numVid>810
+                piv5{1,17-numProf{numVid}}.u=U;
+                piv5{1,17-numProf{numVid}}.v=V;
+                piv5{1,17-numProf{numVid}}.x=X;
+                piv5{1,17-numProf{numVid}}.y=Y;
+                piv5{1,17-numProf{numVid}}.prof=prof(numVid);
+                piv5{1,17-numProf{numVid}}.haut=5;
+                
+            end
+        end
+    end
    % if exist(strcat(baseDir,'PIV_mean.mat'))==2
      %cpt=cpt+1;
-            L=dir(strcat(directoryVid,format));
-             if length(L)>0
-                 n=round(-0.333*numProf{numVid}+20.3333);
-                 finalea=max([n,18]);
-                 alea=9+round(rand(1,no_fields/10)*(length(L)-finalea));
-                 while length(alea) ~= length(unique(alea))
-                     alea=9+round(rand(1,no_fields/10)*(length(L)-finalea));
-                 end
-                 save(strcat(directoryVid,'alea.mat'),'alea');
+%             L=dir(strcat(directoryVid,format));
+%              if length(L)>0
+%                  n=round(-0.333*numProf{numVid}+20.3333);
+%                  alea=9+round(rand(1,no_fields/10)*(length(L)-n-9));
+%                  while length(alea) ~= length(unique(alea))
+%                      alea=9+round(rand(1,no_fields/10)*(length(L)-n-9));
+%                  end
+%                  save(strcat(directoryVid,'alea.mat'),'alea');
 %                 %track_particles_nappe;
 %                 %constr_traj_nappe;
 %     
-                 PIV_pretreatment_nappe;
+              %   PIV_pretreatment_nappe;
 %     
-%                 if numPassage(numVid)==10
-%                     dpiv_nappe;
-%                     PIV_treatment_nappe2;
-%                 end
+                 if numPassage(numVid)==10
+                     %dpiv_nappe;
+                  %  PIV_treatment_nappe2;
+                 end
 %             end
     %end
     
@@ -120,7 +120,10 @@ for numVid=320:810
 %track_particles_nappe;
 %constr_traj_nappe;
 end
-end
+%end
+
+save('Y:\cgouiller\Nappe\piv201020.mat','piv15')
+
 %%DPivsoft
 %
 
