@@ -9,7 +9,7 @@ diamvid=[65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65
 nbImg(81)=310;
 nbImg(766)=200;
 format='*.tif';
-no_fields=500;
+no_fields=200;
 prof=zeros(1,nombreVid);
 for i=1:nombreVid
     if i<321
@@ -32,13 +32,14 @@ piv10=cell(1,32);
 piv15=cell(1,49);
 piv5=cell(1,16);
 
-for numVid=10:10:nombreVid
+
+for numVid=330:10:810
     numVid
     calib=diamtrue(numVid)/diamvid(numVid);
     if numVid<731
-       % mkdir(strcat('Y:\cgouiller\Nappe2\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\'));
+        % mkdir(strcat('Y:\cgouiller\Nappe2\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\'));
         directoryVid=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\',num2str(numPassage(numVid)),'\');
-        directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\Piv\');
+        directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\Piv3\');
         baseDir=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\');
         
         
@@ -46,218 +47,81 @@ for numVid=10:10:nombreVid
     if numVid>730 && numVid<811
         %mkdir(strcat('Y:\cgouiller\Nappe2\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\'));
         directoryVid=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\',num2str(numPassage(numVid)),'\');
-        directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\Piv\');
+        directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\Piv3\');
         baseDir=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\');
         
     end
     if numVid>810
-       % mkdir(strcat('Y:\cgouiller\Nappe2\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\'));
+        % mkdir(strcat('Y:\cgouiller\Nappe2\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\'));
         directoryVid=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\',num2str(numPassage(numVid)),'\');
-        directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\Piv\');
+        directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\Piv3\');
         baseDir=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\');
     end
-%     
-     load(strcat(baseDir,'PIV_mean_all_avec incert.mat'))
-   
-
-    Umoy=Umoy/8.09*fps/4; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
-    Vmoy=Vmoy/8.09*fps/4; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
-    Umed=Umed/8.09*fps/4; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
-    Vmed=Vmed/8.09*fps/4; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
-    Uvar=Uvar*(1/8.09*fps/4)^2; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
-    Vvar=Vvar*(1/8.09*fps/4)^2; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
+    
+    load(strcat(baseDir,'PIV_mean.mat'))
+    n=round(-0.333*numProf{numVid}+20.3333);
+    U=U/8.09*fps/n; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
+    V=V/8.09*fps/n; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
     X=(x-mean(mean(x)))/8.09;
     Y=-(y-mean(mean(y)))/8.09;
-   
+    U(countsu<25)=0;
+    V(countsv<25)=0;
     if numVid<321
-        piv10{1,33-numProf{numVid}}.umoy=Umoy;
-        piv10{1,33-numProf{numVid}}.vmoy=Vmoy;
-        piv10{1,33-numProf{numVid}}.cu=countsu;
-        piv10{1,33-numProf{numVid}}.cv=countsv;
-        piv10{1,33-numProf{numVid}}.umed=Umed;
-        piv10{1,33-numProf{numVid}}.vmed=Vmed;
-        piv10{1,33-numProf{numVid}}.uvar=Uvar;
-        piv10{1,33-numProf{numVid}}.vvar=Vvar;
+        piv10{1,33-numProf{numVid}}.u=U;
+        piv10{1,33-numProf{numVid}}.v=V;
         piv10{1,33-numProf{numVid}}.x=X;
         piv10{1,33-numProf{numVid}}.y=Y;
         piv10{1,33-numProf{numVid}}.prof=prof(numVid);
         piv10{1,33-numProf{numVid}}.haut=10;
-        piv10{1,33-numProf{numVid}}.y=Y;
-        piv10{1,33-numProf{numVid}}.prof=prof(numVid);
-        piv10{1,33-numProf{numVid}}.haut=10;
         
-        piv10{1,33-numProf{numVid}}.umoypassages0=reshape(umpas(1,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.umoypassages1=reshape(umpas(2,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.umoypassages2=reshape(umpas(3,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.umoypassages3=reshape(umpas(4,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.umoypassages4=reshape(umpas(5,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.umoypassages5=reshape(umpas(6,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.umoypassages6=reshape(umpas(7,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.umoypassages7=reshape(umpas(8,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.umoypassages8=reshape(umpas(9,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.umoypassages9=reshape(umpas(10,:,:),120,120);
-        
-        piv10{1,33-numProf{numVid}}.vmoypassages0=reshape(vmpas(1,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.vmoypassages1=reshape(vmpas(2,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.vmoypassages2=reshape(vmpas(3,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.vmoypassages3=reshape(vmpas(4,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.vmoypassages4=reshape(vmpas(5,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.vmoypassages5=reshape(vmpas(6,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.vmoypassages6=reshape(vmpas(7,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.vmoypassages7=reshape(vmpas(8,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.vmoypassages8=reshape(vmpas(9,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.vmoypassages9=reshape(vmpas(10,:,:),120,120);
-        
-        piv10{1,33-numProf{numVid}}.passcounts0=reshape(pascount(1,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.passcounts1=reshape(pascount(2,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.passcounts2=reshape(pascount(3,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.passcounts3=reshape(pascount(4,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.passcounts4=reshape(pascount(5,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.passcounts5=reshape(pascount(6,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.passcounts6=reshape(pascount(7,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.passcounts7=reshape(pascount(8,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.passcounts8=reshape(pascount(9,:,:),120,120);
-        piv10{1,33-numProf{numVid}}.passcounts9=reshape(pascount(10,:,:),120,120);
         
         
     else if numVid>320 && numVid<811
-            piv15{1,50-numProf{numVid}}.umoy=Umoy;
-            piv15{1,50-numProf{numVid}}.vmoy=Vmoy;
-            piv15{1,50-numProf{numVid}}.cu=countsu;
-            piv15{1,50-numProf{numVid}}.cv=countsv;
-            piv15{1,50-numProf{numVid}}.umed=Umed;
-            piv15{1,50-numProf{numVid}}.vmed=Vmed;
-            piv15{1,50-numProf{numVid}}.uvar=Uvar;
-            piv15{1,50-numProf{numVid}}.vvar=Vvar;
+            piv15{1,50-numProf{numVid}}.u=U;
+            piv15{1,50-numProf{numVid}}.v=V;
             piv15{1,50-numProf{numVid}}.x=X;
             piv15{1,50-numProf{numVid}}.y=Y;
             piv15{1,50-numProf{numVid}}.prof=prof(numVid);
             piv15{1,50-numProf{numVid}}.haut=15;
-            piv15{1,50-numProf{numVid}}.umoypassages0=reshape(umpas(1,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.umoypassages1=reshape(umpas(2,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.umoypassages2=reshape(umpas(3,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.umoypassages3=reshape(umpas(4,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.umoypassages4=reshape(umpas(5,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.umoypassages5=reshape(umpas(6,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.umoypassages6=reshape(umpas(7,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.umoypassages7=reshape(umpas(8,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.umoypassages8=reshape(umpas(9,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.umoypassages9=reshape(umpas(10,:,:),120,120);
-        
-        piv15{1,50-numProf{numVid}}.vmoypassages0=reshape(vmpas(1,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.vmoypassages1=reshape(vmpas(2,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.vmoypassages2=reshape(vmpas(3,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.vmoypassages3=reshape(vmpas(4,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.vmoypassages4=reshape(vmpas(5,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.vmoypassages5=reshape(vmpas(6,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.vmoypassages6=reshape(vmpas(7,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.vmoypassages7=reshape(vmpas(8,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.vmoypassages8=reshape(vmpas(9,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.vmoypassages9=reshape(vmpas(10,:,:),120,120);
-        
-        piv15{1,50-numProf{numVid}}.passcounts0=reshape(pascount(1,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.passcounts1=reshape(pascount(2,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.passcounts2=reshape(pascount(3,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.passcounts3=reshape(pascount(4,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.passcounts4=reshape(pascount(5,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.passcounts5=reshape(pascount(6,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.passcounts6=reshape(pascount(7,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.passcounts7=reshape(pascount(8,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.passcounts8=reshape(pascount(9,:,:),120,120);
-        piv15{1,50-numProf{numVid}}.passcounts9=reshape(pascount(10,:,:),120,120);
-        else if numVid>810
-                piv5{1,17-numProf{numVid}}.umoy=Umoy;
-                piv5{1,17-numProf{numVid}}.vmoy=Vmoy;
-                piv5{1,17-numProf{numVid}}.cu=countsu;
-                piv5{1,17-numProf{numVid}}.cv=countsv;
-                piv5{1,17-numProf{numVid}}.umed=Umed;
-                piv5{1,17-numProf{numVid}}.vmed=Vmed;
-                piv5{1,17-numProf{numVid}}.uvar=Uvar;
-                piv5{1,17-numProf{numVid}}.vvar=Vvar;
+            
+        else if numVid>310
+                piv5{1,17-numProf{numVid}}.u=U;
+                piv5{1,17-numProf{numVid}}.v=V;
                 piv5{1,17-numProf{numVid}}.x=X;
                 piv5{1,17-numProf{numVid}}.y=Y;
                 piv5{1,17-numProf{numVid}}.prof=prof(numVid);
                 piv5{1,17-numProf{numVid}}.haut=5;
-                piv5{1,17-numProf{numVid}}.umoypassages0=reshape(umpas(1,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.umoypassages1=reshape(umpas(2,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.umoypassages2=reshape(umpas(3,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.umoypassages3=reshape(umpas(4,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.umoypassages4=reshape(umpas(5,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.umoypassages5=reshape(umpas(6,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.umoypassages6=reshape(umpas(7,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.umoypassages7=reshape(umpas(8,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.umoypassages8=reshape(umpas(9,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.umoypassages9=reshape(umpas(10,:,:),120,120);
-        
-        piv5{1,17-numProf{numVid}}.vmoypassages0=reshape(vmpas(1,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.vmoypassages1=reshape(vmpas(2,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.vmoypassages2=reshape(vmpas(3,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.vmoypassages3=reshape(vmpas(4,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.vmoypassages4=reshape(vmpas(5,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.vmoypassages5=reshape(vmpas(6,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.vmoypassages6=reshape(vmpas(7,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.vmoypassages7=reshape(vmpas(8,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.vmoypassages8=reshape(vmpas(9,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.vmoypassages9=reshape(vmpas(10,:,:),120,120);
-        
-        piv5{1,17-numProf{numVid}}.passcounts0=reshape(pascount(1,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.passcounts1=reshape(pascount(2,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.passcounts2=reshape(pascount(3,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.passcounts3=reshape(pascount(4,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.passcounts4=reshape(pascount(5,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.passcounts5=reshape(pascount(6,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.passcounts6=reshape(pascount(7,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.passcounts7=reshape(pascount(8,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.passcounts8=reshape(pascount(9,:,:),120,120);
-        piv5{1,17-numProf{numVid}}.passcounts9=reshape(pascount(10,:,:),120,120);
+                
+                
             end
         end
     end
-%     save('E:\Clément\Julie\PIVnagseulbis.mat','piv5','piv10','piv15')
-   
-   %if exist(strcat(baseDir,'PIV_mean.mat'))==2
-    % cpt=cpt+1;
-          % L=dir(strcat(directoryVid,format));
-          %  if length(L)>0
-%                 alea=9+round(rand(1,no_fields/10)*(length(L)-18));
-%                 while length(alea) ~= length(unique(alea))
-%                     alea=9+round(rand(1,no_fields/10)*(length(L)-18));
-%                 end
-%                 save(strcat(directoryVid,'alea.mat'),'alea');
-                %track_particles_nappe;
-                %constr_traj_nappe;
+    % if exist(strcat(baseDir,'PIV_mean.mat'))==2
+    %cpt=cpt+1;
+    %             L=dir(strcat(directoryVid,format));
+    %              if length(L)>0
+    %                  n=round(-0.333*numProf{numVid}+20.3333);
+    %                  alea=9+round(rand(1,no_fields/10)*(length(L)-n-9));
+    %                  while length(alea) ~= length(unique(alea))
+    %                      alea=9+round(rand(1,no_fields/10)*(length(L)-n-9));
+    %                  end
+    %                  save(strcat(directoryVid,'alea.mat'),'alea');
+    %                 %track_particles_nappe;
+    %                 %constr_traj_nappe;
+    %
+    %   PIV_pretreatment_nappe_201020;
+    % end
+    if numPassage(numVid)==10
+        %dpiv_nappe_201020;
+        %  PIV_treatment_nappe_201020;
+    end
+ 
     
-              %  PIV_pretreatment_nappe;
-    
-               % if numPassage(numVid)==10
-                   % dpiv_nappe;
-                    %PIV_treatment_nappe2;
-              %  end
-           % end
-   % end
-    
-%     imchampcorresp;
-%save_masked_fields;
-%track_particles_nappe;
-%constr_traj_nappe;
+    %     imchampcorresp;
+    %save_masked_fields;
+    %track_particles_nappe;
+    %constr_traj_nappe;
 end
-     save('E:\Clément\Julie\PIVnagseulall_incert.mat','piv5','piv10','piv15')
 
-%%DPivsoft
-%
 
-%
-% for  numP=1:10:320
-%     load(strcat('D:\2019_12_gouiller\',dateCatalogue{numP},'\',num2str(numProf{numP}),'\PIV_mean'));
-%     x=x/8.09;
-%     y=y/8.09;
-%     U=U*200/(8.09*4);
-%         V=V*200/(8.09*4);
-%
-%    % hold on;plot(V(30,1:60));hold off;
-%     champ{numProf{numP}}.u=U;
-%         champ{numProf{numP}}.v=V;
-% champ{numProf{numP}}.x=x;
-%         champ{numProf{numP}}.y=y;
-%         champ{numProf{numP}}.prof=10.3-0.3*numProf{numP};
-% end
+save('Y:\cgouiller\Nappe\piv201020.mat','piv15')

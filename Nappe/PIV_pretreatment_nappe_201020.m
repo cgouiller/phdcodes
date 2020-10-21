@@ -1,6 +1,6 @@
 
     
-load(strcat(directoryVid,'trajectories.mat'));
+load(strcat(directoryVid,'trajectories_2.mat'));
 mkdir(directoryPiv);
 tracks=sortrows(tracks,4);
 tracks(:,2)=tracks(:,2)+200;
@@ -42,7 +42,7 @@ for kk=1:length(alea) %696Juste pour être sûr que ça dépasse pas
     
     
     
-    fname=L(tracks(k,3)+4).name;
+    fname=L(tracks(k,3)+n).name;
     fnamecompl=strcat(directoryVid,fname);
     im=double(imread(fnamecompl));
    imsq=zeros(1248,1248);

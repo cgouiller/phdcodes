@@ -1,5 +1,8 @@
-Lpivbis=dir(strcat(directoryPiv,'*_bis.mat'));
+
     Lpiv=dir(strcat(directoryPiv,'*.tif'));
+  
+    
+    
 
     index = 'tif';
     
@@ -11,11 +14,12 @@ Lpivbis=dir(strcat(directoryPiv,'*_bis.mat'));
     for field=1:length(Lpiv)/2
         image_filename_1(field)={strcat(directoryPiv,Lpiv(2*field-1).name)};
         image_filename_2(field)={strcat(directoryPiv,Lpiv(2*field).name)};
-        sav_filename(field)={strcat(pathname_sav,num2str(field),'_bis.',sav_index)};
+        sav_filename(field)={strcat(pathname_sav,num2str(field),'.',sav_index)};
     end
+    
+            load(sav_filename{1});
 
-load(strcat(directoryPiv,Lpivbis(1).name))
-%load(strcat(directoryPiv,'alea.mat'))
+
     U_tot=zeros(size(u));
     V_tot=zeros(size(v));
     countsu=zeros(size(u));
@@ -53,32 +57,8 @@ load(strcat(directoryPiv,Lpivbis(1).name))
         countsv=countsv+(ones(size(v))-isnan(v));
         
     end
-    Umoy=U_tot./countsu;
-    Vmoy=-V_tot./countsv; %sinon c'est dans le mauvais sens...
+    u=U_tot./countsu;
+    v=-V_tot./countsv; %sinon c'est dans le mauvais sens...
     
-    
-    Umed=zeros(size(Umoy));
-    Vmed=zeros(size(Vmoy));
-    Uvar=zeros(size(Umoy));
-    Vvar=zeros(size(Vmoy));
-    for i=1:length(u)
-        for j=1:length(v)
-            ul=ucat(:,i,j);
-            vl=vcat(:,i,j);
-            Umed(i,j)=median(ul(ul~=0));
-            Vmed(i,j)=-median(vl(vl~=0)); %idem, pour le bon sens
-            Uvar=var(ul(ul~=0));
-            Vvar=var(vl(vl~=0));
-    
-        end
-    end
-    for kkk=1:10
-        incu=ucat(1+50*(kkk-1):50*kkk,:,:);
-        incu(incu==0)=NaN;
-        incv=vcat(1+50*(kkk-1):50*kkk,:,:);
-        incv(incv==0)=NaN;
-        umpas(kkk,:,:)=nanmean(incu);
-        vmpas(kkk,:,:)=nanmean(incv);
-        pascount(kkk,:,:)=50-max(sum(isnan(incu),1),sum(isnan(incv),1));
-    end
-    save(strcat(baseDir,'PIV_mean_all_avec incert'),'x','y','Umoy','Vmoy','no_fields','countsu','countsv','Umed','Vmed','Uvar','Vvar','umpas','vmpas','pascount')
+
+    save(strcat(baseDir,'PIV_mean'),'x','y','u','v')
