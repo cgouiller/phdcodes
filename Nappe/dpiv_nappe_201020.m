@@ -24,7 +24,7 @@
         sav_filename(field)={strcat(pathname_sav,num2str(field),'.',sav_index)};
     end
     pos = get(gcf,'Position');close;pause(.1)
-    Automaticprocess_3;
+    Automaticprocess_3_201020;
     
 
         
