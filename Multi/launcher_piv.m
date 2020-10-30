@@ -3,8 +3,9 @@ clear all;
 
 run('E:\Clément\phdcodes\Multi\manipspiv.m');
 
-for numVid=8%:9%4:7%[2,1,3]%:3
 
+
+for numVid=8%:9%4:7%[2,1,3]%:3
 % xs=[bdxcat(numVid)-bgxcat(numVid),hdxcat(numVid)-bdxcat(numVid),hdxcat(numVid)-hgxcat(numVid),hgxcat(numVid)-bgxcat(numVid)];
 % ys=-[bdycat(numVid)-bgycat(numVid),hdycat(numVid)-bdycat(numVid),hdycat(numVid)-hgycat(numVid),hgycat(numVid)-bgycat(numVid)];
 % angles=atan(ys./xs);

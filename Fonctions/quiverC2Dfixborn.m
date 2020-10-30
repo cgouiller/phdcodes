@@ -1,4 +1,8 @@
+<<<<<<< HEAD
  function [  ] = quiverC2D(x,y,u,v,valfix,maxNumArrows)
+=======
+function [  ] = quiverC2D(x,y,u,v,valfix,maxNumArrows)
+>>>>>>> essaispivnappe
 %quiverC2D creates a 2D quiver plot and adds a color coding. The color coding is
 %given by the absolut values of the component vectors. Large values result in colors 
 %from the upper end of the used colormap. Plotting parameters have to be changed within 
@@ -115,3 +119,8 @@ end
 hold off;
 
 end
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> essaispivnappe

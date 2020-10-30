@@ -4,11 +4,15 @@
     sete=strjoin(setCatalogue(numVid));
     startImg=startImgCatalogue(numVid);
     date=strjoin(dateCatalogue(numVid));
+    act=strjoin(actCatalogue(numVid));
+
     % build paths and create directories
-    directoryVid=strcat(basePathVid,date,sete,video);
     
-    directoryAnalyse=strcat(basePathAnalyse,date,sete,video);
-    directoryPyt=strcat('E:\Clément\MyCore\Analyse\Multi\',date,sete,video);
+        directoryVid=strcat(basePathVid,date,'\',sete,'\',act,'\',num2str(2*RCat(numVid)),'\',video,'\');
+    directoryAnalyse=strcat(basePathAnalyse,date,'\',sete,'\',act,'\',num2str(2*RCat(numVid)),'\',video,'\');
+    directoryPyt=strcat('E:\Clément\MyCore\Analyse\Multi\',date,'\',sete,'\',act,'\',num2str(2*RCat(numVid)),'\',video,'\');
+
+
     if exist(directoryAnalyse)==0
         mkdir(directoryAnalyse);
         fprintf('Répertoire d\''analyse créé')

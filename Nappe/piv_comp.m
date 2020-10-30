@@ -1,4 +1,29 @@
-clear all;
+% 1 17 33 49
+choix=4;
+if choix==1
+    numVid=441;
+    directoryPiv='E:\Clément\Nappe\essaispiv\1\';
+    vplot=1;
+else if choix==2
+        numVid=591;
+        directoryPiv='E:\Clément\Nappe\essaispiv\17\';
+        vplot=3;
+    else if choix==3
+            numVid=601;
+            directoryPiv='E:\Clément\Nappe\essaispiv\33\';
+                    vplot=3;
+
+        else
+            numVid=751;
+            directoryPiv='E:\Clément\Nappe\essaispiv\49\';
+                    vplot=20;
+
+        end
+    end
+end
+
+
+
 nombreVid=970;
 dateCatalogue={'200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200128','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200129','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200130','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200204','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205','200205'};
 numPassage=[1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10,1:10];
@@ -9,364 +34,113 @@ diamvid=[65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65,65
 nbImg(81)=310;
 nbImg(766)=200;
 format='*.tif';
-no_fields=200;
-prof=zeros(1,nombreVid);
-for i=1:nombreVid
-    if i<321
-        prof(i)=10-(numProf{i}-1)*0.3;
-    else if i>320 && i< 811
-            prof(i)=15-(numProf{i}-1)*0.3;
-        else if i>810
-                prof(i)=5-(numProf{i}-1)*0.3;
-            end
-        end
-    end
-end
 
-c=struct(); % a structure to get the positions of the camphors
+calib=diamtrue(numVid)/diamvid(numVid);
+if numVid<731
+    directoryVid=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\',num2str(numPassage(numVid)),'\');
+end
+if numVid>730 && numVid<811
+    directoryVid=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\',num2str(numPassage(numVid)),'\');
+end
+if numVid>810
+    directoryVid=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\',num2str(numPassage(numVid)),'\');
+end
+load(strcat(directoryVid,'trajectories_2.mat'));
+
+numProf={1,1,1,1,1,1,1,1,1,1,26,26,26,26,26,26,26,26,26,26,17,17,17,17,17,17,17,17,17,17,7,7,7,7,7,7,7,7,7,7,13,13,13,13,13,13,13,13,13,13,3,3,3,3,3,3,3,3,3,3,22,22,22,22,22,22,22,22,22,22,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,5,5,5,5,5,5,5,5,5,5,15,15,15,15,15,15,15,15,15,15,8,8,8,8,8,8,8,8,8,8,28,28,28,28,28,28,28,28,28,28,18,18,18,18,18,18,18,18,18,18,24,24,24,24,24,24,24,24,24,24,4,4,4,4,4,4,4,4,4,4,19,19,19,19,19,19,19,19,19,19,32,32,32,32,32,32,32,32,32,32,27,27,27,27,27,27,27,27,27,27,11,11,11,11,11,11,11,11,11,11,30,30,30,30,30,30,30,30,30,30,9,9,9,9,9,9,9,9,9,9,14,14,14,14,14,14,14,14,14,14,31,31,31,31,31,31,31,31,31,31,2,2,2,2,2,2,2,2,2,2,25,25,25,25,25,25,25,25,25,25,23,23,23,23,23,23,23,23,23,23,16,16,16,16,16,16,16,16,16,16,29,29,29,29,29,29,29,29,29,29,6,6,6,6,6,6,6,6,6,6,21,21,21,21,21,21,21,21,21,21,12,12,12,12,12,12,12,12,12,12,8,8,8,8,8,8,8,8,8,8,38,38,38,38,38,38,38,38,38,38,24,24,24,24,24,24,24,24,24,24,5,5,5,5,5,5,5,5,5,5,12,12,12,12,12,12,12,12,12,12,30,30,30,30,30,30,30,30,30,30,4,4,4,4,4,4,4,4,4,4,39,39,39,39,39,39,39,39,39,39,16,16,16,16,16,16,16,16,16,16,9,9,9,9,9,9,9,9,9,9,37,37,37,37,37,37,37,37,37,37,6,6,6,6,6,6,6,6,6,6,1,1,1,1,1,1,1,1,1,1,7,7,7,7,7,7,7,7,7,7,32,32,32,32,32,32,32,32,32,32,21,21,21,21,21,21,21,21,21,21,40,40,40,40,40,40,40,40,40,40,42,42,42,42,42,42,42,42,42,42,31,31,31,31,31,31,31,31,31,31,46,46,46,46,46,46,46,46,46,46,45,45,45,45,45,45,45,45,45,45,43,43,43,43,43,43,43,43,43,43,23,23,23,23,23,23,23,23,23,23,10,10,10,10,10,10,10,10,10,10,28,28,28,28,28,28,28,28,28,28,34,34,34,34,34,34,34,34,34,34,14,14,14,14,14,14,14,14,14,14,17,17,17,17,17,17,17,17,17,17,33,33,33,33,33,33,33,33,33,33,29,29,29,29,29,29,29,29,29,29,15,15,15,15,15,15,15,15,15,15,18,18,18,18,18,18,18,18,18,18,41,41,41,41,41,41,41,41,41,41,35,35,35,35,35,35,35,35,35,35,13,13,13,13,13,13,13,13,13,13,25,25,25,25,25,25,25,25,25,25,20,20,20,20,20,20,20,20,20,20,27,27,27,27,27,27,27,27,27,27,26,26,26,26,26,26,26,26,26,26,44,44,44,44,44,44,44,44,44,44,48,48,48,48,48,48,48,48,48,48,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,49,49,49,49,49,49,49,49,49,49,22,22,22,22,22,22,22,22,22,22,36,36,36,36,36,36,36,36,36,36,19,19,19,19,19,19,19,19,19,19,47,47,47,47,47,47,47,47,47,47,11,11,11,11,11,11,11,11,11,11,8,8,8,8,8,8,8,8,8,8,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,16,16,16,16,16,16,16,16,16,16,5,5,5,5,5,5,5,5,5,5,1,1,1,1,1,1,1,1,1,1,4,4,4,4,4,4,4,4,4,4,14,14,14,14,14,14,14,14,14,14,7,7,7,7,7,7,7,7,7,7,9,9,9,9,9,9,9,9,9,9,11,11,11,11,11,11,11,11,11,11,10,10,10,10,10,10,10,10,10,10,6,6,6,6,6,6,6,6,6,6,13,13,13,13,13,13,13,13,13,13,15,15,15,15,15,15,15,15,15,15,12,12,12,12,12,12,12,12,12,12};
 fps=200;
+Lpivbis=dir(strcat(directoryPiv,'*.mat'));
+Lpiv=dir(strcat(directoryPiv,'*.tif'));
+
+index = 'tif';
+
 kg=fspecial('gaussian',[9 9],6);
-cpt=0;
-%
-piv10=cell(1,32);
-piv15=cell(1,49);
-piv5=cell(1,16);
-<<<<<<< HEAD:Nappe/launcher_nappe_201020.m
 
+sav_index='mat';
+pathname_sav=directoryPiv;
+filename_sav='result';
 
-for numVid=330:10:810
-=======
-Umoycat=zeros(10,120,120);
-Vmoycat=zeros(10,120,120);
-cpt=1;
-for numVid=[751,722,796,517,530,714,536,492,648,487]%[751,722,796,517,530,714,536,492,648,487];%10:10:nombreVid
->>>>>>> essaispivnappe:Nappe/launcher_nappe.m
-    numVid
-    calib=diamtrue(numVid)/diamvid(numVid);
-    if numVid<731
-        % mkdir(strcat('Y:\cgouiller\Nappe2\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\'));
-        directoryVid=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\',num2str(numPassage(numVid)),'\');
-<<<<<<< HEAD:Nappe/launcher_nappe_201020.m
-        directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\Piv3\');
-=======
-        directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\',num2str(numPassage(numVid)),'\Piv\');
->>>>>>> essaispivnappe:Nappe/launcher_nappe.m
-        baseDir=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\');
-        
-        
-    end
-    if numVid>730 && numVid<811
-        %mkdir(strcat('Y:\cgouiller\Nappe2\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\'));
-        directoryVid=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\',num2str(numPassage(numVid)),'\');
-<<<<<<< HEAD:Nappe/launcher_nappe_201020.m
-        directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\Piv3\');
-=======
-        directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\',num2str(numPassage(numVid)),'\Piv\');
->>>>>>> essaispivnappe:Nappe/launcher_nappe.m
-        baseDir=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\');
-        
-    end
-    if numVid>810
-        % mkdir(strcat('Y:\cgouiller\Nappe2\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\'));
-        directoryVid=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\',num2str(numPassage(numVid)),'\');
-<<<<<<< HEAD:Nappe/launcher_nappe_201020.m
-        directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\Piv3\');
-        baseDir=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\');
-    end
+for field=1:length(Lpiv)/2
+    image_filename_1(field)={strcat(directoryPiv,Lpiv(2*field-1).name)};
+    image_filename_2(field)={strcat(directoryPiv,Lpiv(2*field).name)};
+    sav_filename(field)={strcat(pathname_sav,num2str(field),'.',sav_index)};
+end
+
+load(strcat(directoryPiv,Lpivbis(1).name))
+ns=[10,12,15,1,20,2,30,3,40,50,5,7];
+[out,idx] = sort(ns);
+for i=1:length(ns)
+    nscell{i}=num2str(ns(idx(i)));
+end
+no_fields=length(ns);
+ucat=zeros(no_fields,length(u),length(u));
+vcat=zeros(no_fields,length(v),length(v));
+normvitcat=zeros(no_fields,length(v),length(v));
+deplcat=zeros(no_fields,length(v),length(v));
+windows1=zeros(1,length(ns));
+windows2=zeros(1,length(ns));
+k=150;
+for field=idx
+    load(strcat(sav_filename{field}(1:end-4),'.mat'));
+    windows1(field)=window_1_x;
+    windows2(field)=window_2_x;
     
-    load(strcat(baseDir,'PIV_mean.mat'))
-    n=round(-0.333*numProf{numVid}+20.3333);
-    U=U/8.09*fps/n; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
-    V=V/8.09*fps/n; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
-    X=(x-mean(mean(x)))/8.09;
-    Y=-(y-mean(mean(y)))/8.09;
-    U(countsu<25)=0;
-    V(countsv<25)=0;
-    if numVid<321
-        piv10{1,33-numProf{numVid}}.u=U;
-        piv10{1,33-numProf{numVid}}.v=V;
-        piv10{1,33-numProf{numVid}}.x=X;
-        piv10{1,33-numProf{numVid}}.y=Y;
-        piv10{1,33-numProf{numVid}}.prof=prof(numVid);
-        piv10{1,33-numProf{numVid}}.haut=10;
-        
-        
-        
-    else if numVid>320 && numVid<811
-            piv15{1,50-numProf{numVid}}.u=U;
-            piv15{1,50-numProf{numVid}}.v=V;
-            piv15{1,50-numProf{numVid}}.x=X;
-            piv15{1,50-numProf{numVid}}.y=Y;
-            piv15{1,50-numProf{numVid}}.prof=prof(numVid);
-            piv15{1,50-numProf{numVid}}.haut=15;
-            
-        else if numVid>310
-                piv5{1,17-numProf{numVid}}.u=U;
-                piv5{1,17-numProf{numVid}}.v=V;
-                piv5{1,17-numProf{numVid}}.x=X;
-                piv5{1,17-numProf{numVid}}.y=Y;
-                piv5{1,17-numProf{numVid}}.prof=prof(numVid);
-                piv5{1,17-numProf{numVid}}.haut=5;
-                
-                
+    im=imread(image_filename_1{field});
+    
+    im2=imread(image_filename_2{field});
+    imf=imfilter(im,kg);
+    imf2=imfilter(im2,kg);
+    if numProf{numVid}>44
+        mask=imf<75 & imf2<75 & imf>20 & imf2>20;
+    else
+        mask=imf<75 & imf2<75 & imf>12 & imf2>12;
+    end
+    for ii=1:length(x)
+        for jj=1:length(y)
+            if mask(x(1,ii),y(end+1-jj,1))==0
+                u(ii,jj)=NaN;
+                v(ii,jj)=NaN;
             end
         end
     end
-    % if exist(strcat(baseDir,'PIV_mean.mat'))==2
-    %cpt=cpt+1;
-    %             L=dir(strcat(directoryVid,format));
-    %              if length(L)>0
-    %                  n=round(-0.333*numProf{numVid}+20.3333);
-    %                  alea=9+round(rand(1,no_fields/10)*(length(L)-n-9));
-    %                  while length(alea) ~= length(unique(alea))
-    %                      alea=9+round(rand(1,no_fields/10)*(length(L)-n-9));
-    %                  end
-    %                  save(strcat(directoryVid,'alea.mat'),'alea');
-    %                 %track_particles_nappe;
-    %                 %constr_traj_nappe;
-    %
-    %   PIV_pretreatment_nappe_201020;
-    % end
-    if numPassage(numVid)==10
-        %dpiv_nappe_201020;
-        %  PIV_treatment_nappe_201020;
-    end
- 
-=======
-        directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\',num2str(numPassage(numVid)),'\Piv\');
-        baseDir=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\');
-    end
-%     
-       load(strcat(baseDir,'PIV_unpasparprof.mat'))
-% %    
-% % 
-    Umoy=Umoy/8.09*fps/4; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
-    Vmoy=Vmoy/8.09*fps/4; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
-%     Umed=Umed/8.09*fps/4; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
-%     Vmed=Vmed/8.09*fps/4; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
-%     Uvar=Uvar*(1/8.09*fps/4)^2; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
-%     Vvar=Vvar*(1/8.09*fps/4)^2; %en mm/s, 8.09 facteur spatial et /4 car une toutes les 4 images
-     X=(x-mean(mean(x)))/8.09;
-     Y=-(y-mean(mean(y)))/8.09;
-     Umoycat(cpt,:,:)=Umoy;
-     Vmoycat(cpt,:,:)=Vmoy;
-     cpt=cpt+1;
-     
-     Lpivbis=dir(strcat(directoryPiv,'*.mat'));
-         Lpiv=dir(strcat(directoryPiv,'*.tif'));
-    index = 'tif';
-    
-    
-    sav_index='mat';
-    pathname_sav=directoryPiv;
-    filename_sav='result';
-    for field=1:length(Lpiv)/2
-        image_filename_1(field)={strcat(directoryPiv,Lpiv(2*field-1).name)};
-        image_filename_2(field)={strcat(directoryPiv,Lpiv(2*field).name)};
-        sav_filename(field)={strcat(pathname_sav,num2str(field),'.',sav_index)};
-    end
-    
-    Umoy(countsu<length(sav_filename)/10)=NaN;
-    Vmoy(countsv<length(sav_filename)/10)=NaN;
-
-    
-%    
-%     if numVid<321
-%         piv10{1,33-numProf{numVid}}.umoy=Umoy;
-%         piv10{1,33-numProf{numVid}}.vmoy=Vmoy;
-%         piv10{1,33-numProf{numVid}}.cu=countsu;
-%         piv10{1,33-numProf{numVid}}.cv=countsv;
-%         piv10{1,33-numProf{numVid}}.umed=Umed;
-%         piv10{1,33-numProf{numVid}}.vmed=Vmed;
-%         piv10{1,33-numProf{numVid}}.uvar=Uvar;
-%         piv10{1,33-numProf{numVid}}.vvar=Vvar;
-%         piv10{1,33-numProf{numVid}}.x=X;
-%         piv10{1,33-numProf{numVid}}.y=Y;
-%         piv10{1,33-numProf{numVid}}.prof=prof(numVid);
-%         piv10{1,33-numProf{numVid}}.haut=10;
-%         piv10{1,33-numProf{numVid}}.y=Y;
-%         piv10{1,33-numProf{numVid}}.prof=prof(numVid);
-%         piv10{1,33-numProf{numVid}}.haut=10;
-%         
-%         piv10{1,33-numProf{numVid}}.umoypassages0=reshape(umpas(1,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.umoypassages1=reshape(umpas(2,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.umoypassages2=reshape(umpas(3,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.umoypassages3=reshape(umpas(4,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.umoypassages4=reshape(umpas(5,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.umoypassages5=reshape(umpas(6,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.umoypassages6=reshape(umpas(7,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.umoypassages7=reshape(umpas(8,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.umoypassages8=reshape(umpas(9,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.umoypassages9=reshape(umpas(10,:,:),120,120);
-%         
-%         piv10{1,33-numProf{numVid}}.vmoypassages0=reshape(vmpas(1,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.vmoypassages1=reshape(vmpas(2,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.vmoypassages2=reshape(vmpas(3,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.vmoypassages3=reshape(vmpas(4,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.vmoypassages4=reshape(vmpas(5,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.vmoypassages5=reshape(vmpas(6,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.vmoypassages6=reshape(vmpas(7,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.vmoypassages7=reshape(vmpas(8,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.vmoypassages8=reshape(vmpas(9,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.vmoypassages9=reshape(vmpas(10,:,:),120,120);
-%         
-%         piv10{1,33-numProf{numVid}}.passcounts0=reshape(pascount(1,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.passcounts1=reshape(pascount(2,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.passcounts2=reshape(pascount(3,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.passcounts3=reshape(pascount(4,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.passcounts4=reshape(pascount(5,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.passcounts5=reshape(pascount(6,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.passcounts6=reshape(pascount(7,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.passcounts7=reshape(pascount(8,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.passcounts8=reshape(pascount(9,:,:),120,120);
-%         piv10{1,33-numProf{numVid}}.passcounts9=reshape(pascount(10,:,:),120,120);
-%         
-%         
-%     else if numVid>320 && numVid<811
-%             piv15{1,50-numProf{numVid}}.umoy=Umoy;
-%             piv15{1,50-numProf{numVid}}.vmoy=Vmoy;
-%             piv15{1,50-numProf{numVid}}.cu=countsu;
-%             piv15{1,50-numProf{numVid}}.cv=countsv;
-%             piv15{1,50-numProf{numVid}}.umed=Umed;
-%             piv15{1,50-numProf{numVid}}.vmed=Vmed;
-%             piv15{1,50-numProf{numVid}}.uvar=Uvar;
-%             piv15{1,50-numProf{numVid}}.vvar=Vvar;
-%             piv15{1,50-numProf{numVid}}.x=X;
-%             piv15{1,50-numProf{numVid}}.y=Y;
-%             piv15{1,50-numProf{numVid}}.prof=prof(numVid);
-%             piv15{1,50-numProf{numVid}}.haut=15;
-     
-%         piv15{1,50-numProf{numVid}}.passcounts0=reshape(pascount(1,:,:),120,120);
-%         piv15{1,50-numProf{numVid}}.passcounts1=reshape(pascount(2,:,:),120,120);
-%         piv15{1,50-numProf{numVid}}.passcounts2=reshape(pascount(3,:,:),120,120);
-%         piv15{1,50-numProf{numVid}}.passcounts3=reshape(pascount(4,:,:),120,120);
-%         piv15{1,50-numProf{numVid}}.passcounts4=reshape(pascount(5,:,:),120,120);
-%         piv15{1,50-numProf{numVid}}.passcounts5=reshape(pascount(6,:,:),120,120);
-%         piv15{1,50-numProf{numVid}}.passcounts6=reshape(pascount(7,:,:),120,120);
-%         piv15{1,50-numProf{numVid}}.passcounts7=reshape(pascount(8,:,:),120,120);
-%         piv15{1,50-numProf{numVid}}.passcounts8=reshape(pascount(9,:,:),120,120);
-%         piv15{1,50-numProf{numVid}}.passcounts9=reshape(pascount(10,:,:),120,120);
-%         else if numVid>810
-%                 piv5{1,17-numProf{numVid}}.umoy=Umoy;
-%                 piv5{1,17-numProf{numVid}}.vmoy=Vmoy;
-%                 piv5{1,17-numProf{numVid}}.cu=countsu;
-%                 piv5{1,17-numProf{numVid}}.cv=countsv;
-%                 piv5{1,17-numProf{numVid}}.umed=Umed;
-%                 piv5{1,17-numProf{numVid}}.vmed=Vmed;
-%                 piv5{1,17-numProf{numVid}}.uvar=Uvar;
-%                 piv5{1,17-numProf{numVid}}.vvar=Vvar;
-%                 piv5{1,17-numProf{numVid}}.x=X;
-%                 piv5{1,17-numProf{numVid}}.y=Y;
-%                 piv5{1,17-numProf{numVid}}.prof=prof(numVid);
-%                 piv5{1,17-numProf{numVid}}.haut=5;
-%                 piv5{1,17-numProf{numVid}}.umoypassages0=reshape(umpas(1,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.umoypassages1=reshape(umpas(2,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.umoypassages2=reshape(umpas(3,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.umoypassages3=reshape(umpas(4,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.umoypassages4=reshape(umpas(5,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.umoypassages5=reshape(umpas(6,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.umoypassages6=reshape(umpas(7,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.umoypassages7=reshape(umpas(8,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.umoypassages8=reshape(umpas(9,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.umoypassages9=reshape(umpas(10,:,:),120,120);
-%         
-%         piv5{1,17-numProf{numVid}}.vmoypassages0=reshape(vmpas(1,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.vmoypassages1=reshape(vmpas(2,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.vmoypassages2=reshape(vmpas(3,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.vmoypassages3=reshape(vmpas(4,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.vmoypassages4=reshape(vmpas(5,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.vmoypassages5=reshape(vmpas(6,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.vmoypassages6=reshape(vmpas(7,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.vmoypassages7=reshape(vmpas(8,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.vmoypassages8=reshape(vmpas(9,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.vmoypassages9=reshape(vmpas(10,:,:),120,120);
-%         
-%         piv5{1,17-numProf{numVid}}.passcounts0=reshape(pascount(1,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.passcounts1=reshape(pascount(2,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.passcounts2=reshape(pascount(3,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.passcounts3=reshape(pascount(4,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.passcounts4=reshape(pascount(5,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.passcounts5=reshape(pascount(6,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.passcounts6=reshape(pascount(7,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.passcounts7=reshape(pascount(8,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.passcounts8=reshape(pascount(9,:,:),120,120);
-%         piv5{1,17-numProf{numVid}}.passcounts9=reshape(pascount(10,:,:),120,120);
-%             end
-%         end
-%     end
-%     save('E:\Clément\Julie\PIVnagseulbis.mat','piv5','piv10','piv15')
-   
-   %if exist(strcat(baseDir,'PIV_mean.mat'))==2
-    % cpt=cpt+1;
-         %  L=dir(strcat(directoryVid,format));
-          %  if length(L)>0
-%                 alea=9+round(rand(1,no_fields/10)*(length(L)-18));
-%                 while length(alea) ~= length(unique(alea))
-%                     alea=9+round(rand(1,no_fields/10)*(length(L)-18));
-%                 end
-%                 save(strcat(directoryVid,'alea.mat'),'alea');
-                %track_particles_nappe;
-                %constr_traj_nappe;
-    
-               % PIV_pretreatment_nappe;
-    
-               % if numPassage(numVid)==10
-                 %   dpiv_nappe;
-                %    PIV_treatment_nappe2;
-              %  end
-           % end
-   % end
->>>>>>> essaispivnappe:Nappe/launcher_nappe.m
-    
-    %     imchampcorresp;
-    %save_masked_fields;
-    %track_particles_nappe;
-    %constr_traj_nappe;
+    ucat(field,:,:)=u;
+    vcat(field,:,:)=-v;
+    normvitcat(field,:,:)=sqrt((reshape(ucat(field,:,:),[120,120])/ns(field)/8.09*fps).^2+(reshape(vcat(field,:,:),[120,120])/ns(field)/8.09*fps).^2);
+    deplcat(field,:,:)=sqrt((reshape(ucat(field,:,:),[120,120])).^2+(reshape(vcat(field,:,:),[120,120])).^2);
 end
-<<<<<<< HEAD:Nappe/launcher_nappe_201020.m
-
-
-save('Y:\cgouiller\Nappe\piv201020.mat','piv15')
-=======
- %    save('E:\Clément\Julie\PIVnagseulall_incert.mat','piv5','piv10','piv15')
-         piv15.umoy0=reshape(Umoycat(1,:,:),120,120);
-         piv15.umoy1=reshape(Umoycat(2,:,:),120,120);
-         piv15.umoy2=reshape(Umoycat(3,:,:),120,120);
-         piv15.umoy3=reshape(Umoycat(4,:,:),120,120);
-         piv15.umoy4=reshape(Umoycat(5,:,:),120,120);
-         piv15.umoy5=reshape(Umoycat(6,:,:),120,120);
-         piv15.umoy6=reshape(Umoycat(7,:,:),120,120);
-         piv15.umoy7=reshape(Umoycat(8,:,:),120,120);
-         piv15.umoy8=reshape(Umoycat(9,:,:),120,120);
-         piv15.umoy9=reshape(Umoycat(10,:,:),120,120);
- 
-         piv15.vmoy0=reshape(Vmoycat(1,:,:),120,120);
-         piv15.vmoy1=reshape(Vmoycat(2,:,:),120,120);
-         piv15.vmoy2=reshape(Vmoycat(3,:,:),120,120);
-         piv15.vmoy3=reshape(Vmoycat(4,:,:),120,120);
-         piv15.vmoy4=reshape(Vmoycat(5,:,:),120,120);
-         piv15.vmoy5=reshape(Vmoycat(6,:,:),120,120);
-         piv15.vmoy6=reshape(Vmoycat(7,:,:),120,120);
-         piv15.vmoy7=reshape(Vmoycat(8,:,:),120,120);
-         piv15.vmoy8=reshape(Vmoycat(9,:,:),120,120);
-         piv15.vmoy9=reshape(Vmoycat(10,:,:),120,120);
-save('E:\Clément\Nappe\unpasparprof.mat','X','Y','piv15')
-%%DPivsoft
-%
-
-%
-% for  numP=1:10:320
-%     load(strcat('D:\2019_12_gouiller\',dateCatalogue{numP},'\',num2str(numProf{numP}),'\PIV_mean'));
-%     x=x/8.09;
-%     y=y/8.09;
-%     U=U*200/(8.09*4);
-%     V=V*200/(8.09*4);
-%
-%    % hold on;plot(V(30,1:60));hold off;
-%         champ{numProf{numP}}.u=U;
-%         champ{numProf{numP}}.v=V;
-%         champ{numProf{numP}}.x=x;
-%         champ{numProf{numP}}.y=y;
-%         champ{numProf{numP}}.prof=10.3-0.3*numProf{numP};
+% cpt=1;
+% figure;
+% for field=idx
+%     [counts,bins]=hist_maison(reshape(normvitcat(field,:,:),[120,120]),0,max(max(max(normvitcat(isnan(normvitcat)==0)))),100,1);
+%     hold on;
+%     color_line(bins,counts,cpt*ones(1,length(counts)),'LineWidth',2);
+%     hold off;
+%     cpt=cpt+1;
 % end
->>>>>>> essaispivnappe:Nappe/launcher_nappe.m
+% title('Vitesse [mm/s]')
+% legend(nscell)
+% xlabel(num2str(numProf{numVid}))
+% 
+% cpt=1;
+% figure;
+% for field=idx
+%     [counts,bins]=hist_maison(reshape(deplcat(field,:,:),[120,120]),0,max(max(max(deplcat(isnan(deplcat)==0)))),100,1);
+%     hold on;
+%     color_line(bins,counts,cpt*ones(1,length(counts)),'LineWidth',2);
+%     hold off;
+%     cpt=cpt+1;
+% end
+% title('Déplacement [px]')
+% xlabel(num2str(numProf{numVid}))
+% legend(nscell)
+
+
+%% 1 =>v=1
+field=4;deplpx=sqrt((tracks(k+ns(field),1)-tracks(k,1))^2+(tracks(k,2)-tracks(k+ns(field),2))^2);figure;quiverC2Dfixborn(x,y,reshape(ucat(field,:,:),[120,120])/ns(field)/8.09*fps,reshape(vcat(field,:,:),[120,120])/ns(field)/8.09*fps,vplot);title(num2str(ns(field)));colormap parula(64);colorbar;xlabel(strcat('depl nageur=',num2str(round(deplpx)),' px, w1=',num2str(windows1(field)),', w2-',num2str(windows2(field))));
+field=11;deplpx=sqrt((tracks(k+ns(field),1)-tracks(k,1))^2+(tracks(k,2)-tracks(k+ns(field),2))^2);figure;quiverC2Dfixborn(x,y,reshape(ucat(field,:,:),[120,120])/ns(field)/8.09*fps,reshape(vcat(field,:,:),[120,120])/ns(field)/8.09*fps,vplot);title(num2str(ns(field)));colormap parula(64);colorbar;xlabel(strcat('depl nageur=',num2str(round(deplpx)),' px, w1=',num2str(windows1(field)),', w2-',num2str(windows2(field))));
+field=1;deplpx=sqrt((tracks(k+ns(field),1)-tracks(k,1))^2+(tracks(k,2)-tracks(k+ns(field),2))^2);figure;quiverC2Dfixborn(x,y,reshape(ucat(field,:,:),[120,120])/ns(field)/8.09*fps,reshape(vcat(field,:,:),[120,120])/ns(field)/8.09*fps,vplot);title(num2str(ns(field)));colormap parula(64);colorbar;xlabel(strcat('depl nageur=',num2str(round(deplpx)),' px, w1=',num2str(windows1(field)),', w2-',num2str(windows2(field))));
+field=5;deplpx=sqrt((tracks(k+ns(field),1)-tracks(k,1))^2+(tracks(k,2)-tracks(k+ns(field),2))^2);figure;quiverC2Dfixborn(x,y,reshape(ucat(field,:,:),[120,120])/ns(field)/8.09*fps,reshape(vcat(field,:,:),[120,120])/ns(field)/8.09*fps,vplot);title(num2str(ns(field)));colormap parula(64);colorbar;xlabel(strcat('depl nageur=',num2str(round(deplpx)),' px, w1=',num2str(windows1(field)),', w2-',num2str(windows2(field))));
+field=10;deplpx=sqrt((tracks(k+ns(field),1)-tracks(k,1))^2+(tracks(k,2)-tracks(k+ns(field),2))^2);figure;quiverC2Dfixborn(x,y,reshape(ucat(field,:,:),[120,120])/ns(field)/8.09*fps,reshape(vcat(field,:,:),[120,120])/ns(field)/8.09*fps,vplot);title(num2str(ns(field)));colormap parula(64);colorbar;xlabel(strcat('depl nageur=',num2str(round(deplpx)),' px, w1=',num2str(windows1(field)),', w2-',num2str(windows2(field))));
+
+%
+

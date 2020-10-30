@@ -13,6 +13,7 @@ for i=1:4
     for j=1:4
         if mod(i,2)==mod(j,2)
             plot(i*pas,j*pas,'+r','MarkerSize',10,'LineWidth',2)
+            i*pas
         else
             plot(i*pas,j*pas,'xk','MarkerSize',10,'LineWidth',2)
         end

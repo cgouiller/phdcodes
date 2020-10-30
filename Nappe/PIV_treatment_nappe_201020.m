@@ -1,4 +1,8 @@
+<<<<<<< HEAD:Nappe/PIV_treatment_nappe_201020.m
 
+=======
+Lpivbis=dir(strcat(directoryPiv,'*.mat'));
+>>>>>>> essaispivnappe:Nappe/PIV_treatment_nappe2.m
     Lpiv=dir(strcat(directoryPiv,'*.tif'));
   
     
@@ -27,18 +31,21 @@
     stdcat=zeros(size(u));
     ucat=zeros(no_fields,length(u),length(u));
     vcat=zeros(no_fields,length(v),length(v));
-    umpas=zeros(10,length(u),length(v));
-    vmpas=zeros(10,length(u),length(v));
-    pascount=zeros(10,length(u),length(v));
-    for field=1:no_fields
+    umpas=zeros(length(u),length(v));
+    vmpas=zeros(length(u),length(v));
+    pascount=zeros(length(u),length(v));
+    for field=1:length(sav_filename)
         
         load(strcat(sav_filename{field}(1:end-4),'.mat'));
         im=imread(image_filename_1{field});
         im2=imread(image_filename_2{field});
         imf=imfilter(im,kg);
         imf2=imfilter(im2,kg);
-
-        mask=imf<75 & imf2<75 & imf>12 & imf2>12;
+        if numProf{numVid}>44
+            mask=imf<75 & imf2<75 & imf>20 & imf2>20;
+        else
+            mask=imf<75 & imf2<75 & imf>12 & imf2>12;
+        end
         for ii=1:length(x)
             for jj=1:length(y)
                 if mask(x(1,ii),y(end+1-jj,1))==0
@@ -60,5 +67,41 @@
     u=U_tot./countsu;
     v=-V_tot./countsv; %sinon c'est dans le mauvais sens...
     
+<<<<<<< HEAD:Nappe/PIV_treatment_nappe_201020.m
 
     save(strcat(baseDir,'PIV_mean'),'x','y','u','v')
+=======
+    Umed=zeros(size(Umoy));
+    Vmed=zeros(size(Vmoy));
+    Uvar=zeros(size(Umoy));
+    Vvar=zeros(size(Vmoy));
+    for i=1:length(u)
+        for j=1:length(v)
+            ul=ucat(:,i,j);
+            vl=vcat(:,i,j);
+            Umed(i,j)=median(ul(ul~=0));
+            Vmed(i,j)=-median(vl(vl~=0)); %idem, pour le bon sens
+            Uvar=var(ul(ul~=0));
+            Vvar=var(vl(vl~=0));
+    
+        end
+    end
+    %for kkk=1:10
+        %incu=ucat(1+50*(kkk-1):50*kkk,:,:);
+        incu=ucat;
+        incu(incu==0)=NaN;
+        %incv=vcat(1+50*(kkk-1):50*kkk,:,:);
+        incv=vcat;
+        incv(incv==0)=NaN;
+        %umpas(kkk,:,:)=nanmean(incu);
+        %vmpas(kkk,:,:)=nanmean(incv);
+        umpas=nanmean(incu);
+        umpas=reshape(umpas,[120,120]);
+        vmpas=nanmean(incv);
+        vmpas=reshape(vmpas,[120,120]);
+
+        %pascount(kkk,:,:)=50-max(sum(isnan(incu),1),sum(isnan(incv),1));
+        pascount=no_fields*ones(size(umpas))-reshape(max(sum(isnan(incu),1),sum(isnan(incv),1)),[120,120]);
+   % end
+    save(strcat(baseDir,'PIV_unpasparprof'),'x','y','Umoy','Vmoy','no_fields','countsu','countsv','Umed','Vmed','Uvar','Vvar','umpas','vmpas','pascount')
+>>>>>>> essaispivnappe:Nappe/PIV_treatment_nappe2.m
