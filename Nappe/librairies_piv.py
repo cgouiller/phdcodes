@@ -17,6 +17,7 @@ plt.rcParams['figure.figsize'] = [8,4.5] # taille par défaut des figures qu'on 
 
 import matplotlib.cm as cm #colormaps
 from matplotlib.colors import Normalize #Pour l'utilisation des couleurs dans quiver
+import matplotlib.tri as tri
 
 import scipy as sc #pour l'analyse
 from matplotlib.ticker import MaxNLocator #pour les courbes de niveau

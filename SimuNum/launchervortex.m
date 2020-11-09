@@ -15,7 +15,8 @@ for ii=1:nombreVid
 
     globalcount=globalcount+nt-old_nt;
 end
-for ii=1:nombreVid%[53:nombreVid,42,49,4,5,6,8,10,13,16,20]
+for ii=[53:nombreVid,42,49,4,5,6,8,10,13,16,20]
+   ii
     if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))~=0
         load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
         old_nt=nt;
@@ -65,14 +66,14 @@ for ii=1:nombreVid%[53:nombreVid,42,49,4,5,6,8,10,13,16,20]
 %     load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))
 %     Ccamp=real(ifft2(Ccamp_f));
 %     figure;imagesc(Ccamp);colorbar;title(num2str(ii));
-   if nt~=old_nt
-        ii
-        simu;
+ %  if nt~=old_nt
+ %       ii
+ %       simu;
      %   calcEcandpdfs;
 
-   end
+%   end
   % ii
- %  replay_profils;
+   replay_profils;
    videocount=videocount+nt-old_nt;
 %     if exist(strcat('E:\Clément\SimuNum\Resultats2\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_analyze.mat'))==0
 %         ii

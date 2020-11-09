@@ -12,6 +12,8 @@ from scipy.ndimage import gaussian_filter #Filtrage gaussien
 from numpy.linalg import pinv as nppinv
 from matplotlib.colors import Normalize #Pour l'utilisation des couleurs dans quiver
 from scipy.interpolate import griddata
+import matplotlib.tri as tri
+import matplotlib.cm as cm #colormaps
 
 # Definition des fonctions
 def PIV(prof,manips): 
@@ -228,6 +230,7 @@ def plot_vfield(x,y,u,v,vmax,svect):
     velocity=np.sqrt(u**2+v**2)
     if vmax==0:
         vmax=np.mean(velocity)+3*np.std(velocity)#norme maximale représentée sur la colormap borne sup arbitraire
+    
     colors = np.copy(velocity)
     colors[velocity>vmax]=vmax
     norm = Normalize()
@@ -238,17 +241,24 @@ def plot_vfield(x,y,u,v,vmax,svect):
     plt.gca().set_aspect('equal')        
     plt.colorbar()    
         
-def plot_dvg(x,y,z,dvg,v):
+def plot_dvg(x,y,z,dvg,v,param):
     if v==0:
         v=3*np.std(dvg)    
+    
+    if param==2:    
+        plt.imshow(dvg,vmin=-v,vmax=v,extent=[x[0,0],x[0,-1],y[0,0],y[-1,0]])
+    else:
+        triang = tri.Triangulation(x, y)
+        plt.tripcolor(triang, dvg, shading='gouraud',cmap=cm.PiYG,vmin=-v,vmax=v)
+
         
-    plt.imshow(dvg,vmin=-v,vmax=v,extent=[x[0,0],x[0,-1],y[0,0],y[-1,0]])
     plt.gca().invert_yaxis()
     plt.xlabel("x [mm]")
     plt.ylabel("y [mm]")
     plt.title("prof="+str(z)+"mm")
     plt.gca().set_aspect('equal')        
     plt.colorbar()
+    plt.show()
 
 #%% Calculs de divergences
 def divergence2Dsym(u,v,x,y):
@@ -371,14 +381,14 @@ def vfield_sym(u,v,P):
         mid=int(len(up)/2)
         usym=np.zeros(np.shape(up))
         vsym=np.zeros(np.shape(vp))
-        usym[:,0:mid]=(up[:,0:mid]-np.fliplr(up[:,mid:len(up)])/2)
+        usym[:,0:mid]=(up[:,0:mid]-np.fliplr(up[:,mid:len(up)]))/2
         usym[:,mid:len(up)]=-np.fliplr(usym[:,0:mid])
-        vsym[:,0:mid]=(vp[:,0:mid]+np.fliplr(vp[:,mid:len(vp)])/2)
+        vsym[:,0:mid]=(vp[:,0:mid]+np.fliplr(vp[:,mid:len(vp)]))/2
         vsym[:,mid:len(vp)]=np.fliplr(vsym[:,0:mid])
         us[i]=usym
         vs[i]=vsym
     return(us,vs)
-    
+
 #%% Méthode de Galerkine
     
 def Galerkine(div_2D,dx,dy,x,z,P,m,h):

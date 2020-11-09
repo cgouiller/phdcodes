@@ -1,6 +1,6 @@
 clear all;
 
-run('E:\Clément\phdcodes\Mixing\manips180913.m');
+run('E:\Clément\phdcodes\Mixing\manipsfinales.m');
 %%
 
 

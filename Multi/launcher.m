@@ -2,7 +2,7 @@ clear all;
 
 run('E:\Clément\phdcodes\Multi\manips.m');
 %%
-for numVid=56:61
+for numVid=62:67
   
  numVid
     load_param;

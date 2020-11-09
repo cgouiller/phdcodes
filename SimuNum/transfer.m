@@ -85,42 +85,43 @@
 % AmpVortex=[];
 % Advection=[];
 % AmpSourceCamphre=[];
+% VMar=[];
 % TauP=[];
 % Duree=[];
 % RandomStart=[];
 % run manips200320
 % for i=1:nombreVid
 %     
-%     fname=strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{i},'\',manipCat200320.set{i},'\',manipCat200320.video{i},'.mat');
-%     if exist(fname) && exist(strcat(fname(1:end-4),'_analyze.mat'))
-%         load(fname)
-%      load(strcat(fname(1:end-4),'_analyze.mat'))  
-%         directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat200320.date{i},'\',manipCat200320.set{i},'\');
-%          if exist(directoryPyt)==0
-%              mkdir(directoryPyt);
-%          end
-%          mx=mx(1:10:end);
-%          my=my(1:10:end);
-%          if strcmp(manipCat200320.set{i},'pieg')
-%              frenet;
-%              save(strcat(directoryPyt,manipCat200320.video{i},'.mat'),'mx','my','dt','prodscal','tau','MeanSD')
-%          else
-%          save(strcat(directoryPyt,manipCat200320.video{i},'.mat'),'mx','my','dt','tau','MeanSD')
-%          end
-%     elseif exist(fname)~=0 
-%                 load(fname)
-%         directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat200320.date{i},'\',manipCat200320.set{i},'\');
-%         mx=mx(1:10:end);
-%          my=my(1:10:end);
-%          if strcmp(manipCat200320.set{i},'pieg')
-%              frenet;
-%              save(strcat(directoryPyt,manipCat200320.video{i},'.mat'),'mx','my','dt','prodscal')
-%          else
-%                      save(strcat(directoryPyt,manipCat200320.video{i},'.mat'),'mx','my','dt')
-% 
-%          end
-% 
-%     end
+% %     fname=strcat('E:\Clément\SimuNum\Resultats\',manipCat200320.date{i},'\',manipCat200320.set{i},'\',manipCat200320.video{i},'.mat');
+% %     if exist(fname) && exist(strcat(fname(1:end-4),'_analyze.mat'))
+% %         load(fname)
+% %      load(strcat(fname(1:end-4),'_analyze.mat'))  
+% %         directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat200320.date{i},'\',manipCat200320.set{i},'\');
+% %          if exist(directoryPyt)==0
+% %              mkdir(directoryPyt);
+% %          end
+% %          mx=mx(1:10:end);
+% %          my=my(1:10:end);
+% %          if strcmp(manipCat200320.set{i},'pieg')
+% %              frenet;
+% %              save(strcat(directoryPyt,manipCat200320.video{i},'.mat'),'mx','my','dt','prodscal','tau','MeanSD')
+% %          else
+% %          save(strcat(directoryPyt,manipCat200320.video{i},'.mat'),'mx','my','dt','tau','MeanSD')
+% %          end
+% %     elseif exist(fname)~=0 
+% %                 load(fname)
+% %         directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat200320.date{i},'\',manipCat200320.set{i},'\');
+% %         mx=mx(1:10:end);
+% %          my=my(1:10:end);
+% %          if strcmp(manipCat200320.set{i},'pieg')
+% %              frenet;
+% %              save(strcat(directoryPyt,manipCat200320.video{i},'.mat'),'mx','my','dt','prodscal')
+% %          else
+% %                      save(strcat(directoryPyt,manipCat200320.video{i},'.mat'),'mx','my','dt')
+% % 
+% %          end
+% % 
+% %     end
 %     
 %     Date=[Date;manipCat200320.date{i}];
 %     Rayon=[Rayon,2.5];
@@ -129,6 +130,11 @@
 %     MasseBbg=[MasseBbg,0];
 %     Projet=[Projet;'Vortex'];
 %     Set=[Set;manipCat200320.set{i}];
+%     if manipCat200320.A(i)<0.52966
+%         VMar=[VMar,0];
+%     else
+%         VMar=[VMar,2.3664*(manipCat200320.A(i)-0.52966)^0.57171];
+%     end
 %     TauP=[TauP,manipCat200320.taup(i)];
 %     Video=[Video;manipCat200320.video{i}];
 %     CoefMarangoni=[CoefMarangoni,manipCat200320.A(i)];
@@ -138,8 +144,8 @@
 %     AmpSourceCamphre=[AmpSourceCamphre,manipCat200320.asrc(i)];
 %     RandomStart=[RandomStart,manipCat200320.randomstart(i)];
 % end
-% save('E:\Clément\MyCore\Analyse\SimuNum\manips.mat','Nombre','AmpVortex','CoefMarangoni','TauP','Date','Set','Duree','Rayon','MasseBbg','Projet','Video','Inertie','Advection','AmpSourceCamphre')
-% 
+% save('E:\Clément\MyCore\Analyse\SimuNum\manips.mat','Nombre','AmpVortex','CoefMarangoni','TauP','VMar','Date','Set','Duree','Rayon','MasseBbg','Projet','Video','Inertie','Advection','AmpSourceCamphre')
+
 
 %% Pour le deuxième set de manips:
 Date=[];
@@ -158,9 +164,10 @@ AmpSourceCamphre=[];
 TauP=[];
 Duree=[];
 RandomStart=[];
+VMar=[];
 run manips
 dt=1e-2;
-for i=1:nombreVid
+for i=[51:60,42,49,4,5,6,8,10,13,16,20]
     
     fname=strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{i},'\',manipCat.set{i},'\',manipCat.video{i},'_profiles.mat');
     if exist(fname) 
@@ -176,28 +183,33 @@ for i=1:nombreVid
         [MSD,mdx,tau]=msd(d,dt,1:20:round(length(d)/3));
          save(strcat(directoryPyt,manipCat.video{i},'_profs.mat'),'profs','mx','my','umar','vmar','liste','tau','MSD')
          
-
     end
-    
-    Date=[Date;manipCat.date{i}];
-    Rayon=[Rayon,2.5];
-    Duree=[Duree,manipCat.nt(i)];
-    Nombre=[Nombre,manipCat.npart(i)];
-    MasseBbg=[MasseBbg,0];
-    Projet=[Projet;'Vortex'];
-    Set=[Set;manipCat.set{i}];
-    TauP=[TauP,manipCat.taup(i)];
-    Video=[Video;manipCat.video{i}];
-    CoefMarangoni=[CoefMarangoni,manipCat.A(i)];
-    Inertie=[Inertie,manipCat.inertie(i)];
-    AmpVortex=[AmpVortex,manipCat.amp_ec(i)];
-    Advection=[Advection,manipCat.advection(i)];
-    AmpSourceCamphre=[AmpSourceCamphre,manipCat.asrc(i)];
-    RandomStart=[RandomStart,manipCat.randomstart(i)];
 end
-save('E:\Clément\MyCore\Analyse\SimuNum\manips2.mat','Nombre','AmpVortex','CoefMarangoni','TauP','Date','Set','Duree','Rayon','MasseBbg','Projet','Video','Inertie','Advection','AmpSourceCamphre')
+%     
+%     Date=[Date;manipCat.date{i}];
+%     Rayon=[Rayon,2.5];
+%     Duree=[Duree,manipCat.nt(i)];
+%     Nombre=[Nombre,manipCat.npart(i)];
+%     MasseBbg=[MasseBbg,0];
+%     Projet=[Projet;'Vortex'];
+%     Set=[Set;manipCat.set{i}];
+%     TauP=[TauP,manipCat.taup(i)];
+%     Video=[Video;manipCat.video{i}];
+%     CoefMarangoni=[CoefMarangoni,manipCat.A(i)];
+%     if manipCat.A(i)<0.52966
+%         VMar=[VMar,0];
+%     else
+%         VMar=[VMar,2.3664*(manipCat.A(i)-0.52966)^0.57171];
+%     end
+%     Inertie=[Inertie,manipCat.inertie(i)];
+%     AmpVortex=[AmpVortex,manipCat.amp_ec(i)];
+%     Advection=[Advection,manipCat.advection(i)];
+%     AmpSourceCamphre=[AmpSourceCamphre,manipCat.asrc(i)];
+%     RandomStart=[RandomStart,manipCat.randomstart(i)];
+end
+% save('E:\Clément\MyCore\Analyse\SimuNum\manips2.mat','Nombre','AmpVortex','CoefMarangoni','TauP','Date','Set','Duree','Rayon','MasseBbg','Projet','Video','Inertie','Advection','AmpSourceCamphre','VMar')
 
-for i=1:50
+for i=
     
     fname=strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{i},'\',manipCat.set{i},'\',manipCat.video{i},'.mat');
     

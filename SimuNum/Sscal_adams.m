@@ -22,7 +22,7 @@ phiy_f=fft2(phiy);
 phiy_f=phiy_f.*alias;
 
 else
-    
+    print('Attention on n evite pas l aliasing, voir Sscal_adams.m')
     scal=real(ifft2(scal_f));
     nscal=mean(mean(abs(scal)));    
     phix=vx.*scal;

@@ -27,6 +27,8 @@ Dcamp=0.15;% Coeff de diffusion du camphre
 
 mx=zeros(nt,npart);
 my=zeros(nt,npart);
+umar=zeros(nt,npart);
+vmar=zeros(nt,npart);
 muxp=zeros(nt,npart);
 muyp=zeros(nt,npart);
 mvsx=zeros(nt,npart);
@@ -277,26 +279,27 @@ for iii=1:nbderepet
         mvsy((iii-1)*nt/nbderepet+in,1:npart)=vsy(1,1:npart);
         mx((iii-1)*nt/nbderepet+in,1:npart)=xs(1,1:npart);% position x
         my((iii-1)*nt/nbderepet+in,1:npart)=ys(1,1:npart);% position y
-        
+        vxfiltext=real(ifft2((vxextf).*gfilt_f));
+        vyfiltext=real(ifft2((vyextf).*gfilt_f));
+        vxfiltpext=padarray(vxfiltext,[10 10],'circular','both');
+        vyfiltpext=padarray(vyfiltext,[10 10],'circular','both');
+        xsm=modulo(mx((iii-1)*nt/nbderepet+in,1:npart),2*pi);
+        ysm=modulo(my((iii-1)*nt/nbderepet+in,1:npart),2*pi);
+        umar((iii-1)*nt/nbderepet+in,1:npart)=uxp-interp2(xpad,ypad,vxfiltpext,xsm,ysm,'spline');
+        vmar((iii-1)*nt/nbderepet+in,1:npart)=uyp-interp2(xpad,ypad,vyfiltpext,xsm,ysm,'spline');
         
         if ismember(in,list)
             cpt=cpt+1;
-            if sqrt((mx(in,1)-mx(in-1,1))^2+(my(in,1)-my(in-1,1))^2)~=0
-            profs(cpt,:)=improfile(padarray(Ccamp,[120 120],'circular','both'),round(120+64/pi*[mod(xs,2*pi)-(mx(in,1)-mx(in-1,1))/sqrt((mx(in,1)-mx(in-1,1))^2+(my(in,1)-my(in-1,1))^2)*3 mod(xs,2*pi)+(mx(in,1)-mx(in-1,1))/sqrt((mx(in,1)-mx(in-1,1))^2+(my(in,1)-my(in-1,1))^2)*3]),round(120+64/pi*[mod(ys,2*pi)-(my(in,1)-my(in-1,1))/sqrt((mx(in,1)-mx(in-1,1))^2+(my(in,1)-my(in-1,1))^2)*3 mod(ys,2*pi)+(my(in,1)-my(in-1,1))/sqrt((mx(in,1)-mx(in-1,1))^2+(my(in,1)-my(in-1,1))^2)*3]),200);
+            
+            if sqrt((umar(in,1))^2+vmar(in,1)^2)~=0
+            profs(cpt,:)=improfile(padarray(Ccamp,[120 120],'circular','both'),round(120+64/pi*[mod(xs,2*pi)-(umar(in,1)/sqrt((umar(in,1)+vmar(in,1))^2))*3 mod(xs,2*pi)+(umar(in,1))/sqrt((umar(in,1)+vmar(in,1))^2)*3]),round(120+64/pi*[mod(ys,2*pi)-(vmar(in,1))/sqrt((umar(in,1)+vmar(in,1))^2)*3 mod(ys,2*pi)+(vmar(in,1))/sqrt((umar(in,1)+vmar(in,1))^2)*3]),200);
             end
         end
         
         
     end
 end
-vxfilt=real(ifft2((vxextf).*gfilt_f));
-vyfilt=real(ifft2((vyextf).*gfilt_f));
-vxfiltp=padarray(vxfilt,[10 10],'circular','both');
-vyfiltp=padarray(vyfilt,[10 10],'circular','both');
-xsm=modulo(mx,2*pi);
-ysm=modulo(my,2*pi);
-umar=uxp-interp2(xpad,ypad,vxfiltp,xsm,ysm,'spline');
-vmar=uyp-interp2(xpad,ypad,vyfiltp,xsm,ysm,'spline');
+
 
 
 save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_profiles.mat'),'profs','mx','my','umar','vmar','liste');

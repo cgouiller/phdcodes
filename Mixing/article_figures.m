@@ -26,6 +26,80 @@ imbg=imbg.im0;
         ylim([min(Y)-0.0000001 max(Y)+0.0000001]);
         xlim([min(X)-0.0000001 max(X)+0.0000001]);
           xlabel('X [mm]');ylabel('Y [mm]');
+          
+%% Image referee 8mg
+mean(CMoy(time>55*60&time<65*60))
+numVid=40;load_param;
+    
+    load(strcat(directoryAnalyse,'directory.mat'));
+    imbg=load(strcat(directoryAnalyse,'im0.mat'));
+imbg=imbg.im0;
+
+       immask=nanOutCircle(ones(length(imbg)),round(length(imbg)/2),round(length(imbg)/2),round(length(imbg)/2));
+
+
+    k=10000;
+    
+    fname=L(k).name;
+        fnamecompl=strcat('Y:\cgouiller\Mixing\190620\varSize\5\',fname);
+        im=double(imread(fnamecompl));
+        
+        im=im(round(centerCellY-radiusCellPx):round(centerCellY+radiusCellPx),round(centerCellX-radiusCellPx):round(centerCellX+radiusCellPx));
+        im=im.*immask;
+        X=((1:length(im)-1))*calib;
+        Y=X;
+        load('E:\Clément\Mixing\Analyse\190620\varSize\5\Conclin.mat')
+        im=im/mean(CMoy(time>55*60&time<65*60));
+        imagesc(X,Y,im);colormap gray(256);colorbar;axis square;
+        ylim([min(Y)-0.0000001 max(Y)+0.0000001]);
+        xlim([min(X)-0.0000001 max(X)+0.0000001]);
+          xlabel('X [mm]');ylabel('Y [mm]');
+          %%
+       numVid=40;load_param;
+ imbg=load(strcat(directoryAnalyse,'im0'));
+    imbg=imbg.im0;
+     load(strcat(directoryAnalyse,'directory.mat'));
+
+    immask=nanOutCircle(ones(length(imbg)),round(length(imbg)/2),round(length(imbg)/2),round(length(imbg)/2));
+
+   
+    load(strcat(directoryAnalyse,'particules_selectionnees.mat'));
+   
+    
+    a=load(strcat(directoryAnalyse,'positions.mat'));
+    c=a.c;
+ 
+
+    k=10000;
+    
+    fname=L(k).name;
+        fnamecompl=strcat('Y:\cgouiller\Mixing\190620\varSize\5\',fname);
+        im=double(imread(fnamecompl));
+        
+        im=im(round(centerCellY-radiusCellPx):round(centerCellY+radiusCellPx),round(centerCellX-radiusCellPx):round(centerCellX+radiusCellPx));
+        im=im.*immask;
+         X=((1:length(im)-1))*calib;
+        Y=X;
+ pos=[c(k).x,c(k).y,c(k).r];
+        pos=pos/calib;
+        Cfield=calc_Cfield2(im,imbg,pos,immask);
+        load('E:\Clément\Mixing\Analyse\190620\varSize\5\Conclin.mat')
+
+        Cfieldnorm=Cfield/mean(CMoy(time>55*60&time<65*60)); %en g/m^2 d'après calibration
+       % Cfieldtrue=Cfieldtrue-nanmean2(Cfieldtrue);
+        imagesc(X,Y,Cfieldnorm);colormap parula(256);colorbar;hold on;axis equal;
+     
+        caxis([-0.0000001 6.00000001]);axis equal;ylim([min(Y)-0.0000001 max(Y)+0.0000001]);
+        xlim([min(X)-0.0000001 max(X)+0.0000001]);
+          xlabel('X [mm]');ylabel('Y [mm]');
+        annotation('textbox',...
+    [0.73 0.4 0.3 0.15],...
+    'String',{'C/$\bar{<C>}$'},...
+    'FontSize',30,...
+    'LineStyle','none',...
+    'Interpreter','latex',...
+    'FontName','Times New Roman');
+
  %% Cfield
        numVid=25;load_param;
  imbg=load(strcat(directoryAnalyse,'im0'));
@@ -113,12 +187,13 @@ ylim([-0.005 0.045])
 
 %% Cstd=f(N)
 
-list=varN;
+list=varNold;
 XCat=NCat(list);
 CstdCat=[];
 CstdEt=[];
 CstdCatNorm=[];
-
+CstdEtNorm=[];
+test=[];
 for i=1:length(list)
     numVid=list(i);
     %determine the current video/set/parameters
@@ -129,14 +204,15 @@ CstdCat=[CstdCat,mean(Cstd(time>55*60&time<65*60))];
 CstdCatNorm=[CstdCatNorm,mean(Cstd(time>55*60&time<65*60))/mean(CMoy(time>55*60&time<65*60))];
 
 CstdEt=[CstdEt,std((Cstd(time>55*60&time<65*60)))];
-
+CstdEtNorm=[CstdEtNorm,std((Cstd(time>55*60&time<65*60)))/mean(CMoy(time>55*60&time<65*60))];
+test=[test,mean(Cstd(time>55*60&time<65*60))/mean(CMoy(time>55*60&time<65*60))*(std(Cstd(time>55*60&time<65*60))/mean(Cstd(time>55*60&time<65*60))+std(CMoy(time>55*60&time<65*60))/mean(CMoy(time>55*60&time<65*60)))];%C'est comme ça que ça a été mis dans l'article
     
 end
 
 errorbar(XCat,CstdCat,CstdEt,'LineStyle','none')
 xlabel('N []')
 hold on;
-plot(XCat,CstdCat,'+b','LineWidth',3,'MarkerSize',15)
+%plot(XCat,CstdCat,'+b','LineWidth',3,'MarkerSize',15)
 ylabel('C_{std} [arb.units]')
 xlim([0 50])
 ylim([0 0.06])
@@ -201,6 +277,7 @@ for numVid=1:12
 end
 Cstdfilt=Cstdfilt/Cstdfilt(1);
 plot(timefilt,Cstdfilt,'+k','LineWidth',2,'MarkerSize',12)
+%errorbar(timefilt,Cstdfilt,Cstdfiltstd,'LineStyle','none')
 xlabel('Time [min]','Interpreter','latex')
 ylabel('$C_{std}$','Interpreter','latex')
 xlim([0 125])

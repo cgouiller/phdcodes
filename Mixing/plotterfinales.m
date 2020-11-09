@@ -2,14 +2,13 @@ clear all;
 close all;
 run('E:\Clément\Mixing\Matlab\manipsfinales.m');
 
-
 %% Tracé de CMoy
 massCat=[];
 CMoyCat=[];
 CMoyEt=[];
 c=parula(256);
 %figure;
-list=[1:3,5,7,8,10:16,29:31];%[varR,varRold];
+list[1:3,5,7,8,10:16,29:31];%[varR,varRold];
 XCat=MCat(list);
 for i=1:length(list)
     numVid=list(i);
@@ -84,6 +83,45 @@ ylim([-0.005 0.045])
 % 
 % ylabel('<C> val neg')
 
+%% Cstd(M) (réponse au referee)
+
+
+massCat=[];
+CstdCat=[];
+CstdEt=[];
+c=parula(256);
+%figure;
+list=varM%[1:3,5,7,8,10:16,29:31];%[varR,varRold];
+XCat=MCat(list);
+for i=1:length(list)
+    numVid=list(i);
+    %determine the current video/set/parameters
+    load_param;
+    
+            load(strcat(directoryAnalyse,'Conclin.mat'));
+
+time=time(CMoy~=0);
+Cstd=Cstd(Cstd~=0);
+   
+    if numVid==29
+         CstdCat=[CstdCat,mean(Cstd)];
+        CstdEt=[CstdEt,std(Cstd)];
+    else
+        CstdCat=[CstdCat,mean(Cstd(time>55*60&time<65*60))];
+        CstdEt=[CstdEt,std(Cstd(time>55*60&time<65*60))];
+    end
+    
+end
+
+errorbar(XCat,CstdCat,CstdEt,'LineStyle','none')
+xlabel('Poured glass bubbles mass [g]')
+hold on;
+plot(XCat,CstdCat,'+b','LineWidth',3,'MarkerSize',15)
+% plot(XCat(1:21),CMoyCat(1:21),'+k','LineWidth',3,'MarkerSize',15)
+% plot(XCat(22:28),CMoyCat(22:28),'+r','LineWidth',3,'MarkerSize',15)
+ylabel('C_{std} [a.u.]')
+xlim([0 85])
+ylim([-0.005 0.07])
 
 
 %% Tracé de Cstd

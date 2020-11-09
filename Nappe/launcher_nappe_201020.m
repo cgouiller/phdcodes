@@ -31,26 +31,19 @@ cpt=0;
 piv10=cell(1,32);
 piv15=cell(1,49);
 piv5=cell(1,16);
-<<<<<<< HEAD:Nappe/launcher_nappe_201020.m
 
 
 for numVid=330:10:810
-=======
 Umoycat=zeros(10,120,120);
 Vmoycat=zeros(10,120,120);
 cpt=1;
-for numVid=[751,722,796,517,530,714,536,492,648,487]%[751,722,796,517,530,714,536,492,648,487];%10:10:nombreVid
->>>>>>> essaispivnappe:Nappe/launcher_nappe.m
+%for numVid=[751,722,796,517,530,714,536,492,648,487]%[751,722,796,517,530,714,536,492,648,487];%10:10:nombreVid
     numVid
     calib=diamtrue(numVid)/diamvid(numVid);
     if numVid<731
         % mkdir(strcat('Y:\cgouiller\Nappe2\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\'));
         directoryVid=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\',num2str(numPassage(numVid)),'\');
-<<<<<<< HEAD:Nappe/launcher_nappe_201020.m
         directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\Piv3\');
-=======
-        directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\',num2str(numPassage(numVid)),'\Piv\');
->>>>>>> essaispivnappe:Nappe/launcher_nappe.m
         baseDir=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\',num2str(numProf{numVid}),'\');
         
         
@@ -58,18 +51,13 @@ for numVid=[751,722,796,517,530,714,536,492,648,487]%[751,722,796,517,530,714,53
     if numVid>730 && numVid<811
         %mkdir(strcat('Y:\cgouiller\Nappe2\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\'));
         directoryVid=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\',num2str(numPassage(numVid)),'\');
-<<<<<<< HEAD:Nappe/launcher_nappe_201020.m
         directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\Piv3\');
-=======
-        directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\',num2str(numPassage(numVid)),'\Piv\');
->>>>>>> essaispivnappe:Nappe/launcher_nappe.m
         baseDir=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\15\',num2str(numProf{numVid}),'\');
         
     end
     if numVid>810
         % mkdir(strcat('Y:\cgouiller\Nappe2\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\'));
         directoryVid=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\',num2str(numPassage(numVid)),'\');
-<<<<<<< HEAD:Nappe/launcher_nappe_201020.m
         directoryPiv=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\Piv3\');
         baseDir=strcat('Y:\cgouiller\Nappe\',dateCatalogue{numVid},'\5\',num2str(numProf{numVid}),'\');
     end

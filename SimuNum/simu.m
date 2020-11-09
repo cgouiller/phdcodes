@@ -30,6 +30,8 @@ if old_nt==1
     muyp=zeros(nt,npart);
     mvsx=zeros(nt,npart);
     mvsy=zeros(nt,npart);
+    mvxnage=zeros(nt,npart);
+    mvynage=zeros(nt,npart);
     mvfx=cell(200,1);
     mvfy=cell(200,1);
 end
@@ -38,15 +40,20 @@ if old_nt~=1
     muypb=zeros(nt,npart);
     mvsxb=zeros(nt,npart);
     mvsyb=zeros(nt,npart);
+    mvxnageb=zeros(nt,npart);
+    mvynageb=zeros(nt,npart);
     muxpb(1:old_nt,1:npart)=muxp(1:old_nt,1:npart);
     muypb(1:old_nt,1:npart)=muyp(1:old_nt,1:npart);
     mvsxb(1:old_nt,1:npart)=mvsx(1:old_nt,1:npart);
     mvsyb(1:old_nt,1:npart)=mvsy(1:old_nt,1:npart);
+    mvxnageb(1:old_nt,1:npart)=mvxnage(1:old_nt,1:npart);
+    mvynageb(1:old_nt,1:npart)=mvynage(1:old_nt,1:npart);
     muxp=muxpb;
     muyp=muypb;
     mvsx=mvsxb;
     mvsy=mvsyb;
-    
+    mvxnage=mvxnageb;
+    mvynage=mvynageb;
     
     mxb=zeros(nt,npart);
     myb=zeros(nt,npart);
@@ -102,6 +109,12 @@ if old_nt==1
         vsx=0.001;
         vsy=0;
     end
+    if amp_ec==0 && npart>1
+        angles=2*pi*rand(1,npart);
+        vsx=0.001*cos(angles);
+        vsy=0.001*sin(angles);
+        
+    end
     % stockage de la position initiale
     xs=xp;
     ys=yp;
@@ -128,11 +141,7 @@ if old_nt==1
     end
     Ccamp_f=Ccamp0_f;
     
-    % positons et vitesse en t=0
-    vsx_old=vsx;% vitesse en t=0
-    vsy_old=vsy;% vitesse en t=0
-    xs_old=xs;% position t=0
-    ys_old=ys;% position en t=0
+
     
     % TF du champ de vitesse Marangoni en t=0
     [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A);
@@ -143,11 +152,25 @@ if old_nt==1
     
     %Donne la vitesse filtrée sur chacun des nageurs
     [uxp,uyp]=vfiltnag(vxfilt,vyfilt,Npad,xs,ys,xpad,ypad);
-    
+     % Calcul de la vitesse Marangoni (de propulsion) en t=0
+    % On en a besoin pour calculer le terme d'advection, mais on veut aussi
+    % stocker ce qu'ils valent aux positions des nageurs pour connaitre la
+    % direction de nage
+    vx=real(ifft2((vxf)));
+    vy=real(ifft2((vyf)));
+    [vxnage,vynage]=vfiltnag(vx,vy,Npad,xs,ys,xpad,ypad);
     % Stockage pour les itérations de Adams-Bashforth
-    uxp_old=uxp;
-    uyp_old=uyp;
+   vsx_old=vsx;% vitesse des nageurs en t=0
+    vsy_old=vsy;% vitesse des nageurs en t=0
+    xs_old=xs;% position t=0
+    ys_old=ys;% position en t=0
+    uxp_old=uxp; % Vitesse du champ Marangoni+extérieur en t=0
+    uyp_old=uyp; % Vitesse du champ Marangoni+extérieur en t=0
+    vxnage_old=vxnage;
+    vynage_old=vynage;
     
+    
+
     %% Pas de temps en t=1/2
     
     % Source de camphre en t=1/2
@@ -156,14 +179,11 @@ if old_nt==1
         source_f=source_f+source0_f.*exp(-1i*xs(nn)*kx-1i*ys(nn)*ky);
     end
     
-    % Calcul de la vitesse Marangoni (de propulsion) en t=1/2
-    vx=real(ifft2((vxf)));
-    vy=real(ifft2((vyf)));
     
     % Calcul du terme d'advection (nul si advection=0)
     Sfcamp = Sscal_adams(advection,Ccamp_f,vxext,vyext,kx,ky,alias);
     
-    Sfcamp=Sfcamp+source_f;
+    Sfcamp=Sfcamp+source_f; % Puisqu'on a résolu par un changement de variable, on revient à celle de départ
     Sfcamp_old=Sfcamp;% Stockage pour Adams-Bashforth
     % calcul en t=1/2
     Ccamp_f=expdt05.*(Ccamp_f + dt*Sfcamp/2); % Propagation du résultat de l'équa diff
@@ -171,6 +191,9 @@ if old_nt==1
     
     % calcul des positions et vitesses en t=1/2
     [xs,ys,vsx,vsy]=eval_posvit(0,inertie,dt/2,xs,ys,vsx,vsy,uxp,uyp,gfilt_f,vxextf,vyextf,Npad,xpad,ypad,uxp_old,vsx_old,uyp_old,vsy_old,vx,vy,taup); %0 car pas d'adams-bashforth ici
+    
+
+    
     
     % TF du champ de vitesse Marangoni en t=1/2
     [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A);
@@ -183,16 +206,20 @@ if old_nt==1
     %Donne la vitesse filtrée sur chacun des nageurs
     [uxp,uyp]=vfiltnag(vxfilt,vyfilt,Npad,xs,ys,xpad,ypad);
     
-    % Nouvelle source de camphre en t=1/2 puisque les nageurs ont bougés
+    
+   % On ne change pas les old ici car pour 2 ce seront t=0 et t=1 les
+   % importants
+    %% scalaire en t=1
+        
     source_f=zeros(size(source0_f));
     for nn=1:npart
         source_f=source_f+source0_f.*exp(-1i*xs(nn)*kx-1i*ys(nn)*ky);
     end
     
-    % calcul du champ de camphreen t=1/2
+    % calcul du champ de camphreen t=1
     Ccamp=real(ifft2(Ccamp_f));
     
-    % Calcul de la vitesse Marangoni en t=1/2
+    % Calcul de la vitesse Marangoni en t=1
     vx=real(ifft2((vxf)));
     vy=real(ifft2((vyf)));
     
@@ -202,29 +229,28 @@ if old_nt==1
     Sfcamp=Sfcamp+source_f;
     Sfcamp=Sfcamp.*alias;
     
-    %% scalaire en t=1
     t=t+dt; % Le temps avance
     Ccamp_f=expdt.*Ccamp0_f + dt*expdt05.*Sfcamp; % Evolution de l'équa dif
     Ccamp_f=Ccamp_f.*alias; % Pour éviter l'aliasing
     
     % calcul de la position et vitesse en dt, grâce à la vitesse en t=1/2. Les old sont
     % ceux de t=0
-    [xs,ys,vsx,vsy]=eval_posvit(0,inertie,dt,xs_old,ys_old,vsx,vsy,uxp,uyp,gfilt_f,vxextf,vyextf,Npad,xpad,ypad,uxp_old,vsx_old,uyp_old,vsy_old,vx,vy,taup); % 0 car pas d'adams-bashforth ici
-    
-    %Stockage du premier pas de temps
-    mx(1,1:npart)=xs_old(1,1:npart);
-    my(1,1:npart)=ys_old(1,1:npart);
-    muxp(1,1:npart)=uxp_old(1,1:npart);
-    muyp(1,1:npart)=uyp_old(1,1:npart);
-    mvsx(1,1:npart)=vsx_old(1,1:npart);
-    mvsy(1,1:npart)=vsy_old(1,1:npart);
-    
-    
-    
-    compteur=1; %Pour sauvegarder les champs de vitesse
-    
+    [xs,ys,vsx,vsy]=eval_posvit(1,inertie,dt/2,xs_old,ys_old,vsx,vsy,uxp,uyp,gfilt_f,vxextf,vyextf,Npad,xpad,ypad,uxp_old,vsx_old,uyp_old,vsy_old,vx,vy,taup); % 0 car pas d'adams-bashforth ici
+    [vxnage,vynage]=vfiltnag(vx,vy,Npad,xs,ys,xpad,ypad);
+
+  %Stockage du premier pas de temps (t=1)
+    mx(1,1:npart)=xs(1,1:npart);
+    my(1,1:npart)=ys(1,1:npart);
+    muxp(1,1:npart)=uxp(1,1:npart);
+    muyp(1,1:npart)=uyp(1,1:npart);
+    mvsx(1,1:npart)=vsx(1,1:npart);
+    mvsy(1,1:npart)=vsy(1,1:npart);
+    mvxnage(1,1:npart)=vxnage(1,1:npart);
+    mvynage(1,1:npart)=vynage(1,1:npart);
+     
 end
 %% Début de la boucle
+    compteur=1; %Pour sauvegarder les champs de vitesse
 
 %Initialize the clock
 dispstat('','init'); % One time only initialization
@@ -242,15 +268,7 @@ for in=old_nt+1:nt
         dispstat(sprintf('Progress video %d%% Progress total %d%%',prcent),'timestamp');
     end
     
-    %% On garde en mémoire pour l'itération adams-bashforth
-    uxp_old=uxp;
-    uyp_old=uyp;
-    vsx_old=vsx;
-    vsy_old=vsy;
-    xs_old=xs;
-    ys_old=ys;
     
-   
     
     % TF du champ de vitesse Marangoni en t
     [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A);
@@ -262,8 +280,9 @@ for in=old_nt+1:nt
     % Champ de vitesse filtré et interpolé en t
     % filtrage en fourier, interp dans l'espace physique
     [vxfilt,vyfilt]=ec_filtre(marangoni,ecoulement,vxf,vxextf,vyf,vyextf,gfilt_f);
-    
-    
+    % On stocke avant de remplacer
+    uxp_old=uxp;
+    uyp_old=uyp;  
     %Donne la vitesse filtrée sur chacun des nageurs
     [uxp,uyp]=vfiltnag(vxfilt,vyfilt,Npad,xs,ys,xpad,ypad);
     
@@ -281,7 +300,8 @@ for in=old_nt+1:nt
     
     vx=real(ifft2(vxf));
     vy=real(ifft2(vyf));
-    
+    [vxnage,vynage]=vfiltnag(vx,vy,Npad,xs,ys,xpad,ypad);
+
     Ccamp_f=expdt.*(Ccamp_f + 3/2*dt*Sfcamp)-1/2*dt*expdt2.*Sfcamp_old;% Evolution de l'équa diff
     Ccamp_f=Ccamp_f.*alias;%Eviter l'aliasing
     Sfcamp_old=Sfcamp;
@@ -289,11 +309,21 @@ for in=old_nt+1:nt
     
     % Adams-Bashforth pour v et x
     % cas purement lagrangien
-    [xs,ys,vsx,vsy]=eval_posvit(1,inertie,dt,xs_old,ys_old,vsx,vsy,uxp,uyp,gfilt_f,vxextf,vyextf,Npad,xpad,ypad,uxp_old,vsx_old,uyp_old,vsy_old,vx,vy,taup); %1 car adams-bashforth
+    [xsnew,ysnew,vsxnew,vsynew]=eval_posvit(1,inertie,dt,xs_old,ys_old,vsx,vsy,uxp,uyp,gfilt_f,vxextf,vyextf,Npad,xpad,ypad,uxp_old,vsx_old,uyp_old,vsy_old,vx,vy,taup); %1 car adams-bashforth
     
+    % On actualise les variables
     
+    vsx_old=vsx;
+    vsy_old=vsy;
+    xs_old=xs;
+    ys_old=ys;
+    vsx=vsxnew;
+    vsy=vsynew;
+    xs=xsnew;
+    ys=ysnew;
     
-    
+    t=t+dt;
+
     
      % On écrit dans les tableaux
     muxp(in,1:npart)=uxp(1,1:npart);
@@ -302,7 +332,9 @@ for in=old_nt+1:nt
     mvsy(in,1:npart)=vsy(1,1:npart);
     mx(in,1:npart)=xs(1,1:npart);% position x
     my(in,1:npart)=ys(1,1:npart);% position y
-    
+    mvxnage(in,1:npart)=vxnage(1,1:npart);
+    mvynage(in,1:npart)=vynage(1,1:npart);
+
     if old_nt==1
         if ismember(in,list)
             cpt=cpt+1;
@@ -325,7 +357,6 @@ for in=old_nt+1:nt
     end
     
     
-    t=t+dt;
     
     
     if autosaves==1 && mod(in*1000/nt,1)==0
@@ -333,7 +364,7 @@ for in=old_nt+1:nt
             mkdir(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\'));
         end
         nts=nt;
-        nt=in;
+        nt=in; %Malgré ce que dit matlab, nt est utilisé dans la sauvegarde !
         save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'commit','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old');
         nt=nts;
     end
@@ -394,6 +425,6 @@ if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.s
     mkdir(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\'));
 end
 %save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'commit','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','k','Spx','Spy','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old');
-save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'commit','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old');
+save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'commit','muxp','muyp','mvsx','mvsy','mvxnage','mvynage','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old');
 
 
