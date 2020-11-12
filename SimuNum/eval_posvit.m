@@ -1,4 +1,4 @@
-function [xsnew,ysnew,vsxnew,vsynew]=eval_posvit(methode,inertie,pas,xs,ys,vsx,vsy,uxp,uyp,gfilt_f,vxextf,vyextf,Npad,xpad,ypad,uxp_old,vsx_old,uyp_old,vsy_old,vx,vy,taup)
+function [xsnew,ysnew,vsxnew,vsynew]=eval_posvit(methode,inertie,pas,xs,ys,vsx,vsy,uxp,uyp,uxp_old,vsx_old,uyp_old,vsy_old,taup)
 
 
 if methode==0 % On le fait que pour le pas de temps t=1/2 parce qu'on n'a pas deux antécédents pour faire du Adams

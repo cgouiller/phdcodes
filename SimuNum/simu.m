@@ -16,7 +16,7 @@ alpha=2; %Coefficient de sublimation
 sig=sqrt(4*pi*(Dnag/2)^2/(90)^2); %Calcule la largeur de gaussienne associée au diamètre des nageurs
 dt=taup/20;% Choix du pas de temps
 if dt==0
-    dt=0.2/20;
+    dt=0.01/20;
 end
 Dcamp=0.15;% Coeff de diffusion du camphre
 
@@ -190,7 +190,7 @@ if old_nt==1
     Ccamp_f=Ccamp_f.*alias; %pour éviter les vecteurs d'ondes trop grands (aliasing?)
     
     % calcul des positions et vitesses en t=1/2
-    [xs,ys,vsx,vsy]=eval_posvit(0,inertie,dt/2,xs,ys,vsx,vsy,uxp,uyp,gfilt_f,vxextf,vyextf,Npad,xpad,ypad,uxp_old,vsx_old,uyp_old,vsy_old,vx,vy,taup); %0 car pas d'adams-bashforth ici
+    [xs,ys,vsx,vsy]=eval_posvit(0,inertie,dt/2,xs,ys,vsx,vsy,uxp,uyp,uxp_old,vsx_old,uyp_old,vsy_old,taup); %0 car pas d'adams-bashforth ici
     
 
     
@@ -235,7 +235,7 @@ if old_nt==1
     
     % calcul de la position et vitesse en dt, grâce à la vitesse en t=1/2. Les old sont
     % ceux de t=0
-    [xs,ys,vsx,vsy]=eval_posvit(1,inertie,dt/2,xs_old,ys_old,vsx,vsy,uxp,uyp,gfilt_f,vxextf,vyextf,Npad,xpad,ypad,uxp_old,vsx_old,uyp_old,vsy_old,vx,vy,taup); % 0 car pas d'adams-bashforth ici
+    [xs,ys,vsx,vsy]=eval_posvit(1,inertie,dt/2,xs_old,ys_old,vsx,vsy,uxp,uyp,uxp_old,vsx_old,uyp_old,vsy_old,taup); % 0 car pas d'adams-bashforth ici
     [vxnage,vynage]=vfiltnag(vx,vy,Npad,xs,ys,xpad,ypad);
 
   %Stockage du premier pas de temps (t=1)
@@ -267,52 +267,16 @@ for in=old_nt+1:nt
         prcent=[round((in-(old_nt+1))*100/(nt-old_nt+1)),round(100*(videocount+in-old_nt)/globalcount)];
         dispstat(sprintf('Progress video %d%% Progress total %d%%',prcent),'timestamp');
     end
+    Ccamp_f=expdt.*(Ccamp_f + 3/2*dt*Sfcamp)-1/2*dt*expdt2.*Sfcamp_old;% Evolution de l'équa diff
+
+    Ccamp_f=Ccamp_f.*alias;%Eviter l'aliasing
     
-    
-    
-    % TF du champ de vitesse Marangoni en t
-    [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A);
-    
-    % Calcul du champ de camphre en t
-    Ccamp=real(ifft2(Ccamp_f));% init en dt
-    
-    
-    % Champ de vitesse filtré et interpolé en t
-    % filtrage en fourier, interp dans l'espace physique
-    [vxfilt,vyfilt]=ec_filtre(marangoni,ecoulement,vxf,vxextf,vyf,vyextf,gfilt_f);
-    % On stocke avant de remplacer
+    % Position et vitesse des sources
+   [xsnew,ysnew,vsxnew,vsynew]=eval_posvit(1,inertie,dt,xs,ys,vsx,vsy,uxp,uyp,uxp_old,vsx_old,uyp_old,vsy_old,taup); %1 car adams-bashforth
+
+    % On actualise les variables
     uxp_old=uxp;
     uyp_old=uyp;  
-    %Donne la vitesse filtrée sur chacun des nageurs
-    [uxp,uyp]=vfiltnag(vxfilt,vyfilt,Npad,xs,ys,xpad,ypad);
-    
-    % Calcul de la source de camphre à l'instant t, en Fourier
-    %source_f=source0_f.*exp(-1i*xs*kx-1i*ys*ky);
-    source_f=zeros(size(source0_f));
-    for nn=1:npart
-        source_f=source_f+source0_f.*exp(-1i*xs(nn)*kx-1i*ys(nn)*ky);
-    end
-    
-    % calcul des termes source
-    Sfcamp = Sscal_adams(advection,Ccamp_f,vxext,vyext,kx,ky,alias); %advection est l'interrupteur on/off
-    Sfcamp=Sfcamp+source_f;
-    Sfcamp=Sfcamp.*alias;
-    
-    vx=real(ifft2(vxf));
-    vy=real(ifft2(vyf));
-    [vxnage,vynage]=vfiltnag(vx,vy,Npad,xs,ys,xpad,ypad);
-
-    Ccamp_f=expdt.*(Ccamp_f + 3/2*dt*Sfcamp)-1/2*dt*expdt2.*Sfcamp_old;% Evolution de l'équa diff
-    Ccamp_f=Ccamp_f.*alias;%Eviter l'aliasing
-    Sfcamp_old=Sfcamp;
-    
-    
-    % Adams-Bashforth pour v et x
-    % cas purement lagrangien
-    [xsnew,ysnew,vsxnew,vsynew]=eval_posvit(1,inertie,dt,xs_old,ys_old,vsx,vsy,uxp,uyp,gfilt_f,vxextf,vyextf,Npad,xpad,ypad,uxp_old,vsx_old,uyp_old,vsy_old,vx,vy,taup); %1 car adams-bashforth
-    
-    % On actualise les variables
-    
     vsx_old=vsx;
     vsy_old=vsy;
     xs_old=xs;
@@ -322,6 +286,37 @@ for in=old_nt+1:nt
     xs=xsnew;
     ys=ysnew;
     
+    
+    % Calcul de la source de camphre à l'instant t, en Fourier
+    %source_f=source0_f.*exp(-1i*xs*kx-1i*ys*ky);
+    source_f=zeros(size(source0_f));
+    for nn=1:npart
+        source_f=source_f+source0_f.*exp(-1i*xs(nn)*kx-1i*ys(nn)*ky);
+    end
+    Sfcamp_old=Sfcamp; %On stocke avant de remplacer
+ % calcul des termes source
+    Sfcamp = Sscal_adams(advection,Ccamp_f,vxext,vyext,kx,ky,alias); %advection est l'interrupteur on/off
+    Sfcamp=Sfcamp+source_f;
+    Sfcamp=Sfcamp.*alias;
+    
+        
+    % TF du champ de vitesse Marangoni en t
+    [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A);
+    
+    % Champ de vitesse filtré et interpolé en t
+    % filtrage en fourier, interp dans l'espace physique
+    [vxfilt,vyfilt]=ec_filtre(marangoni,ecoulement,vxf,vxextf,vyf,vyextf,gfilt_f);
+
+    %Donne la vitesse filtrée sur chacun des nageurs
+    [uxp,uyp]=vfiltnag(vxfilt,vyfilt,Npad,xs,ys,xpad,ypad);
+        
+    vx=real(ifft2(vxf));
+    vy=real(ifft2(vyf));
+    [vxnage,vynage]=vfiltnag(vx,vy,Npad,xs,ys,xpad,ypad);
+
+    
+    % Adams-Bashforth pour v et x
+    % cas purement lagrangien
     t=t+dt;
 
     
@@ -345,7 +340,8 @@ for in=old_nt+1:nt
     %% Affichage des champs
     if round(in/chopvec)*chopvec==in && affichage==1
         colormap parula(256);
-        
+         % Calcul du champ de camphre en t
+        Ccamp=real(ifft2(Ccamp_f));% init en dt
         
         figure(1);
         pcolor(x,y,Ccamp);colorbar;shading flat;axis equal;caxis([0 1])
@@ -365,7 +361,7 @@ for in=old_nt+1:nt
         end
         nts=nt;
         nt=in; %Malgré ce que dit matlab, nt est utilisé dans la sauvegarde !
-        save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'commit','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old');
+        save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old');
         nt=nts;
     end
 
@@ -425,6 +421,6 @@ if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.s
     mkdir(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\'));
 end
 %save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'commit','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','k','Spx','Spy','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old');
-save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'commit','muxp','muyp','mvsx','mvsy','mvxnage','mvynage','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old');
+        save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old');
 
 
