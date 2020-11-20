@@ -1,9 +1,7 @@
 function [xsnew,ysnew,vsxnew,vsynew]=eval_posvit(methode,inertie,pas,xs,ys,vsx,vsy,uxp,uyp,uxp_old,vsx_old,uyp_old,vsy_old,taup)
 
 
-if methode==0 % On le fait que pour le pas de temps t=1/2 parce qu'on n'a pas deux antécédents pour faire du Adams
-    xsnew=xs+vsx*pas;
-    ysnew=ys+vsy*pas;
+if methode==0 % On le fait que pour le pas de temps t=1/2 parce qu'on n'a pas deux antécédents pour faire du Adams-Bashforth ordre 2
     if inertie==0
         vsxnew=uxp;
         vsynew=uyp;
@@ -11,6 +9,8 @@ if methode==0 % On le fait que pour le pas de temps t=1/2 parce qu'on n'a pas de
         vsxnew=vsx+pas/taup*(uxp-vsx);% vitesse en t=1/2
         vsynew=vsy+pas/taup*(uyp-vsy);% vitesse en t=1/2
     end
+    xsnew=xs+vsxnew*pas;
+    ysnew=ys+vsynew*pas;
 end
 
 if methode==1 % Pour tous les autres

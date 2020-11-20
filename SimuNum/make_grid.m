@@ -16,6 +16,10 @@ k =(2*pi/L)*[0:(N/2-1) (-N/2):-1]; % Wavenumber vector in either x or y
 %kmax=max(max(k));%sqrt((pi/dx)^2+(pi/dy)^2); % maximum wavenumbe
 normk=sqrt((kx.^2+ky.^2));
 kmax=max(max(normk));
+
+% la variable alias ci-dessous servira dans le cas où il y a de l'advection
+% à supprimer l'éventuel aliasing en ne gardant que les nombre d'ondes
+% suffisamment faibles
 alias=ones(size(kx));
 w=zeros(size(normk));
 
