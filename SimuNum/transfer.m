@@ -165,62 +165,62 @@ TauP=[];
 Duree=[];
 RandomStart=[];
 VMar=[];
+Dt=[];
 run manips
-dt=1e-2;
-for i=[51:60,42,49,4,5,6,8,10,13,16,20]
+for i=1:nombreVid
     
-    fname=strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{i},'\',manipCat.set{i},'\',manipCat.video{i},'_profiles.mat');
+    fname=strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{i},'\',manipCat.set{i},'\',manipCat.video{i},'.mat');
     if exist(fname) 
         load(fname)
         directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{i},'\',manipCat.set{i},'\');
          if exist(directoryPyt)==0
              mkdir(directoryPyt);
          end
-         d=zeros(10,round(length(mx)/10*0.5));
-        for j=1:10
-        d(j,:)=sqrt((mx(1+(j-1)*length(mx)/10+5000:j*length(mx)/10)-mx(1+(j-1)*length(mx)/10+5000)).^2+(my(1+(j-1)*length(mx)/10+5000:j*length(mx)/10)-my(1+(j-1)*length(mx)/10+5000)).^2)';
-        end
-        [MSD,mdx,tau]=msd(d,dt,1:20:round(length(d)/3));
-         save(strcat(directoryPyt,manipCat.video{i},'_profs.mat'),'profs','mx','my','umar','vmar','liste','tau','MSD')
+%         d=zeros(10,round(length(mx)/10*0.5));
+%         for j=1:10
+%         d(j,:)=sqrt((mx(1+(j-1)*length(mx)/10+5000:j*length(mx)/10)-mx(1+(j-1)*length(mx)/10+5000)).^2+(my(1+(j-1)*length(mx)/10+5000:j*length(mx)/10)-my(1+(j-1)*length(mx)/10+5000)).^2)';
+%         end
+        %[MSD,mdx,tau]=msd(d,dt,1:20:round(length(d)/3));
+         save(strcat(directoryPyt,manipCat.video{i},'.mat'),'mx','my','mvxnage','mvynage')
          
     end
-end
-%     
-%     Date=[Date;manipCat.date{i}];
-%     Rayon=[Rayon,2.5];
-%     Duree=[Duree,manipCat.nt(i)];
-%     Nombre=[Nombre,manipCat.npart(i)];
-%     MasseBbg=[MasseBbg,0];
-%     Projet=[Projet;'Vortex'];
-%     Set=[Set;manipCat.set{i}];
-%     TauP=[TauP,manipCat.taup(i)];
-%     Video=[Video;manipCat.video{i}];
-%     CoefMarangoni=[CoefMarangoni,manipCat.A(i)];
+
+    Dt=[Dt,dt];
+    Date=[Date;manipCat.date{i}];
+    Rayon=[Rayon,2.5];
+    Duree=[Duree,manipCat.nt(i)];
+    Nombre=[Nombre,manipCat.npart(i)];
+    MasseBbg=[MasseBbg,0];
+    Projet=[Projet;'Vortex'];
+    Set=[Set;manipCat.set{i}];
+    TauP=[TauP,manipCat.taup(i)];
+    Video=[Video;manipCat.video{i}];
+    CoefMarangoni=[CoefMarangoni,manipCat.A(i)];
 %     if manipCat.A(i)<0.52966
 %         VMar=[VMar,0];
 %     else
 %         VMar=[VMar,2.3664*(manipCat.A(i)-0.52966)^0.57171];
 %     end
-%     Inertie=[Inertie,manipCat.inertie(i)];
-%     AmpVortex=[AmpVortex,manipCat.amp_ec(i)];
-%     Advection=[Advection,manipCat.advection(i)];
-%     AmpSourceCamphre=[AmpSourceCamphre,manipCat.asrc(i)];
-%     RandomStart=[RandomStart,manipCat.randomstart(i)];
+    Inertie=[Inertie,manipCat.inertie(i)];
+    AmpVortex=[AmpVortex,manipCat.amp_ec(i)];
+    Advection=[Advection,manipCat.advection(i)];
+    AmpSourceCamphre=[AmpSourceCamphre,manipCat.asrc(i)];
+    RandomStart=[RandomStart,manipCat.randomstart(i)];
 end
-% save('E:\Clément\MyCore\Analyse\SimuNum\manips2.mat','Nombre','AmpVortex','CoefMarangoni','TauP','Date','Set','Duree','Rayon','MasseBbg','Projet','Video','Inertie','Advection','AmpSourceCamphre','VMar')
+save('E:\Clément\MyCore\Analyse\SimuNum\manips.mat','Nombre','AmpVortex','CoefMarangoni','TauP','Date','Set','Duree','Rayon','MasseBbg','Projet','Video','Inertie','Advection','AmpSourceCamphre','Dt')
 
-for i=
-    
-    fname=strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{i},'\',manipCat.set{i},'\',manipCat.video{i},'.mat');
-    
-        load(fname)
-        directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{i},'\',manipCat.set{i},'\');
-         if exist(directoryPyt)==0
-             mkdir(directoryPyt);
-         end
-         
-         save(strcat(directoryPyt,manipCat.video{i},'.mat'),'profs','mx','my')
-         
-
-    
-end
+% for i=
+%     
+%     fname=strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{i},'\',manipCat.set{i},'\',manipCat.video{i},'.mat');
+%     
+%         load(fname)
+%         directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{i},'\',manipCat.set{i},'\');
+%          if exist(directoryPyt)==0
+%              mkdir(directoryPyt);
+%          end
+%          
+%          save(strcat(directoryPyt,manipCat.video{i},'.mat'),'profs','mx','my')
+%          
+% 
+%     
+% end

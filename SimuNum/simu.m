@@ -14,10 +14,6 @@ make_grid; %Initialise la grille de simu (N*N)
 
 alpha=2; %Coefficient de sublimation
 sig=sqrt(4*pi*(Dnag/2)^2/(90)^2); %Calcule la largeur de gaussienne associée au diamètre des nageurs
-dt=taup/20;% Choix du pas de temps
-if dt==0
-    dt=0.01/20;
-end
 Dcamp=0.15;% Coeff de diffusion du camphre
 
 
@@ -86,8 +82,8 @@ if old_nt==1
         xp=2*pi*rand(1,npart);
         yp=2*pi*rand(1,npart);
     elseif rdomstart==2
-        xp=0.1*ones(1,npart);
-        yp=pi/4*ones(1,npart);
+        xp=(pi/2-0.1)*ones(1,npart);
+        yp=(pi/2-0.1)*ones(1,npart);
     elseif rdomstart==0
         xp=pi/4*ones(1,npart);
         yp=pi/4*ones(1,npart);
