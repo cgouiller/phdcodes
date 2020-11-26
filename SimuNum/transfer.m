@@ -176,11 +176,8 @@ for i=1:nombreVid
          if exist(directoryPyt)==0
              mkdir(directoryPyt);
          end
-%         d=zeros(10,round(length(mx)/10*0.5));
-%         for j=1:10
-%         d(j,:)=sqrt((mx(1+(j-1)*length(mx)/10+5000:j*length(mx)/10)-mx(1+(j-1)*length(mx)/10+5000)).^2+(my(1+(j-1)*length(mx)/10+5000:j*length(mx)/10)-my(1+(j-1)*length(mx)/10+5000)).^2)';
-%         end
-        %[MSD,mdx,tau]=msd(d,dt,1:20:round(length(d)/3));
+         
+
          save(strcat(directoryPyt,manipCat.video{i},'.mat'),'mx','my','mvxnage','mvynage')
          
     end
@@ -206,6 +203,14 @@ for i=1:nombreVid
     Advection=[Advection,manipCat.advection(i)];
     AmpSourceCamphre=[AmpSourceCamphre,manipCat.asrc(i)];
     RandomStart=[RandomStart,manipCat.randomstart(i)];
+    if manipCat.set{i}(1)=='m'
+         d=zeros(manipCat.npart(i),round(length(mx)*0.5));
+         for j=1:manipCat.npart(i)
+         d(j,:)=sqrt((mx(1+round(length(mx)/2):length(mx),j)).^2+(my(1+round(length(mx)/2):length(mx),j)).^2)';
+         end
+        [MSD,mdx,tau]=msd(d,dt,1:20:round(length(d)/3));
+        save(strcat(directoryPyt,manipCat.video{i},'_msd.mat'),'MSD','tau')
+
 end
 save('E:\Clément\MyCore\Analyse\SimuNum\manips.mat','Nombre','AmpVortex','CoefMarangoni','TauP','Date','Set','Duree','Rayon','MasseBbg','Projet','Video','Inertie','Advection','AmpSourceCamphre','Dt')
 

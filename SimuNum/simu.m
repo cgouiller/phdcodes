@@ -309,8 +309,8 @@ for in=old_nt+1:nt
     [uxp,uyp]=vfiltnag(vxfilt,vyfilt,Npad,xs,ys,xpad,ypad);
     
     % Composante Marangoni de la vitesse du nageur 
-    vx=real(ifft2(vxf));
-    vy=real(ifft2(vyf));
+    vx=real(ifft2((vxf).*gfilt_f));
+    vy=real(ifft2((vyf).*gfilt_f));
     [vxnage,vynage]=vfiltnag(vx,vy,Npad,xs,ys,xpad,ypad);
 
     t=t+dt;
