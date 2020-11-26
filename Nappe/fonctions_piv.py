@@ -224,23 +224,28 @@ def closest(lst, K):
      return lst[idx] 
 
 #%% Fonctions de plot
-def plot_vfield(x,y,u,v,vmax,svect):
+def plot_vfield(x,y,u,v,vmax,svect,hide):
     if svect==0:
         svect=10
     velocity=np.sqrt(u**2+v**2)
     if vmax==0:
-        vmax=np.mean(velocity)+3*np.std(velocity)#norme maximale représentée sur la colormap borne sup arbitraire
+        vmax=np.mean(velocity)+np.std(velocity)#norme maximale représentée sur la colormap borne sup arbitraire
     
     colors = np.copy(velocity)
     colors[velocity>vmax]=vmax
+    if hide==1:
+        u[velocity<np.nanmax(colors)*0.2]=np.nan
+        v[velocity<np.nanmax(colors)*0.2]=np.nan
+    colors[0,0]=vmax
     norm = Normalize()
     norm.autoscale(colors)
     plt.quiver(x,y,u/velocity,v/velocity,colors,scale=svect)
     plt.xlabel("x [mm]")
     plt.ylabel("y [mm]")
     plt.gca().set_aspect('equal')        
+    plt.clim([0,vmax])
     plt.colorbar()    
-        
+    
 def plot_dvg(x,y,z,dvg,v,param):
     if v==0:
         v=3*np.std(dvg)    

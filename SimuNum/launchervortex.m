@@ -1,11 +1,11 @@
 clear all;close all;run defaultfig;
-run manips
-autosaves=1;
-globalcount=0;
-videocount=0;
+run manips % Catalogue de toutes les variables utilisées pour les exp demandées
+autosaves=1; % Si on veut des enregistrements réguliers de l'avancée de la simu, en cas de pépin
+globalcount=0; % Juste pour l'affichage de l'avancée
+videocount=0; %idem
 affichage=0; %1 si on veut tracer le champ, 0 si non    
 
-for ii=31:60
+for ii=1:nombreVid % Pour l'affichage de l'avancée globale du programme on compte d'abord le nombre de pas de temps totaux à réaliser dans toutes les manips
     if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))~=0
         load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
         old_nt=nt;
@@ -16,16 +16,16 @@ for ii=31:60
 
     globalcount=globalcount+nt-old_nt;
 end
-for ii=31:60
+for ii=1:nombreVid % La boucle qui appelle le programme de simu
    ii
-    if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))~=0
+    if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))~=0 % si il existe déjà des data pour cette vidéo, on repart du dernier pas de temps existant
         load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
         old_nt=nt;
     else
         old_nt=1;
     end
     
-    %% Choix de simu
+    %% Choix des paramètres de la simu
     
     taup=manipCat.taup(ii);
     inertie=manipCat.inertie(ii);
@@ -50,7 +50,7 @@ for ii=31:60
     advection=1; %1 si avec advection, 0 si non
     
     
- param_ecexterne=manipCat.paramec(ii); 
+    param_ecexterne=manipCat.paramec(ii); 
 
    if nt~=old_nt
         simu;
@@ -61,4 +61,4 @@ for ii=31:60
 %  load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_profiles.mat'))
  %   hold on;color_line(linspace(-100,100,200),mean(profs),ones(1,200)*A);hold off;
 end
-transfer;
+transfer; % Code pour exporter vers MyCore les résultats et les utiliser dans les notebooks
