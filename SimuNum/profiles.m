@@ -156,7 +156,7 @@ for in=old_nt+1:nt
     
     Ccamp=real(ifft2(Ccamp_f.*alias));
     if ismember(in,list)
-        profs(cpt,:)=improfile(padarray(Ccamp,[120 120],'circular','both'),round(120+64/pi*[mod(xs,2*pi)-(vxnage/sqrt((vxnage+vynage)^2))*3 mod(xs,2*pi)+(vxnage)/sqrt((vxnage+vynage)^2)*3]),round(120+64/pi*[mod(ys,2*pi)-(vynage)/sqrt((vxnage+vynage)^2)*3 mod(ys,2*pi)+(vynage)/sqrt((vxnage+vynage)^2)*3]),200);
+        profs(cpt,:)=improfile(padarray(Ccamp,[120 120],'circular','both'),round(121+64/pi*[mod(xs,2*pi)-(vxnage/sqrt((vxnage^2+vynage^2)))*3 mod(xs,2*pi)+(vxnage)/sqrt((vxnage^2+vynage^2))*3]),round(121+64/pi*[mod(ys,2*pi)-(vynage)/sqrt((vxnage^2+vynage^2))*3 mod(ys,2*pi)+(vynage)/sqrt((vxnage^2+vynage^2))*3]),200);
         cpt=cpt+1;
     end
     

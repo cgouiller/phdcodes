@@ -29,7 +29,7 @@ kg=fspecial('gaussian',[6 6],3);
 cpt=0;
 
 
-for numVid=1:nombreVid
+for numVid=203:nombreVid
     numVid
     calib=diamtrue(numVid)/diamvid(numVid);
     if numVid<731
