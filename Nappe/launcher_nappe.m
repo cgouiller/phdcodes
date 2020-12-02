@@ -29,7 +29,7 @@ kg=fspecial('gaussian',[6 6],3);
 cpt=0;
 
 
-for numVid=203:nombreVid
+for numVid=211:nombreVid
     numVid
     calib=diamtrue(numVid)/diamvid(numVid);
     if numVid<731
@@ -58,6 +58,7 @@ for numVid=203:nombreVid
 % save_masked_fields;
 % track_particles_nappe;
 % constr_traj_nappe;
+    if numVid>210
     L=dir(strcat(directoryVid,format));
     n=round(-0.333*numProf{numVid}+20.3333); %calcule combien d'image d'écart pour la piv pour chaque couple
     alea=9+round(rand(1,no_fields/10)*(length(L)-n-9));
@@ -67,7 +68,7 @@ for numVid=203:nombreVid
     save(strcat(directoryVid,'alea.mat'),'alea');
     
     PIV_pretreatment_nappe;
-    
+    end
     if numPassage(numVid)==10
         dpiv_nappe;
         PIV_treatment_nappe;

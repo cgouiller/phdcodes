@@ -55,7 +55,9 @@ for ii=1:nombreVid % La boucle qui appelle le programme de simu
    if nt~=old_nt
         simu;
    end
-   %profiles;
+   if (ii>34 && ii<45) || (ii>59 && ii<71)
+   profiles;
+   end
 %   replay_profils;
    videocount=videocount+nt-old_nt;
 
