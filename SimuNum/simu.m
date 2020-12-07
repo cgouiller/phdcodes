@@ -141,7 +141,7 @@ if old_nt==1
 
     
     % TF du champ de vitesse Marangoni du fluide en t=0
-    [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A);
+    [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A,satur);
     
     % Champ de vitesse total du fluide filtré et interpolé en t=0
     % filtrage en fourier, interp dans l'espace physique
@@ -186,7 +186,7 @@ if old_nt==1
     
     
     % TF du champ de vitesse Marangoni en t=1/2
-    [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A);
+    [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A,satur);
     
     
     % Champ de vitesse filtré et interpolé en t=1/2
@@ -299,7 +299,7 @@ for in=old_nt+1:nt
     
         
     % TF du champ de vitesse du fluide dû à Marangoni en t
-    [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A);
+    [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A,satur);
     
     % Champ de vitesse du fluide total filtré et interpolé en t
     % filtrage en fourier, interp dans l'espace physique
@@ -356,7 +356,7 @@ for in=old_nt+1:nt
         end
         nts=nt; % On veut sauvegarder comme nt le pas de temps où on s'est arrêté, et pas celui prévu d'où ce petit trick avec un autre nom nts
         nt=in; %Malgré ce que dit matlab, nt est utilisé dans la sauvegarde !
-        save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old');
+        save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old','satur');
         nt=nts;
     end
 
@@ -416,6 +416,6 @@ if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.s
     mkdir(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\'));
 end
 %save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'commit','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','k','Spx','Spy','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old');
-save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old');
+save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old','satur');
 
 

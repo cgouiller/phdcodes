@@ -4,7 +4,7 @@ autosaves=1; % Si on veut des enregistrements réguliers de l'avancée de la simu,
 globalcount=0; % Juste pour l'affichage de l'avancée
 videocount=0; %idem
 affichage=0; %1 si on veut tracer le champ, 0 si non    
-
+changes=zeros(1,nombreVid);
 for ii=1:nombreVid % Pour l'affichage de l'avancée globale du programme on compte d'abord le nombre de pas de temps totaux à réaliser dans toutes les manips
     if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))~=0
         load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
@@ -35,6 +35,7 @@ for ii=1:nombreVid % La boucle qui appelle le programme de simu
     nt=manipCat.nt(ii);
     rdomstart=manipCat.randomstart(ii);
     dt=manipCat.dt(ii);
+    satur=manipCat.satur(ii);
     ecoulement=1;
     marangoni=1;
     if amp_ec==0
@@ -54,10 +55,11 @@ for ii=1:nombreVid % La boucle qui appelle le programme de simu
 
    if nt~=old_nt
         simu;
+        changes(ii)=1;
    end
-   if (ii>34 && ii<45) || (ii>59 && ii<71)
-   profiles;
-   end
+    if ((ii>34 && ii<45) || (ii>59 && ii<71)) && changes(ii)==1
+    profiles;
+    end
 %   replay_profils;
    videocount=videocount+nt-old_nt;
 
