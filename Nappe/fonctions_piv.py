@@ -236,7 +236,11 @@ def plot_vfield(x,y,u,v,vmax,svect,hide):
     if hide==1:
         u[velocity<np.nanmax(colors)*0.2]=np.nan
         v[velocity<np.nanmax(colors)*0.2]=np.nan
-    colors[0,0]=vmax
+    if np.ndim(colors)==2:
+        colors[0,0]=vmax
+    else:
+        colors[0]=vmax
+
     norm = Normalize()
     norm.autoscale(colors)
     plt.quiver(x,y,u/velocity,v/velocity,colors,scale=svect)
