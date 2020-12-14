@@ -88,8 +88,8 @@ if old_nt==1
         xp=pi/4*ones(1,npart);
         yp=pi/4*ones(1,npart);
     elseif rdomstart==3
-        xp=linspace(0.1,2*pi-0.1,npart)+0.01;
-        yp=linspace(0.1,2*pi-0.1,npart)+0.01;
+        xp=pi;
+        yp=pi/2-0.1;
 
     end
     
@@ -342,6 +342,7 @@ for in=old_nt+1:nt
         pcolor(x,y,Ccamp);colorbar;shading flat;axis equal;caxis([0 1])
         hold on
         plot(modulo(xs,2*pi),modulo(ys,2*pi),'ok','markerfacecolor','r');
+        quiver(x(1:3:128,1:3:128),y(1:3:128,1:3:128),vxext(1:3:128,1:3:128),vyext(1:3:128,1:3:128),'w');
         hold off
         title(strcat('Champ de camphre et nageurs, t=',int2str(in)));
         pause(0.01) % Pour que l'affichage à l'écran soit rafraichi
