@@ -61,6 +61,9 @@ for ii=1:nombreVid % La boucle qui appelle le programme de simu
     profiles;
     end
 %   replay_profils;
+if ii>100
+stabilite;
+end
    videocount=videocount+nt-old_nt;
 
 %  load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_profiles.mat'))
