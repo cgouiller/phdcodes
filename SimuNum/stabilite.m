@@ -16,19 +16,18 @@ Dcamp=0.15;% Coeff de diffusion du camphre
 
 %% Initialisation des tableaux de stockage de valeurs
 
-if old_nt~=1 % Correspond à une simu à poursuivre
     muxpb=zeros(nt,npart);
     muypb=zeros(nt,npart);
     mvsxb=zeros(nt,npart);
     mvsyb=zeros(nt,npart);
     mvxnageb=zeros(nt,npart);
     mvynageb=zeros(nt,npart);
-    muxpb(1:old_nt,1:npart)=muxp(1:old_nt,1:npart);
-    muypb(1:old_nt,1:npart)=muyp(1:old_nt,1:npart);
-    mvsxb(1:old_nt,1:npart)=mvsx(1:old_nt,1:npart);
-    mvsyb(1:old_nt,1:npart)=mvsy(1:old_nt,1:npart);
-    mvxnageb(1:old_nt,1:npart)=mvxnage(1:old_nt,1:npart);
-    mvynageb(1:old_nt,1:npart)=mvynage(1:old_nt,1:npart);
+    muxpb(1:nt,1:npart)=muxp(1:nt,1:npart);
+    muypb(1:nt,1:npart)=muyp(1:nt,1:npart);
+    mvsxb(1:nt,1:npart)=mvsx(1:nt,1:npart);
+    mvsyb(1:nt,1:npart)=mvsy(1:nt,1:npart);
+    mvxnageb(1:nt,1:npart)=mvxnage(1:nt,1:npart);
+    mvynageb(1:nt,1:npart)=mvynage(1:nt,1:npart);
     muxp=muxpb;
     muyp=muypb;
     mvsx=mvsxb;
@@ -38,13 +37,12 @@ if old_nt~=1 % Correspond à une simu à poursuivre
     
     mxb=zeros(nt,npart);
     myb=zeros(nt,npart);
-    mxb(1:old_nt,1:npart)=mx(1:old_nt,1:npart);
-    myb(1:old_nt,1:npart)=my(1:old_nt,1:npart);
+    mxb(1:nt,1:npart)=mx(1:nt,1:npart);
+    myb(1:nt,1:npart)=my(1:nt,1:npart);
     mx=mxb;
     my=myb;
     
-    t=old_nt*dt;
-end
+    t=nt*dt;
 
 %% Début de la simu
 % profil source de camphre (centré en pi), qui correspond à un nageur
@@ -78,7 +76,7 @@ vxforc=zeros(5,1);
 vyforc=zeros(5,1);
 for kkk=1:5
     load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
-    for in=old_nt+1:old_nt+5000
+    for in=nt+1:nt+5000
         
         
         
@@ -89,8 +87,8 @@ for kkk=1:5
         
         % Position et vitesse des sources
         %[xsnew,ysnew,vsxnew,vsynew]=eval_posvit(1,inertie,dt,xs,ys,vsx,vsy,uxp,uyp,uxp_old,vsx_old,uyp_old,vsy_old,taup); % Evolution de vitesse et position des nageurs
-        xsnew=mx(old_nt)+decx(kkk);
-        ysnew=my(old_nt)+decy(kkk);
+        xsnew=mx(nt)+decx(kkk);
+        ysnew=my(nt)+decy(kkk);
         vsxnew=0;
         vsynew=0;
         % On actualise les variables, pour que les old soit toujours au temps
@@ -141,8 +139,8 @@ for kkk=1:5
         
         
     end
-    xeq=mx(old_nt);
-    yeq=my(old_nt);
+    xeq=mx(nt);
+    yeq=my(nt);
     vxforc(kkk)=vxnage;
     vyforc(kkk)=vynage;
     Ccamp_f=expdt.*(Ccamp_f + 3/2*dt*Sfcamp)-1/2*dt*expdt2.*Sfcamp_old;% Evolution de l'équa diff pour le camphre
