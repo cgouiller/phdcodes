@@ -169,6 +169,10 @@ Dt=[];
 C0=[];
 Afin=zeros(1,nombreVid);
 run manips
+
+if (exist('changes','var'))==0
+    changes=zeros(1,nombreVid);
+end
 for i=1:nombreVid
     
     fname=strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{i},'\',manipCat.set{i},'\',manipCat.video{i},'.mat');
@@ -196,7 +200,7 @@ for i=1:nombreVid
         
     end
     
-    Dt=[Dt,dt];
+    Dt=[Dt,manipCat.dt(i)];
     Date=[Date;manipCat.date{i}];
     Rayon=[Rayon,2.5];
     Duree=[Duree,manipCat.nt(i)];

@@ -265,16 +265,7 @@ if old_nt==1
     vy=real(ifft2((vyf)));
     [vxnage,vynage]=vfiltnag(vx,vy,Npad,xs,ys,xpad,ypad);
     
-  %Stockage du premier pas de temps (t=1)
-    mx(1,1:npart)=xs(1,1:npart);
-    my(1,1:npart)=ys(1,1:npart);
-    muxp(1,1:npart)=uxp(1,1:npart);
-    muyp(1,1:npart)=uyp(1,1:npart);
-    mvsx(1,1:npart)=vsx(1,1:npart);
-    mvsy(1,1:npart)=vsy(1,1:npart);
-    mvxnage(1,1:npart)=vxnage(1,1:npart);
-    mvynage(1,1:npart)=vynage(1,1:npart);
-     
+
 end
 %% Début de la boucle
     compteur=1; %Pour sauvegarder les champs de vitesse
@@ -348,108 +339,12 @@ for in=old_nt+1:nt
 
     t=t+dt;
     
-     % On écrit dans les tableaux
-    muxp(in,1:npart)=uxp(1,1:npart);
-    muyp(in,1:npart)=uyp(1,1:npart);
-    mvsx(in,1:npart)=vsx(1,1:npart);
-    mvsy(in,1:npart)=vsy(1,1:npart);
-    mx(in,1:npart)=xs(1,1:npart);% position x
-    my(in,1:npart)=ys(1,1:npart);% position y
-    mvxnage(in,1:npart)=vxnage(1,1:npart);
-    mvynage(in,1:npart)=vynage(1,1:npart);
-
-    if old_nt==1 % Cette boucle que pour stocker des chps de vitesse e fluide qu'on n'utilise jamais
-        if ismember(in,list)
-            cpt=cpt+1;
-            mvfx{cpt,1}=real(ifft2((vxf)));
-            mvfy{cpt,1}=real(ifft2((vyf)));
-        end
-    end
-    %% Affichage des champs 
-    if round(in/chopvec)*chopvec==in && affichage==1
-        colormap parula(256);
-         % Calcul du champ de camphre en t
-        Ccamp=real(ifft2(Ccamp_f));% init en dt
-        
-        figure(1);
-        pcolor(x,y,Ccamp);colorbar;shading flat;axis equal;caxis([0 1])
-        hold on
-        plot(modulo(xs,2*pi),modulo(ys,2*pi),'ok','markerfacecolor','r');
-        %quiver(x(1:3:128,1:3:128),y(1:3:128,1:3:128),vxext(1:3:128,1:3:128),vyext(1:3:128,1:3:128),'w');
-        hold off
-        title(strcat('Champ de camphre et nageurs, t=',int2str(in)));
-        pause(0.01) % Pour que l'affichage à l'écran soit rafraichi
-    end
-    
-    
-    
-    
-    if autosaves==1 && mod(in*1000/nt,1)==0 % Pour faire des sauvegardes intermédiaires, au cas où par exemple l'ordi se met à jour de son propre chef pendant que ça tourne encore la nuit :P
-        if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\'))==0
-            mkdir(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\'));
-        end
-        nts=nt; % On veut sauvegarder comme nt le pas de temps où on s'est arrêté, et pas celui prévu d'où ce petit trick avec un autre nom nts
-        nt=in; %Malgré ce que dit matlab, nt est utilisé dans la sauvegarde !
-        save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old','satur');
-        nt=nts;
-    end
-
-        
 end
+Ccamp=real(ifft2(Ccamp_f));
+[vxext,vyext]=vfiltnag(real(ifft2((vxextf).*gfilt_f)),real(ifft2((vyextf).*gfilt_f)),Npad,xs,ys,xpad,ypad);
 
+directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{ii},'\',manipCat.set{ii},'\');
 
-
-%% Mise en forme pour la mesure de MSD
-% Formatage des trajectoires pour l'utilisation de msdanalyzer
-% tracks = cell(npart, 1);
-%
-% for i = 1 : npart
-%
-%     % Time
-%     time = (0 : nt-1)' * dt;
-%
-%     X=mx(1:nt,i);
-%     Y=my(1:nt,i);
-%
-%     % Store
-%     tracks{i} = [time X Y];
-%
-% end
-% ma = msdanalyzer(2, 'space unit', 'time'); % Crée la classe nécessaire à l'utilisation de msd analyzer
-%
-% ma = ma.addAll(tracks); %Ajoute les trajectoires à la classe
-%
-% %ma.plotTracks;
-% ma = ma.computeMSD; %Calcule le MSD
-
-
-
-%% Calcul du spectre du champ de vitesse
-% if old_nt==1
-%     j=1;
-%     Spaddx=zeros(65,1);
-%     Spaddy=zeros(65,1);
-%     for j=1:200 %vf contient 200 champs de vitesse répartis sur la simu dont on va moyenner les spectres
-%         vfx=mvfx{j}; %On en garde qu'un à chaque fois (le numéro j)
-%         vfy=mvfy{j};
-%         for k=1:128 %Somme de chaque ligne de chaque champ de vitesse
-%             Spaddx=Spaddx+pwelch(vfx(k,:),hanning(128),round(128/2),128,1/(2*pi));
-%             Spaddy=Spaddy+pwelch(vfy(k,:),hanning(128),round(128/2),128,1/(2*pi));
-%         end
-%         
-%     end
-%     Spx=Spaddx/(128*200); %Normalisation
-%     Spy=Spaddy/(128*200);
-%     Sp=(Spx+Spy)/2;
-%     [aaa,ff]=pwelch(vfy(k,:),hanning(128),round(128/2),128,1/(2*pi)); % juste pour récupérer le vecteur fréquence
-% end
-% 
-% k=ff;
-%% On sauvegarde tout
-if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\'))==0
-    mkdir(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\'));
-end
-%save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'commit','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','k','Spx','Spy','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old');
-save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old','satur');
+save(strcat(directoryPyt,manipCat.video{ii},'_champ_',num2str(in),'.mat'),'Ccamp','vxnage','vynage','vxext','vyext','xs','ys','vsx','vsy');
 
 
