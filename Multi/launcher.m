@@ -2,8 +2,8 @@ clear all;
 
 run('E:\Clément\phdcodes\Multi\manips.m');
 %%
-for numVid=79:82
-  
+for numVid=[71,72,73,86,67,69,70,87,83,84,85,88,74,78,79,89,80,81,82,90,55,56,57,91]+1
+%for numVid=91:92
  numVid
     load_param;
     %R_range
@@ -30,14 +30,15 @@ for numVid=79:82
 % figure;
 % plot(startImg:length(c),l(startImg:length(c)));title(num2str(numVid))
     
-  track_particles; % Création de l'image de background (im0) et tracking de particules (sauvegardé dans positions.mat)
-  filtre_pos;
+%  track_particles; % Création de l'image de background (im0) et tracking de particules (sauvegardé dans positions.mat)
+%  filtre_pos;
 
   %numVid
-   constr_traject;%Se servant des positions obtenues par track_particles en déduit les trajectoires sauvegardées dans trajectories.mat
+ % constr_traject;%Se servant des positions obtenues par track_particles en déduit les trajectoires sauvegardées dans trajectories.mat
 %traj_plot;
 %msd_calc;
 %msd_inf;
+msd_cuve;
 %center_analyze
 end
 

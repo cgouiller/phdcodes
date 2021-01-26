@@ -176,7 +176,7 @@ end
 for i=1:nombreVid
     
     fname=strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{i},'\',manipCat.set{i},'\',manipCat.video{i},'.mat');
-    if exist(fname)~=0 && changes(i)==1
+    if changes(i)==1
         load(fname)
         if manipCat.satur(i)==0
             Afin(i)=0;
@@ -218,14 +218,15 @@ for i=1:nombreVid
     AmpSourceCamphre=[AmpSourceCamphre,manipCat.asrc(i)];
     RandomStart=[RandomStart,manipCat.randomstart(i)];
     
-       if (((manipCat.set{i}(1)=='m') || (manipCat.set{i}(1)=='s')) || (i>91 && i<101)) && changes(i)==1
+       %if (((manipCat.set{i}(1)=='m') || (manipCat.set{i}(1)=='s')) || (i>91 && i<101)) && changes(i)==1
+       if manipCat.npart(i)>5 && changes(i)==1
                    load(fname)
 
             directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{i},'\',manipCat.set{i},'\');
     
             d=zeros(manipCat.npart(i),round(length(mx)*0.5));
             for j=1:manipCat.npart(i)
-                d(j,:)=sqrt((mx(1+round(length(mx)/2):length(mx),j)).^2+(my(1+round(length(mx)/2):length(mx),j)).^2)';
+                d(j,:)=sqrt((mx(1+round(length(mx)/2):length(mx),j)-mx(1+round(length(mx)/2))).^2+(my(1+round(length(mx)/2):length(mx),j)-my(1+round(length(mx)/2))).^2)';
             end
             [MSD,mdx,tau]=msd(d,dt,[1:50,51:10:500,501:20:round(length(d)/1.5)]);
             save(strcat(directoryPyt,manipCat.video{i},'_msd.mat'),'MSD','tau')

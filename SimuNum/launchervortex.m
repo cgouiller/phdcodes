@@ -16,7 +16,7 @@ for ii=1:nombreVid % Pour l'affichage de l'avancée globale du programme on compt
 
     globalcount=globalcount+nt-old_nt;
 end
-for ii=170:nombreVid % La boucle qui appelle le programme de simu
+for ii=117%:nombreVid% La boucle qui appelle le programme de simu
    ii
     if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))~=0 % si il existe déjà des data pour cette vidéo, on repart du dernier pas de temps existant
         load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));

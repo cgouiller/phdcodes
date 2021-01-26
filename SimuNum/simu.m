@@ -375,7 +375,13 @@ for in=old_nt+1:nt
         pcolor(x,y,Ccamp);colorbar;shading flat;axis equal;caxis([0 1])
         hold on
         plot(modulo(xs,2*pi),modulo(ys,2*pi),'ok','markerfacecolor','r');
-        %quiver(x(1:3:128,1:3:128),y(1:3:128,1:3:128),vxext(1:3:128,1:3:128),vyext(1:3:128,1:3:128),'w');
+        quiver(x(1:3:128,1:3:128),y(1:3:128,1:3:128),vxext(1:3:128,1:3:128),vyext(1:3:128,1:3:128),'w');
+        quiver(mod(xs,2*pi),mod(ys,2*pi),vxnage,vynage,'r')
+        quiver(mod(xs,2*pi),mod(ys,2*pi),vsx,vsy,'k')
+        [vxecext,vyecext]=vfiltnag(real(ifft2((vxextf).*gfilt_f)),real(ifft2((vyextf).*gfilt_f)),Npad,xs,ys,xpad,ypad);
+        quiver(mod(xs,2*pi),mod(ys,2*pi),vxecext,vyecext,'w')
+
+
         hold off
         title(strcat('Champ de camphre et nageurs, t=',int2str(in)));
         pause(0.01) % Pour que l'affichage à l'écran soit rafraichi

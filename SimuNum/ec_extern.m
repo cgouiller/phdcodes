@@ -19,7 +19,15 @@ if onoff==1
     end
     if choix==3
         vx=amplitude*sin(y);
-        vy=0;
+        vy=0*x;
+    end
+    if choix==4
+        vx=amplitude*sin(2*y);
+        vy=0*x;
+    end
+    if choix==5
+        vx=amplitude*sin(4*y);
+        vy=0*x;
     end
 end
 
