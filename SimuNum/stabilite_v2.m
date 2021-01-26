@@ -70,106 +70,98 @@ expdt2=exp(-2*alpha*dt)*exp(-2*Dcamp*dt*k2);
 
 
 %% Début de la boucle
-decalages=pi/2*[1/488281250,1/97656250,1/19531250,1/3906250,1/781250,1/156250,1/31250,1/6250,1/1250,1/250,1/50,1/10];
+posy=pi/2*linspace(0,1,11);
+posy=posy(2:end-1);
+vxforc=zeros(1,length(posy));
+vyforc=zeros(1,length(posy));
+vxmar=zeros(1,length(posy));
+vymar=zeros(1,length(posy));
 
-vxforc=zeros(3,length(decalages));
-vyforc=zeros(3,length(decalages));
-for jjj=1:length(decalages)
-    decalage=decalages(jjj);
-    decx=[0,decalage,0];
-    decy=[decalage,0,-decalage];
-    for kkk=1:3
-        load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
-        for in=nt+1:nt+2000
-            
-            
-            
-            
-            Ccamp_f=expdt.*(Ccamp_f + 3/2*dt*Sfcamp)-1/2*dt*expdt2.*Sfcamp_old;% Evolution de l'équa diff pour le camphre
-            
-            Ccamp_f=Ccamp_f.*alias;%Eviter l'aliasing
-            
-            % Position et vitesse des sources
-            %[xsnew,ysnew,vsxnew,vsynew]=eval_posvit(1,inertie,dt,xs,ys,vsx,vsy,uxp,uyp,uxp_old,vsx_old,uyp_old,vsy_old,taup); % Evolution de vitesse et position des nageurs
-            xsnew=mx(nt)+decx(kkk);
-            ysnew=my(nt)+decy(kkk);
-            vsxnew=0;
-            vsynew=0;
-            % On actualise les variables, pour que les old soit toujours au temps
-            % in-1 et les normales au temps in
-            uxp_old=uxp;
-            uyp_old=uyp;
-            vsx_old=vsx;
-            vsy_old=vsy;
-            xs_old=xs;
-            ys_old=ys;
-            vsx=vsxnew;
-            vsy=vsynew;
-            xs=xsnew;
-            ys=ysnew;
-            
-            
-            % Calcul de la source de camphre à l'instant t, en Fourier
-            %source_f=source0_f.*exp(-1i*xs*kx-1i*ys*ky);
-            source_f=zeros(size(source0_f));
-            for nn=1:npart
-                source_f=source_f+source0_f.*exp(-1i*xs(nn)*kx-1i*ys(nn)*ky);
-            end
-            
-            Sfcamp_old=Sfcamp; %On stocke avant de remplacer
-            % calcul du terme d'advection
-            Sfcamp = Sscal_adams(advection,Ccamp_f,vxext,vyext,kx,ky,alias); %advection est l'interrupteur on/off
-            Sfcamp=Sfcamp+source_f;
-            Sfcamp=Sfcamp.*alias;
-            
-            
-            % TF du champ de vitesse du fluide dû à Marangoni en t
-            [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A,satur);
-            
-            % Champ de vitesse du fluide total filtré et interpolé en t
-            % filtrage en fourier, interp dans l'espace physique
-            [vxfilt,vyfilt]=ec_filtre(marangoni,ecoulement,vxf,vxextf,vyf,vyextf,gfilt_f);
-            
-            %Donne la vitesse du fluide tot filtrée sur chacun des nageurs
-            [uxp,uyp]=vfiltnag(vxfilt,vyfilt,Npad,xs,ys,xpad,ypad);
-            
-            % Composante Marangoni de la vitesse du nageur
-            vx=real(ifft2((vxf+vxextf).*gfilt_f));
-            vy=real(ifft2((vyf+vyextf).*gfilt_f));
-            [vxnage,vynage]=vfiltnag(vx,vy,Npad,xs,ys,xpad,ypad);
-            
-            t=t+dt;
-            
-            
-            
-        end
-        xeq=mx(nt);
-        yeq=my(nt);
-        vxforc(kkk,jjj)=vxnage;
-        vyforc(kkk,jjj)=vynage;
-        Ccamp_f=expdt.*(Ccamp_f + 3/2*dt*Sfcamp)-1/2*dt*expdt2.*Sfcamp_old;% Evolution de l'équa diff pour le camphre
-        Ccamp_f=Ccamp_f.*alias;%Eviter l'aliasing
-        Ccampfin=real(ifft2(Ccamp_f));
-        if jjj==4
-            if kkk==1
-                Ccamph=Ccampfin;
-            end
-            if kkk==2
-                Ccampd=Ccampfin;
-                
-            end
-            if kkk==3
-                Ccampb=Ccampfin;
-                
-            end
-         
-        end
+for kkk=1:length(posy)
+    load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
+
+    for in=nt+1:nt+1000
+    
+    
+    
+    
+    Ccamp_f=expdt.*(Ccamp_f + 3/2*dt*Sfcamp)-1/2*dt*expdt2.*Sfcamp_old;% Evolution de l'équa diff pour le camphre
+    
+    Ccamp_f=Ccamp_f.*alias;%Eviter l'aliasing
+    
+    % Position et vitesse des sources
+    %[xsnew,ysnew,vsxnew,vsynew]=eval_posvit(1,inertie,dt,xs,ys,vsx,vsy,uxp,uyp,uxp_old,vsx_old,uyp_old,vsy_old,taup); % Evolution de vitesse et position des nageurs
+    xsnew=pi/2+0.001;
+    ysnew=posy(kkk);
+    vsxnew=0;
+    vsynew=0;
+    % On actualise les variables, pour que les old soit toujours au temps
+    % in-1 et les normales au temps in
+    uxp_old=uxp;
+    uyp_old=uyp;
+    vsx_old=vsx;
+    vsy_old=vsy;
+    xs_old=xs;
+    ys_old=ys;
+    vsx=vsxnew;
+    vsy=vsynew;
+    xs=xsnew;
+    ys=ysnew;
+    
+    
+    % Calcul de la source de camphre à l'instant t, en Fourier
+    %source_f=source0_f.*exp(-1i*xs*kx-1i*ys*ky);
+    source_f=zeros(size(source0_f));
+    for nn=1:npart
+        source_f=source_f+source0_f.*exp(-1i*xs(nn)*kx-1i*ys(nn)*ky);
     end
+    
+    Sfcamp_old=Sfcamp; %On stocke avant de remplacer
+    % calcul du terme d'advection
+    Sfcamp = Sscal_adams(advection,Ccamp_f,vxext,vyext,kx,ky,alias); %advection est l'interrupteur on/off
+    Sfcamp=Sfcamp+source_f;
+    Sfcamp=Sfcamp.*alias;
+    
+    
+    % TF du champ de vitesse du fluide dû à Marangoni en t
+    [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A,satur);
+    
+    % Champ de vitesse du fluide total filtré et interpolé en t
+    % filtrage en fourier, interp dans l'espace physique
+    [vxfilt,vyfilt]=ec_filtre(marangoni,ecoulement,vxf,vxextf,vyf,vyextf,gfilt_f);
+    
+    %Donne la vitesse du fluide tot filtrée sur chacun des nageurs
+    [uxp,uyp]=vfiltnag(vxfilt,vyfilt,Npad,xs,ys,xpad,ypad);
+    
+    % Vitesse du nageur
+    vx=real(ifft2((vxf+vxextf).*gfilt_f));
+    vy=real(ifft2((vyf+vyextf).*gfilt_f));
+    [vxnage,vynage]=vfiltnag(vx,vy,Npad,xs,ys,xpad,ypad);
+    
+    t=t+dt;
+    
+    
+    
+    end
+    
+    vxforc(kkk)=vxnage;
+    vyforc(kkk)=vynage;
+    vx=real(ifft2((vxf).*gfilt_f));
+    vy=real(ifft2((vyf).*gfilt_f));
+    [vxmar(kkk),vymar(kkk)]=vfiltnag(vx,vy,Npad,xs,ys,xpad,ypad);
+
 end
+
+
+% Ccamp_f=expdt.*(Ccamp_f + 3/2*dt*Sfcamp)-1/2*dt*expdt2.*Sfcamp_old;% Evolution de l'équa diff pour le camphre
+% Ccamp_f=Ccamp_f.*alias;%Eviter l'aliasing
+% Ccampfin=real(ifft2(Ccamp_f));
+% 
+
 %% On sauvegarde tout
 
 directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{ii},'\',manipCat.set{ii},'\');
 
-save(strcat(directoryPyt,manipCat.video{ii},'_stab.mat'),'decx','decy','vxforc','vyforc','Ccamph','Ccampd','Ccampb','xeq','yeq','decalages');
+save(strcat(directoryPyt,manipCat.video{ii},'_stab2.mat'),'posy','vxforc','vyforc','vxmar','vymar');
 
 toc

@@ -1,9 +1,7 @@
 load(strcat(directoryPyt,'infinitetraj.mat'))
 
-dtot=zeros(1,length(xinf));
-for k=1:length(xinf)
-    dtot(k)=sqrt((xinf(k)-xinf(1))^2+(yinf(k)-yinf(1))^2);
-end
-
-[MeanSD,mdx,tau]=msd(dtot,1,1:round(length(dtot)/1.5));
+[MeanSDx,mdx,taux]=msd(xinf,1/fps,1:round(length(xinf)/2));
+[MeanSDy,mdy,tauy]=msd(yinf,1/fps,1:round(length(yinf)/2));
+MeanSD=MeanSDx+MeanSDy;
+tau=taux;
 save(strcat(directoryPyt,'msd_inf.mat'),'tau','MeanSD')
