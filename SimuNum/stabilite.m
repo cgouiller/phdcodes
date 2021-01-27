@@ -1,98 +1,93 @@
 tic
-%% Initialisations de la simu
-L = 2*pi; %Taille de la boîte
-N=128;%Résolution de la grille de simu
-chopvec=5; %On affiche une toutes les chopvec images
+load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
 
-make_grid; %Initialise la grille de simu (N*N) et une variable utile pour gérer l'aliasing
-[vxext,vyext,vxextf,vyextf]=ec_extern(ecoulement,param_ecexterne,N,amp_ec,x,y); % Donne l'écoulement externe et sa TF en fonction des choix de simu.
-
-%% Paramètres physiques invariables
-
-alpha=2; %Coefficient de sublimation
-sig=sqrt(4*pi*(Dnag/2)^2/(90)^2); %Calcule la largeur de gaussienne associée au diamètre des nageurs
-Dcamp=0.15;% Coeff de diffusion du camphre
-
-
-
-%% Initialisation des tableaux de stockage de valeurs
-
-muxpb=zeros(nt,npart);
-muypb=zeros(nt,npart);
-mvsxb=zeros(nt,npart);
-mvsyb=zeros(nt,npart);
-mvxnageb=zeros(nt,npart);
-mvynageb=zeros(nt,npart);
-muxpb(1:nt,1:npart)=muxp(1:nt,1:npart);
-muypb(1:nt,1:npart)=muyp(1:nt,1:npart);
-mvsxb(1:nt,1:npart)=mvsx(1:nt,1:npart);
-mvsyb(1:nt,1:npart)=mvsy(1:nt,1:npart);
-mvxnageb(1:nt,1:npart)=mvxnage(1:nt,1:npart);
-mvynageb(1:nt,1:npart)=mvynage(1:nt,1:npart);
-muxp=muxpb;
-muyp=muypb;
-mvsx=mvsxb;
-mvsy=mvsyb;
-mvxnage=mvxnageb;
-mvynage=mvynageb;
-
-mxb=zeros(nt,npart);
-myb=zeros(nt,npart);
-mxb(1:nt,1:npart)=mx(1:nt,1:npart);
-myb(1:nt,1:npart)=my(1:nt,1:npart);
-mx=mxb;
-my=myb;
-
-t=nt*dt;
-
-%% Début de la simu
-% profil source de camphre (centré en pi), qui correspond à un nageur
-source=exp(-((x-pi).^2+(y-pi).^2)/2/sig^2)/(2*pi*sig^2);% aire normalisée à 1
-% on centre la source en (0,0), translation de -pi en x et y
-source0_f=fft2(source).*exp(1i*pi*kx+1i*pi*ky);
-
-% on definit le filtre dans l'espace de fourier
-gfilt_f=source0_f/sum(sum(source));
-
-source=asrc*source; % permet de l'annuler si pas de Marangoni en ayant quand même défini le filtre.
-source0_f=asrc*source0_f; % Linéarité de la TF
-
-
-%% Pas de temps 0
-
-% en fourier d_t TF[s] = -(Dcamp*k2+alpha)*TF[s] + B k2 TF[s.^2] + TF[source]
-% Ces exponentielles sont utiles pour résoudre l'éque diff et la faire
-% progresser en temps:
-k2=(kx.^2+ky.^2);
-expdt=exp(-alpha*dt)*exp(-Dcamp*dt*k2);% on a mis la reaction dedans
-expdt05=exp(-alpha*dt/2)*exp(-Dcamp*dt*k2/2);
-expdt2=exp(-2*alpha*dt)*exp(-2*Dcamp*dt*k2);
-
-
-%% Début de la boucle
-decalages=pi/2*[1/100000,1/10000,1/1000,1/100,1/10];
-xeq=pi;
-if A<0.52022
-    vmar=0;
-else
-    vmar=2.336*(A-0.52022)^0.55252;
-end
-yeq=asin(vmar/amp_ec);
-if vmar==0
-    yeq=pi;
-end
+decalages=[1/1000000,1/100000,1/10000,1/1000,1/100];
+xeq=mx(2300);
+yeq=my(2300);
 vxforc=zeros(3,length(decalages));
 vyforc=zeros(3,length(decalages));
 vxmar=zeros(3,length(decalages));
 vymar=zeros(3,length(decalages));
-vxext=zeros(3,length(decalages));
-vyext=zeros(3,length(decalages));
+vxextnag=zeros(3,length(decalages));
+vyextnag=zeros(3,length(decalages));
 for jjj=1:length(decalages)
     decalage=decalages(jjj);
     decx=[0,decalage,0];
     decy=[decalage,0,-decalage];
     for kkk=1:3
         load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
+        %% Initialisations de la simu
+        L = 2*pi; %Taille de la boîte
+        N=128;%Résolution de la grille de simu
+        chopvec=5; %On affiche une toutes les chopvec images
+        
+        make_grid; %Initialise la grille de simu (N*N) et une variable utile pour gérer l'aliasing
+        [vxext,vyext,vxextf,vyextf]=ec_extern(ecoulement,param_ecexterne,N,amp_ec,x,y); % Donne l'écoulement externe et sa TF en fonction des choix de simu.
+        
+        %% Paramètres physiques invariables
+        
+        alpha=2; %Coefficient de sublimation
+        sig=sqrt(4*pi*(Dnag/2)^2/(90)^2); %Calcule la largeur de gaussienne associée au diamètre des nageurs
+        Dcamp=0.15;% Coeff de diffusion du camphre
+        
+        
+        
+        %% Initialisation des tableaux de stockage de valeurs
+        
+        muxpb=zeros(nt,npart);
+        muypb=zeros(nt,npart);
+        mvsxb=zeros(nt,npart);
+        mvsyb=zeros(nt,npart);
+        mvxnageb=zeros(nt,npart);
+        mvynageb=zeros(nt,npart);
+        muxpb(1:nt,1:npart)=muxp(1:nt,1:npart);
+        muypb(1:nt,1:npart)=muyp(1:nt,1:npart);
+        mvsxb(1:nt,1:npart)=mvsx(1:nt,1:npart);
+        mvsyb(1:nt,1:npart)=mvsy(1:nt,1:npart);
+        mvxnageb(1:nt,1:npart)=mvxnage(1:nt,1:npart);
+        mvynageb(1:nt,1:npart)=mvynage(1:nt,1:npart);
+        muxp=muxpb;
+        muyp=muypb;
+        mvsx=mvsxb;
+        mvsy=mvsyb;
+        mvxnage=mvxnageb;
+        mvynage=mvynageb;
+        
+        mxb=zeros(nt,npart);
+        myb=zeros(nt,npart);
+        mxb(1:nt,1:npart)=mx(1:nt,1:npart);
+        myb(1:nt,1:npart)=my(1:nt,1:npart);
+        mx=mxb;
+        my=myb;
+        
+        t=nt*dt;
+        
+        %% Début de la simu
+        % profil source de camphre (centré en pi), qui correspond à un nageur
+        source=exp(-((x-pi).^2+(y-pi).^2)/2/sig^2)/(2*pi*sig^2);% aire normalisée à 1
+        % on centre la source en (0,0), translation de -pi en x et y
+        source0_f=fft2(source).*exp(1i*pi*kx+1i*pi*ky);
+        
+        % on definit le filtre dans l'espace de fourier
+        gfilt_f=source0_f/sum(sum(source));
+        
+        source=asrc*source; % permet de l'annuler si pas de Marangoni en ayant quand même défini le filtre.
+        source0_f=asrc*source0_f; % Linéarité de la TF
+        
+        
+        %% Pas de temps 0
+        
+        % en fourier d_t TF[s] = -(Dcamp*k2+alpha)*TF[s] + B k2 TF[s.^2] + TF[source]
+        % Ces exponentielles sont utiles pour résoudre l'éque diff et la faire
+        % progresser en temps:
+        k2=(kx.^2+ky.^2);
+        expdt=exp(-alpha*dt)*exp(-Dcamp*dt*k2);% on a mis la reaction dedans
+        expdt05=exp(-alpha*dt/2)*exp(-Dcamp*dt*k2/2);
+        expdt2=exp(-2*alpha*dt)*exp(-2*Dcamp*dt*k2);
+        
+        
+        %% Début de la boucle
+        
         for in=nt+1:nt+1000
             
             
@@ -167,8 +162,8 @@ for jjj=1:length(decalages)
         vx=real(ifft2((vxextf).*gfilt_f));
         vy=real(ifft2((vyextf).*gfilt_f));
         [vxnage,vynage]=vfiltnag(vx,vy,Npad,xs,ys,xpad,ypad);
-        vxext(kkk,jjj)=vxnage;
-        vyext(kkk,jjj)=vynage;
+        vxextnag(kkk,jjj)=vxnage;
+        vyextnag(kkk,jjj)=vynage;
         
         
         
@@ -187,7 +182,7 @@ for jjj=1:length(decalages)
                 Ccampb=Ccampfin;
                 
             end
-         
+            
         end
     end
 end
@@ -195,6 +190,6 @@ end
 
 directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{ii},'\',manipCat.set{ii},'\');
 
-save(strcat(directoryPyt,manipCat.video{ii},'_stab.mat'),'decx','decy','vxforc','vyforc','Ccamph','Ccampd','Ccampb','xeq','yeq','decalages','vxmar','vymar','vxext','vyext');
+save(strcat(directoryPyt,manipCat.video{ii},'_stab.mat'),'decx','decy','vxforc','vyforc','Ccamph','Ccampd','Ccampb','xeq','yeq','decalages','vxmar','vymar','vxextnag','vyextnag');
 
 toc

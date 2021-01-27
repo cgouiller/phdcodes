@@ -70,7 +70,7 @@ expdt2=exp(-2*alpha*dt)*exp(-2*Dcamp*dt*k2);
 
 
 %% Début de la boucle
-posy=pi/2*linspace(0,1,11);
+posy=pi/2*linspace(0,1,11)+pi/2;
 posy=posy(2:end-1);
 vxforc=zeros(1,length(posy));
 vyforc=zeros(1,length(posy));
@@ -91,7 +91,7 @@ for kkk=1:length(posy)
     
     % Position et vitesse des sources
     %[xsnew,ysnew,vsxnew,vsynew]=eval_posvit(1,inertie,dt,xs,ys,vsx,vsy,uxp,uyp,uxp_old,vsx_old,uyp_old,vsy_old,taup); % Evolution de vitesse et position des nageurs
-    xsnew=pi/2+0.001;
+    xsnew=pi+0.01;
     ysnew=posy(kkk);
     vsxnew=0;
     vsynew=0;
