@@ -70,17 +70,30 @@ expdt2=exp(-2*alpha*dt)*exp(-2*Dcamp*dt*k2);
 
 
 %% Début de la boucle
-decalages=pi/2*[1/488281250,1/97656250,1/19531250,1/3906250,1/781250,1/156250,1/31250,1/6250,1/1250,1/250,1/50,1/10];
-
+decalages=pi/2*[1/100000,1/10000,1/1000,1/100,1/10];
+xeq=pi;
+if A<0.52022
+    vmar=0;
+else
+    vmar=2.336*(A-0.52022)^0.55252;
+end
+yeq=asin(vmar/amp_ec);
+if vmar==0
+    yeq=pi;
+end
 vxforc=zeros(3,length(decalages));
 vyforc=zeros(3,length(decalages));
+vxmar=zeros(3,length(decalages));
+vymar=zeros(3,length(decalages));
+vxext=zeros(3,length(decalages));
+vyext=zeros(3,length(decalages));
 for jjj=1:length(decalages)
     decalage=decalages(jjj);
     decx=[0,decalage,0];
     decy=[decalage,0,-decalage];
     for kkk=1:3
         load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
-        for in=nt+1:nt+2000
+        for in=nt+1:nt+1000
             
             
             
@@ -91,8 +104,8 @@ for jjj=1:length(decalages)
             
             % Position et vitesse des sources
             %[xsnew,ysnew,vsxnew,vsynew]=eval_posvit(1,inertie,dt,xs,ys,vsx,vsy,uxp,uyp,uxp_old,vsx_old,uyp_old,vsy_old,taup); % Evolution de vitesse et position des nageurs
-            xsnew=mx(nt)+decx(kkk);
-            ysnew=my(nt)+decy(kkk);
+            xsnew=xeq+decx(kkk);
+            ysnew=yeq+decy(kkk);
             vsxnew=0;
             vsynew=0;
             % On actualise les variables, pour que les old soit toujours au temps
@@ -143,14 +156,26 @@ for jjj=1:length(decalages)
             
             
         end
-        xeq=mx(nt);
-        yeq=my(nt);
+        
         vxforc(kkk,jjj)=vxnage;
         vyforc(kkk,jjj)=vynage;
+        vx=real(ifft2((vxf).*gfilt_f));
+        vy=real(ifft2((vyf).*gfilt_f));
+        [vxnage,vynage]=vfiltnag(vx,vy,Npad,xs,ys,xpad,ypad);
+        vxmar(kkk,jjj)=vxnage;
+        vymar(kkk,jjj)=vynage;
+        vx=real(ifft2((vxextf).*gfilt_f));
+        vy=real(ifft2((vyextf).*gfilt_f));
+        [vxnage,vynage]=vfiltnag(vx,vy,Npad,xs,ys,xpad,ypad);
+        vxext(kkk,jjj)=vxnage;
+        vyext(kkk,jjj)=vynage;
+        
+        
+        
         Ccamp_f=expdt.*(Ccamp_f + 3/2*dt*Sfcamp)-1/2*dt*expdt2.*Sfcamp_old;% Evolution de l'équa diff pour le camphre
         Ccamp_f=Ccamp_f.*alias;%Eviter l'aliasing
         Ccampfin=real(ifft2(Ccamp_f));
-        if jjj==4
+        if jjj==5
             if kkk==1
                 Ccamph=Ccampfin;
             end
@@ -170,6 +195,6 @@ end
 
 directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{ii},'\',manipCat.set{ii},'\');
 
-save(strcat(directoryPyt,manipCat.video{ii},'_stab.mat'),'decx','decy','vxforc','vyforc','Ccamph','Ccampd','Ccampb','xeq','yeq','decalages');
+save(strcat(directoryPyt,manipCat.video{ii},'_stab.mat'),'decx','decy','vxforc','vyforc','Ccamph','Ccampd','Ccampb','xeq','yeq','decalages','vxmar','vymar','vxext','vyext');
 
 toc
