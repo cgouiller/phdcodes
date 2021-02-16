@@ -3,7 +3,7 @@ run manips % Catalogue de toutes les variables utilisées pour les exp demandées
 autosaves=0; % Si on veut des enregistrements réguliers de l'avancée de la simu, en cas de pépin
 affichage=1; %1 si on veut tracer le champ, 0 si non
 
-ii=104 %numéro de la vidéo
+ii=231 %numéro de la vidéo
 load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
 old_nt=nt;
 
@@ -15,7 +15,7 @@ inertie=manipCat.inertie(ii);
 amp_ec=manipCat.amp_ec(ii);
 npart=manipCat.npart(ii);
 A=manipCat.A(ii);
-nt=old_nt+10000;
+nt=old_nt+1000000;
 rdomstart=manipCat.randomstart(ii);
 dt=manipCat.dt(ii);
 satur=manipCat.satur(ii);

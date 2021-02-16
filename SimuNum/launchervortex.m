@@ -5,7 +5,8 @@ globalcount=0; % Juste pour l'affichage de l'avancée
 videocount=0; %idem
 affichage=0; %1 si on veut tracer le champ, 0 si non    
 changes=zeros(1,nombreVid);
-for ii=1:nombreVid % Pour l'affichage de l'avancée globale du programme on compte d'abord le nombre de pas de temps totaux à réaliser dans toutes les manips
+start=492;
+for ii=start:nombreVid % Pour l'affichage de l'avancée globale du programme on compte d'abord le nombre de pas de temps totaux à réaliser dans toutes les manips
     if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))~=0
         load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
         old_nt=nt;
@@ -16,7 +17,7 @@ for ii=1:nombreVid % Pour l'affichage de l'avancée globale du programme on compt
 
     globalcount=globalcount+nt-old_nt;
 end
-for ii=118:127%:nombreVid% La boucle qui appelle le programme de simu
+for ii=start:nombreVid% La boucle qui appelle le programme de simu
    ii
     if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))~=0 % si il existe déjà des data pour cette vidéo, on repart du dernier pas de temps existant
         load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
@@ -37,6 +38,7 @@ for ii=118:127%:nombreVid% La boucle qui appelle le programme de simu
     dt=manipCat.dt(ii);
     satur=manipCat.satur(ii);
     theta=manipCat.theta(ii);
+    delai=manipCat.delai(ii);
     ecoulement=1;
     marangoni=1;
     if amp_ec==0
@@ -55,7 +57,7 @@ for ii=118:127%:nombreVid% La boucle qui appelle le programme de simu
     param_ecexterne=manipCat.paramec(ii); 
 
    if nt~=old_nt
-     %   simu;
+        simu;
         changes(ii)=1;
    end
 %     if ((ii>34 && ii<45) || (ii>59 && ii<71)) && changes(ii)==1
@@ -65,14 +67,15 @@ for ii=118:127%:nombreVid% La boucle qui appelle le programme de simu
 %if (ii>100 && changes(ii)==1) 
 %stabilite;
 %end
-directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{ii},'\',manipCat.set{ii},'\');
+%directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{ii},'\',manipCat.set{ii},'\');
 %stabilite_v2;
-if A<2
-     stabilite;
-end
-%    videocount=videocount+nt-old_nt;
+%if A<2
+%     stabilite;
+%     stabilite_v2;
+%end
+    videocount=videocount+nt-old_nt;
 
 %  load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_profiles.mat'))
  %   hold on;color_line(linspace(-100,100,200),mean(profs),ones(1,200)*A);hold off;
 end
-%transfer; % Code pour exporter vers MyCore les résultats et les utiliser dans les notebooks
+transfer; % Code pour exporter vers MyCore les résultats et les utiliser dans les notebooks

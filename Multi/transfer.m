@@ -11,7 +11,7 @@ Raystr={};
 run('E:\Clément\phdcodes\Multi\manips.m')
 for numVid=1:nombreVid
     load_param;
-    if numVid>75 && exist(strcat(directoryAnalyse,'trajectories.mat'))~=0
+    if numVid>92 && exist(strcat(directoryAnalyse,'trajectories.mat'))~=0
         load(strcat(directoryAnalyse,'directory.mat'));
         load(strcat(directoryAnalyse,'trajectories.mat'))
     

@@ -167,9 +167,11 @@ RandomStart=[];
 VMar=[];
 Dt=[];
 C0=[];
-Afin=zeros(1,nombreVid);
+Pe=[];
+M=[];
+Theta=[];
 run manips
-
+Afin=zeros(1,nombreVid);
 if (exist('changes','var'))==0
     changes=zeros(1,nombreVid);
 end
@@ -217,7 +219,16 @@ for i=1:nombreVid
     Advection=[Advection,manipCat.advection(i)];
     AmpSourceCamphre=[AmpSourceCamphre,manipCat.asrc(i)];
     RandomStart=[RandomStart,manipCat.randomstart(i)];
-    
+    Theta=[Theta,manipCat.theta(i)];
+    if manipCat.A(i)<0.52022
+        vtmp=0;
+    else
+        vtmp=2.336*(manipCat.A(i)-0.52022)^0.55252;
+    end
+   Pe=[Pe,vtmp*sqrt(4*pi*(5/2)^2/(90)^2)/0.15];
+   M=[M,manipCat.A(i)*manipCat.asrc(i)/(4*0.15*0.15)];
+
+
        %if (((manipCat.set{i}(1)=='m') || (manipCat.set{i}(1)=='s')) || (i>91 && i<101)) && changes(i)==1
        if manipCat.npart(i)>5 && changes(i)==1
                    load(fname)
@@ -234,7 +245,7 @@ for i=1:nombreVid
     changes(i)=0;
     clear Ccampmean;
 end
-save('E:\Clément\MyCore\Analyse\SimuNum\manips.mat','Nombre','AmpVortex','CoefMarangoni','TauP','Date','Set','Duree','Rayon','MasseBbg','Projet','Video','Inertie','Advection','AmpSourceCamphre','Dt','C0','Afin')
+save('E:\Clément\MyCore\Analyse\SimuNum\manips.mat','Nombre','AmpVortex','CoefMarangoni','TauP','Date','Set','Duree','Rayon','MasseBbg','Projet','Video','Inertie','Advection','AmpSourceCamphre','Dt','C0','Afin','M','Pe','Theta')
 
 % for i=
 %

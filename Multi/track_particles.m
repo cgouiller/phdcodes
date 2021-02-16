@@ -40,7 +40,11 @@ for k=startImg:length(L)
     
   
     % Position of the camphor swimmers
-    [ctmp,rtmp] = imfindcircles(im>250,R_range,'ObjectPolarity','bright','Method','TwoStage','Sensitivity',s); 
+    if numVid<93 || numVid>95
+        [ctmp,rtmp] = imfindcircles(im>250,R_range,'ObjectPolarity','bright','Method','TwoStage','Sensitivity',s); 
+    else
+        [ctmp,rtmp] = imfindcircles(im>200,[25 35],'ObjectPolarity','bright','Method','TwoStage','Sensitivity',s); 
+    end
     if isempty(ctmp)==0
         c(k).x=ctmp(:,1);
         c(k).y=ctmp(:,2);

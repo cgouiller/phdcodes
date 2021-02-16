@@ -91,8 +91,14 @@ if old_nt==1
         xp=pi;
         yp=pi/2-0.1;
     elseif rdomstart==4
-            xp=[pi-sqrt(pi^2+(pi/tan(theta))^2),pi-pi/tan(theta)];
+            xp=[pi-sqrt(pi^2+(pi/tan(theta))^2)-delai,pi-pi/tan(theta)];
             yp=[pi+0.00000001,0.00000001];
+    elseif rdomstart==5
+        xp=pi+0.00001;
+        yp=pi/2-0.1;
+    elseif rdomstart==6
+        xp=pi+0.00001;
+        yp=pi+0.00001;
     end
     
     % vitesse initiale = vitesse locale de l'écoulement
@@ -116,6 +122,10 @@ if old_nt==1
     if rdomstart==4
         vsx=[1.554,1.554*cos(theta)];
         vsy=[0,1.554*sin(theta)];
+    end
+    if rdomstart==6
+        vsx=0.000000000000001;
+        vsy=0;
     end
     % stockage de la position initiale
     xs=xp;
