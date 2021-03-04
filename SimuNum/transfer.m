@@ -170,11 +170,14 @@ C0=[];
 Pe=[];
 M=[];
 Theta=[];
+Delai=[];
 run manips
 Afin=zeros(1,nombreVid);
+L=[];
 if (exist('changes','var'))==0
     changes=zeros(1,nombreVid);
 end
+
 for i=1:nombreVid
     
     fname=strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{i},'\',manipCat.set{i},'\',manipCat.video{i},'.mat');
@@ -220,6 +223,8 @@ for i=1:nombreVid
     AmpSourceCamphre=[AmpSourceCamphre,manipCat.asrc(i)];
     RandomStart=[RandomStart,manipCat.randomstart(i)];
     Theta=[Theta,manipCat.theta(i)];
+    Delai=[Delai,manipCat.delai(i)];
+    L=[L,manipCat.L(i)];
     if manipCat.A(i)<0.52022
         vtmp=0;
     else
@@ -230,7 +235,7 @@ for i=1:nombreVid
 
 
        %if (((manipCat.set{i}(1)=='m') || (manipCat.set{i}(1)=='s')) || (i>91 && i<101)) && changes(i)==1
-       if manipCat.npart(i)>5 && changes(i)==1
+       if manipCat.npart(i)>3 && changes(i)==1
                    load(fname)
 
             directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{i},'\',manipCat.set{i},'\');
@@ -239,13 +244,13 @@ for i=1:nombreVid
             for j=1:manipCat.npart(i)
                 d(j,:)=sqrt((mx(1+round(length(mx)/2):length(mx),j)-mx(1+round(length(mx)/2))).^2+(my(1+round(length(mx)/2):length(mx),j)-my(1+round(length(mx)/2))).^2)';
             end
-            [MSD,mdx,tau]=msd(d,dt,[1:50,51:10:500,501:20:round(length(d)/1.5)]);
+            [MSD,mdx,tau]=msd(d,dt,round(logspace(0,log10(length(d)/1.5),1000)));
             save(strcat(directoryPyt,manipCat.video{i},'_msd.mat'),'MSD','tau')
        end
     changes(i)=0;
     clear Ccampmean;
 end
-save('E:\Clément\MyCore\Analyse\SimuNum\manips.mat','Nombre','AmpVortex','CoefMarangoni','TauP','Date','Set','Duree','Rayon','MasseBbg','Projet','Video','Inertie','Advection','AmpSourceCamphre','Dt','C0','Afin','M','Pe','Theta')
+save('E:\Clément\MyCore\Analyse\SimuNum\manips.mat','Nombre','AmpVortex','CoefMarangoni','TauP','Date','Set','Duree','Rayon','MasseBbg','Projet','Video','Inertie','Advection','AmpSourceCamphre','Dt','C0','Afin','M','Pe','Theta','Delai','L')
 
 % for i=
 %

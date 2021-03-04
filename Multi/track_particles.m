@@ -43,7 +43,7 @@ for k=startImg:length(L)
     if numVid<93 || numVid>95
         [ctmp,rtmp] = imfindcircles(im>250,R_range,'ObjectPolarity','bright','Method','TwoStage','Sensitivity',s); 
     else
-        [ctmp,rtmp] = imfindcircles(im>200,[25 35],'ObjectPolarity','bright','Method','TwoStage','Sensitivity',s); 
+        [ctmp,rtmp] = imfindcircles(im>200,R_detect,'ObjectPolarity','bright','Method','TwoStage','Sensitivity',s); 
     end
     if isempty(ctmp)==0
         c(k).x=ctmp(:,1);

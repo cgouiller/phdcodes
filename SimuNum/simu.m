@@ -3,8 +3,7 @@
 % end
 
 %% Initialisations de la simu
-L = 2*pi; %Taille de la boîte
-N=128;%Résolution de la grille de simu
+N=round(64/pi*L);%Résolution de la grille de simu
 chopvec=5; %On affiche une toutes les chopvec images
 
 make_grid; %Initialise la grille de simu (N*N) et une variable utile pour gérer l'aliasing
@@ -91,8 +90,12 @@ if old_nt==1
         xp=pi;
         yp=pi/2-0.1;
     elseif rdomstart==4
-            xp=[pi-sqrt(pi^2+(pi/tan(theta))^2)-delai,pi-pi/tan(theta)];
-            yp=[pi+0.00000001,0.00000001];
+            xp=[L/2-sqrt((L/2)^2+(L/2/tan(theta))^2)-delai,L/2-L/2/tan(theta)];
+            yp=[L/2+0.00000001,0.00000001];
+            if theta==3.1416
+                xp=[L/8,7*L/8];
+                yp=[L/2+0.00000001,L/2+0.00000001];
+            end
     elseif rdomstart==5
         xp=pi+0.00001;
         yp=pi/2-0.1;
@@ -188,7 +191,7 @@ if old_nt==1
     [vxfilt,vyfilt]=ec_filtre(marangoni,ecoulement,vxf,vxextf,vyf,vyextf,gfilt_f);
     
     %Donne la vitesse filtrée sur chacun des nageurs
-    [uxp,uyp]=vfiltnag(vxfilt,vyfilt,Npad,xs,ys,xpad,ypad);
+    [uxp,uyp]=vfiltnag(vxfilt,vyfilt,Npad,xs,ys,xpad,ypad,L);
     if rdomstart==4
         uxp=vsx;
         uyp=vsy;
@@ -237,7 +240,7 @@ if old_nt==1
     [vxfilt,vyfilt]=ec_filtre(marangoni,ecoulement,vxf,vxextf,vyf,vyextf,gfilt_f);
     
     %Donne la vitesse filtrée sur chacun des nageurs
-    [uxp,uyp]=vfiltnag(vxfilt,vyfilt,Npad,xs,ys,xpad,ypad);
+    [uxp,uyp]=vfiltnag(vxfilt,vyfilt,Npad,xs,ys,xpad,ypad,L);
     
     
    % On ne change pas les old ici car pour 2 ce seront t=0 et t=1 les
@@ -273,7 +276,7 @@ if old_nt==1
     % direction de nage
     vx=real(ifft2((vxf))); %TF-1 du champ de vitesse marangoni du fluide en fourier
     vy=real(ifft2((vyf)));
-    [vxnage,vynage]=vfiltnag(vx,vy,Npad,xs,ys,xpad,ypad);
+    [vxnage,vynage]=vfiltnag(vx,vy,Npad,xs,ys,xpad,ypad,L);
     
   %Stockage du premier pas de temps (t=1)
     mx(1,1:npart)=xs(1,1:npart);
@@ -349,12 +352,12 @@ for in=old_nt+1:nt
     [vxfilt,vyfilt]=ec_filtre(marangoni,ecoulement,vxf,vxextf,vyf,vyextf,gfilt_f);
 
     %Donne la vitesse du fluide tot filtrée sur chacun des nageurs
-    [uxp,uyp]=vfiltnag(vxfilt,vyfilt,Npad,xs,ys,xpad,ypad);
+    [uxp,uyp]=vfiltnag(vxfilt,vyfilt,Npad,xs,ys,xpad,ypad,L);
     
     % Composante Marangoni de la vitesse du nageur 
     vx=real(ifft2((vxf).*gfilt_f));
     vy=real(ifft2((vyf).*gfilt_f));
-    [vxnage,vynage]=vfiltnag(vx,vy,Npad,xs,ys,xpad,ypad);
+    [vxnage,vynage]=vfiltnag(vx,vy,Npad,xs,ys,xpad,ypad,L);
 
     t=t+dt;
     
@@ -384,12 +387,12 @@ for in=old_nt+1:nt
         figure(1);
         pcolor(x,y,Ccamp);colorbar;shading flat;axis equal;caxis([0 1])
         hold on
-        plot(modulo(xs,2*pi),modulo(ys,2*pi),'ok','markerfacecolor','r');
-        quiver(x(1:3:128,1:3:128),y(1:3:128,1:3:128),vxext(1:3:128,1:3:128),vyext(1:3:128,1:3:128),'w');
-        quiver(mod(xs,2*pi),mod(ys,2*pi),vxnage,vynage,'r')
-        quiver(mod(xs,2*pi),mod(ys,2*pi),vsx,vsy,'k')
-        [vxecext,vyecext]=vfiltnag(real(ifft2((vxextf).*gfilt_f)),real(ifft2((vyextf).*gfilt_f)),Npad,xs,ys,xpad,ypad);
-        quiver(mod(xs,2*pi),mod(ys,2*pi),vxecext,vyecext,'w')
+        plot(modulo(xs,L),modulo(ys,L),'ok','markerfacecolor','r');
+        quiver(x(1:3:N,1:3:N),y(1:3:N,1:3:N),vxext(1:3:N,1:3:N),vyext(1:3:N,1:3:N),'w');
+        quiver(mod(xs,L),mod(ys,L),vxnage,vynage,'r')
+        quiver(mod(xs,L),mod(ys,L),vsx,vsy,'k')
+        [vxecext,vyecext]=vfiltnag(real(ifft2((vxextf).*gfilt_f)),real(ifft2((vyextf).*gfilt_f)),Npad,xs,ys,xpad,ypad,L);
+        quiver(mod(xs,L),mod(ys,L),vxecext,vyecext,'w')
 
 
         hold off
