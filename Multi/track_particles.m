@@ -43,7 +43,7 @@ for k=startImg:length(L)
     if numVid<93 || numVid>95
         [ctmp,rtmp] = imfindcircles(im>250,R_range,'ObjectPolarity','bright','Method','TwoStage','Sensitivity',s); 
     else
-        [ctmp,rtmp] = imfindcircles(im>200,R_detect,'ObjectPolarity','bright','Method','TwoStage','Sensitivity',s); 
+        [ctmp,rtmp] = imfindcircles(im>200,R_range,'ObjectPolarity','bright','Method','TwoStage','Sensitivity',s); 
     end
     if isempty(ctmp)==0
         c(k).x=ctmp(:,1);
@@ -55,8 +55,10 @@ for k=startImg:length(L)
 
     end
     % Avancement dans le traitement
-    if mod(k,1)==0
+    if mod(k,500)==0
         dispstat(sprintf('Progress %i%%',round((k-startImg)*100/(length(L)-startImg))),'timestamp');
+        save(strcat(directoryAnalyse,'\','positions.mat'),'c')
+
     end
     l(k)=length(c(k).x);
     s=s+0.05;

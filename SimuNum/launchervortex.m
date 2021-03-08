@@ -5,8 +5,8 @@ globalcount=0; % Juste pour l'affichage de l'avancée
 videocount=0; %idem
 affichage=0; %1 si on veut tracer le champ, 0 si non
 changes=zeros(1,nombreVid);
-start=557;
-for ii=[526,542,558] % Pour l'affichage de l'avancée globale du programme on compte d'abord le nombre de pas de temps totaux à réaliser dans toutes les manips
+start=570;
+for ii=start:nombreVid % Pour l'affichage de l'avancée globale du programme on compte d'abord le nombre de pas de temps totaux à réaliser dans toutes les manips
     if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))~=0
         load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
         old_nt=nt;
@@ -17,8 +17,8 @@ for ii=[526,542,558] % Pour l'affichage de l'avancée globale du programme on com
     
     globalcount=globalcount+nt-old_nt;
 end
-for ii=[526,542,558]% La boucle qui appelle le programme de simu
-    %for ii=[501,502,503]
+%for ii=[526,542,558]% La boucle qui appelle le programme de simu
+for ii=570:nombreVid
     ii
     
     if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))~=0 % si il existe déjà des data pour cette vidéo, on repart du dernier pas de temps existant
@@ -78,11 +78,12 @@ for ii=[526,542,558]% La boucle qui appelle le programme de simu
     %     stabilite_v2;
     %end
     %hold off;plot(mx,'b');hold on;plot(my,'r');pause;
-    %  hold off;
-    % figure(1);plot(mx,my);title(num2str(ii));
-    % figure(2);plot(mx);hold on;plot(my,'r');title(num2str(ii));pause;
+    %      hold off;
+    %     figure(1);plot(mx(:,1),my(:,1),'-b',mx(:,2),my(:,2),'+r');title(num2str(ii));
+    %     figure(2);plot(my);hold on;title(num2str(ii));pause;
+    %     plot(mx);pause;
     videocount=videocount+nt-old_nt;
-    
+    %
     %  load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_profiles.mat'))
     %   hold on;color_line(linspace(-100,100,200),mean(profs),ones(1,200)*A);hold off;
 end
