@@ -171,6 +171,7 @@ Pe=[];
 M=[];
 Theta=[];
 Delai=[];
+Bbg=[];
 run manips
 Afin=zeros(1,nombreVid);
 L=[];
@@ -200,9 +201,11 @@ for i=1:nombreVid
             mvxnage=mvxnage(1:10:fin,:);
             mvynage=mvynage(1:10:fin,:);
         end
-        
+        if bbg==0
         save(strcat(directoryPyt,manipCat.video{i},'.mat'),'mx','my','mvxnage','mvynage')
-        
+        else
+         save(strcat(directoryPyt,manipCat.video{i},'.mat'),'mx','my','mstdbg')
+        end
     end
     
     Dt=[Dt,manipCat.dt(i)];
@@ -225,6 +228,7 @@ for i=1:nombreVid
     Theta=[Theta,manipCat.theta(i)];
     Delai=[Delai,manipCat.delai(i)];
     L=[L,manipCat.L(i)];
+    Bbg=[Bbg,manipCat.bbg(i)];
     if manipCat.A(i)<0.52022
         vtmp=0;
     else

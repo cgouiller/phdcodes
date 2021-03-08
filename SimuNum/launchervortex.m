@@ -5,7 +5,7 @@ globalcount=0; % Juste pour l'affichage de l'avancée
 videocount=0; %idem
 affichage=0; %1 si on veut tracer le champ, 0 si non
 changes=zeros(1,nombreVid);
-start=570;
+start=581;
 for ii=start:nombreVid % Pour l'affichage de l'avancée globale du programme on compte d'abord le nombre de pas de temps totaux à réaliser dans toutes les manips
     if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))~=0
         load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
@@ -18,7 +18,7 @@ for ii=start:nombreVid % Pour l'affichage de l'avancée globale du programme on c
     globalcount=globalcount+nt-old_nt;
 end
 %for ii=[526,542,558]% La boucle qui appelle le programme de simu
-for ii=570:nombreVid
+for ii=start:nombreVid
     ii
     
     if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))~=0 % si il existe déjà des data pour cette vidéo, on repart du dernier pas de temps existant
@@ -29,7 +29,7 @@ for ii=570:nombreVid
     end
     
     %% Choix des paramètres de la simu
-    
+    bbg=manipCat.bbg(ii);
     taup=manipCat.taup(ii);
     inertie=manipCat.inertie(ii);
     amp_ec=manipCat.amp_ec(ii);
