@@ -14,7 +14,6 @@ make_grid; %Initialise la grille de simu (N*N) et une variable utile pour gérer 
 alpha=2; %Coefficient de sublimation
 sig=sqrt(4*pi*(Dnag/2)^2/(90)^2); %Calcule la largeur de gaussienne associée au diamètre des nageurs
 Dcamp=0.15;% Coeff de diffusion du camphre
-Dbg=0.15;
 
 
 %% Initialisation des tableaux de stockage de valeurs
@@ -29,8 +28,12 @@ if old_nt==1 % Correspond à une simu jamais commencée
     mvynage=zeros(nt,npart);
     mvfx=cell(200,1);   % Pour stocker quelques champs de vitesse, pas exploités en ce moment
     mvfy=cell(200,1);
-    if bbg~=0
+    if bbg==1
         mstdbg=zeros(nt,1);
+    end
+    if bbg>1
+       mxbg=zeros(nt,bbg);
+       mybg=zeros(nt,bbg);
     end
 end
 if old_nt~=1 % Correspond à une simu à poursuivre
@@ -58,10 +61,20 @@ if old_nt~=1 % Correspond à une simu à poursuivre
     myb(1:old_nt,1:npart)=my(1:old_nt,1:npart);
     mx=mxb;
     my=myb;
-    if bbg~=0
+    if bbg==1
         mstdbgb=zeros(nt,1);
-        mstdbgb(1:old_nt,1)=msdtbg;
+        mstdbgb(1:old_nt,1)=mstdbg;
         mstdbg=mstdbgb;
+    end
+    if bbg>1
+        mxbgb=zeros(nt,bbg);
+        mybgb=zeros(nt,bbg);
+        mxbgb(1:old_nt,:)=mxbg;
+        mybgb(1:old_nt,:)=mybg;
+        mxbg=mxbgb;
+        mybg=mybgb;
+        clear mxbgb
+        clear mybgb
     end
     t=old_nt*dt;
 end
@@ -110,8 +123,13 @@ if old_nt==1
         yp=pi+0.00001;
     end
     if bbg==1
-        Cbg=zeros(N);
-        
+        Cbg=zeros(N);     
+    end
+    if bbg>1
+        xbg=rand(1,bbg)*L;
+        ybg=rand(1,bbg)*L;
+        vxbg=zeros(1,bbg);
+        vybg=zeros(1,bbg);
     end
     % vitesse initiale = vitesse locale de l'écoulement
     if ecoulement==1
@@ -119,6 +137,10 @@ if old_nt==1
         vyfilt=real(ifft2(vyextf.*gfilt_f));
         vsx=interp2(x,y,vxfilt,xp,yp,'spline'); %On interpole la vitesse filtrée à la position du nageur
         vsy=interp2(x,y,vyfilt,xp,yp,'spline');
+        if bbg>1
+            vxbg=interp2(x,y,vxext,xbg,ybg,'spline');
+            vybg=interp2(x,y,vyext,xbg,ybg,'spline');
+        end
         
     end
     if amp_ec==0 && npart==1
@@ -168,7 +190,7 @@ if old_nt==1
         Ccamp0_f=Ccamp0_f+source0_f.*exp(-1i*xs(nn)*kx-1i*ys(nn)*ky);
     end
     Ccamp_f=Ccamp0_f;
-    if bbg~=0
+    if bbg==1
         Cbg0_f=fft2(Cbg);
     end
     % TF du champ de vitesse Marangoni du fluide en t=0
@@ -191,11 +213,19 @@ if old_nt==1
     ys_old=ys;% position en t=0
     uxp_old=uxp; % Vitesse du champ fluide Marangoni+extérieur en t=0 sous les nageurs
     uyp_old=uyp; % Vitesse du champ fluide Marangoni+extérieur en t=0 sous les nageurs
-    
-    
+    if bbg>1
+    vxbg_old=vxbg;
+    vybg_old=vybg;
+    end
     
     
     %% Pas de temps en t=1/2
+    if bbg>1
+       xbg=xbg+vxbg*dt/2;
+       ybg=ybg+vybg*dt/2;
+       vxbg=interp2(x,y,real(ifft2(vxf+vxextf)),xbg,ybg,'spline')+sqrt(2*Dbg*dt/2)*randn(1,bbg)/(dt/2);
+       vybg=interp2(x,y,real(ifft2(vyf+vyextf)),xbg,ybg,'spline')+sqrt(2*Dbg*dt/2)*randn(1,bbg)/(dt/2);
+    end
     
     % Source de camphre en t=1/2
     source_f=zeros(size(source0_f));
@@ -206,7 +236,7 @@ if old_nt==1
     
     % Calcul du terme d'advection (nul si advection=0)
     Sfcamp = Sscal_adams(advection,Ccamp_f,vxext,vyext,kx,ky,alias);
-    if bbg~=0
+    if bbg==1
         Sfbg=Sscal_adams(advection,Cbg0_f,vxext+real(ifft2(vxf)),vyext+real(ifft2(vyf)),kx,ky,alias);
         Sfbg_old=Sfbg;
     end
@@ -215,13 +245,12 @@ if old_nt==1
     % calcul en t=1/2
     Ccamp_f=expdt05.*(Ccamp_f + dt*Sfcamp/2); % Propagation du résultat de l'équa diff sur un demi pas de temps
     Ccamp_f=Ccamp_f.*alias; %pour éviter les vecteurs d'ondes trop grands (aliasing)
-    if bbg~=0
+    if bbg==1
         Cbg_f=expdt05bg.*(Cbg0_f + dt*Sfbg);
         Cbg_f=Cbg_f.*alias;
     end
     % calcul des positions et vitesses en t=1/2
     [xs,ys,vsx,vsy]=eval_posvit(0,inertie,dt/2,xs,ys,vsx,vsy,uxp,uyp,uxp_old,vsx_old,uyp_old,vsy_old,taup); %0 car pas d'adams-bashforth ici
-    
     
     
     
@@ -240,7 +269,12 @@ if old_nt==1
     % On ne change pas les old ici car pour 2 ce seront t=0 et t=1 les
     % importants
     %% scalaire en t=1
-    
+    if bbg>1
+       xbg=xbg+vxbg*dt/2;
+       ybg=ybg+vybg*dt/2;
+       vxbg=interp2(x,y,real(ifft2(vxf+vxextf)),xbg,ybg,'spline')+sqrt(2*Dbg*dt/2)*randn(1,bbg)/(dt/2);
+       vybg=interp2(x,y,real(ifft2(vyf+vyextf)),xbg,ybg,'spline')+sqrt(2*Dbg*dt/2)*randn(1,bbg)/(dt/2);
+    end
     source_f=zeros(size(source0_f));
     for nn=1:npart
         source_f=source_f+source0_f.*exp(-1i*xs(nn)*kx-1i*ys(nn)*ky);
@@ -248,7 +282,7 @@ if old_nt==1
     
     % calcul du champ de camphreen t=1
     Ccamp=real(ifft2(Ccamp_f));
-    if bbg~=0
+    if bbg==1
         Cbg=real(ifft2(Cbg_f));
         Sfbg=Sscal_adams(advection,Cbg_f,vxext+real(ifft2(vxf)),vyext+real(ifft2(vyf)),kx,ky,alias);
         Sfbg=Sfbg.*alias;
@@ -263,7 +297,7 @@ if old_nt==1
     Ccamp_f=expdt.*Ccamp0_f + dt*expdt05.*Sfcamp; % Evolution de l'équa dif de 1/2 à 1
     Ccamp_f=Ccamp_f.*alias; % Pour éviter l'aliasing
     
-    if bbg~=0
+    if bbg==1
         Cbg_f=expdtbg.*Cbg0_f + dt*expdt05bg.*Sfbg;
         Cbg_f=Cbg_f.*alias;
     end
@@ -288,8 +322,12 @@ if old_nt==1
     mvsy(1,1:npart)=vsy(1,1:npart);
     mvxnage(1,1:npart)=vxnage(1,1:npart);
     mvynage(1,1:npart)=vynage(1,1:npart);
-    if bbg~=0
+    if bbg==1
         mstdbg(1,1)=std(std(real(ifft2(Cbg_f))));
+    end
+    if bbg>1
+        mxbg(1,1:bbg)=xbg;
+        mybg(1,1:bbg)=ybg;
     end
 end
 %% Début de la boucle
@@ -304,10 +342,23 @@ dispstat(sprintf('Begining the simulation loop...'),'keepthis','timestamp');
 
 for in=old_nt+1:nt
     
-    if in==200
+    if in==200 && bbg==1
         %Cbg_f=fft2(ones(N));
         Cbg_f=fft2(exp(-((x-pi).^2+(y-pi).^2)/2/sig^2)/(2*pi*sig^2));
     end
+    if bbg>1
+        xbg=xbg+3/2*dt*vxbg-1/2*dt*vxbg_old;
+        ybg=ybg+3/2*dt*vybg-1/2*dt*vybg_old;
+        vxbg_old=vxbg;
+        vybg_old=vybg;
+        vxbg=interp2(x,y,real(ifft2(vxf+vxextf)),modulo(xbg,L),modulo(ybg,L),'spline')+sqrt(2*Dbg*dt)*randn(1,bbg)/dt;
+        vybg=interp2(x,y,real(ifft2(vyf+vyextf)),modulo(xbg,L),modulo(ybg,L),'spline')+sqrt(2*Dbg*dt)*randn(1,bbg)/dt;
+       % vxbg(abs(vxbg)>15)=vxbg_old(abs(vxbg)>15);
+       % vybg(abs(vybg)>15)=vybg_old(abs(vybg)>15);
+
+    end
+        
+        
     % Affichage du pourcentage d'avancée de la simu et de toutes celles
     % lancées
     if (mod(in,1000)==0)
@@ -317,7 +368,7 @@ for in=old_nt+1:nt
     
     Ccamp_f=expdt.*(Ccamp_f + 3/2*dt*Sfcamp)-1/2*dt*expdt2.*Sfcamp_old;% Evolution de l'équa diff pour le camphre
     Ccamp_f=Ccamp_f.*alias;%Eviter l'aliasing
-    if bbg~=0
+    if bbg==1
         Cbg_f=expdtbg.*(Cbg_f + 3/2*dt*Sfbg)-1/2*dt*expdt2bg.*Sfbg_old;
         Cbg_f=Cbg_f.*alias;
     end
@@ -350,7 +401,7 @@ for in=old_nt+1:nt
     Sfcamp = Sscal_adams(advection,Ccamp_f,vxext,vyext,kx,ky,alias); %advection est l'interrupteur on/off
     Sfcamp=Sfcamp+source_f;
     Sfcamp=Sfcamp.*alias;
-    if bbg~=0
+    if bbg==1
         Sfbg_old=Sfbg;
         Sfbg=Sscal_adams(advection,Cbg_f,vxext+real(ifft2(vxf)),vyext+real(ifft2(vyf)),kx,ky,alias);
         Sfbg=Sfbg.*alias;
@@ -382,8 +433,12 @@ for in=old_nt+1:nt
     my(in,1:npart)=ys(1,1:npart);% position y
     mvxnage(in,1:npart)=vxnage(1,1:npart);
     mvynage(in,1:npart)=vynage(1,1:npart);
-    if bbg~=0
+    if bbg==1
         mstdbg(in,1)=std(std(real(ifft2(Cbg_f))));
+    end
+    if bbg>1
+        mxbg(in,1:bbg)=xbg;
+        mybg(in,1:bbg)=ybg;
     end
     if old_nt==1 % Cette boucle que pour stocker des chps de vitesse e fluide qu'on n'utilise jamais
         if ismember(in,list)
@@ -443,9 +498,10 @@ for in=old_nt+1:nt
         nt=in; %Malgré ce que dit matlab, nt est utilisé dans la sauvegarde !
         if bbg==0
             save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old','satur');
-        else
-            save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old','satur','mstdbg');
-            
+        elseif bbg==1
+            save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old','satur','mstdbg','Cbg_f','Sfbg','Sfbg_old');
+        elseif bbg>1
+            save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old','satur','mxbg','mybg','vxbg','vybg','vxbg_old','vybg_old');
         end
         nt=nts;
     end
@@ -506,6 +562,10 @@ if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.s
     mkdir(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\'));
 end
 %save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'commit','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','k','Spx','Spy','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old');
+if bbg==0
 save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old','satur');
-
-
+elseif bbg==1
+save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old','satur','mstdbg','Cbg_f','Sfbg','Sfbg_old');
+elseif bbg>1
+    save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old','satur','mxbg','mybg','vxbg','vybg','vxbg_old','vybg_old');
+end

@@ -64,8 +64,11 @@ for numVid=[71,72,73,86,67,69,70,87,83,84,85,88,74,78,79,89,80,81,82,90,55,56,57
 %  constr_traject;%Se servant des positions obtenues par track_particles en déduit les trajectoires sauvegardées dans trajectories.mat
 %traj_plot;
 %msd_calc;
-msd_inf;
+%msd_inf;
+%msd_truetum;
+%msd_tum;
 %msd_cuve;
+msd_trueinf;
 %center_analyze
 end
 

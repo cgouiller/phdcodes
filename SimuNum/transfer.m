@@ -178,9 +178,10 @@ L=[];
 if (exist('changes','var'))==0
     changes=zeros(1,nombreVid);
 end
-
+changes(591)=1;
+changes(617:620)=1;
 for i=1:nombreVid
-    
+    bbg=manipCat.bbg(i);
     fname=strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{i},'\',manipCat.set{i},'\',manipCat.video{i},'.mat');
     if changes(i)==1
         load(fname)
@@ -203,8 +204,10 @@ for i=1:nombreVid
         end
         if bbg==0
         save(strcat(directoryPyt,manipCat.video{i},'.mat'),'mx','my','mvxnage','mvynage')
-        else
+        elseif bbg==1
          save(strcat(directoryPyt,manipCat.video{i},'.mat'),'mx','my','mstdbg')
+        else
+         save(strcat(directoryPyt,manipCat.video{i},'.mat'),'mx','my','mxbg','mybg')
         end
     end
     
