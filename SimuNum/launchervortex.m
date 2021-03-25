@@ -5,7 +5,7 @@ globalcount=0; % Juste pour l'affichage de l'avancée
 videocount=0; %idem
 affichage=0; %1 si on veut tracer le champ, 0 si non
 changes=zeros(1,nombreVid);
-start=580;
+start=637;
 for ii=start:nombreVid % Pour l'affichage de l'avancée globale du programme on compte d'abord le nombre de pas de temps totaux à réaliser dans toutes les manips
     if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))~=0
         load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
@@ -64,11 +64,15 @@ for ii=start:nombreVid
         simu;
         changes(ii)=1;
     end
-    if bbg>1 && exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_cstd','num2str(factelarg)','.mat'))==0
+    if bbg>1
         ii
-                load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
-
-        calc_std;
+        load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
+        if 0==1
+            calc_std;
+        end
+        if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_msd','.mat'))==0
+            calc_msdbbg
+        end
     end
     %     if ((ii>34 && ii<45) || (ii>59 && ii<71)) && changes(ii)==1
     %     profiles;
@@ -84,13 +88,13 @@ for ii=start:nombreVid
     %     stabilite_v2;
     %end
     %hold off;plot(mx,'b');hold on;plot(my,'r');pause;
-%           hold off;
-%         figure(1);plot(mx(:,1),my(:,1),'-b',mx(:,2),my(:,2),'+r');title(num2str(ii));
-%         figure(2);plot(my);hold on;title(num2str(ii));pause;
+    %           hold off;
+    %         figure(1);plot(mx(:,1),my(:,1),'-b',mx(:,2),my(:,2),'+r');title(num2str(ii));
+    %         figure(2);plot(my);hold on;title(num2str(ii));pause;
     %
     %  load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_profiles.mat'))
     %   hold on;color_line(linspace(-100,100,200),mean(profs),ones(1,200)*A);hold off;
     videocount=videocount+nt-old_nt;
-
+    
 end
 transfer; % Code pour exporter vers MyCore les résultats et les utiliser dans les notebooks

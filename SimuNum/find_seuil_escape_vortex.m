@@ -2,10 +2,10 @@ amplist=[0.3,0.6,1,1.5,2,4,6,3,0.1,5];
 alpha=2;
 Dcamp=0.15;
 s0=1;
-nt=10000;
+nt=10000*2;
 old_nt=1;
 taup=0;
-dt=0.1/20;
+dt=0.1/20/2;
 inertie=0;
 amp_ec=0;
 npart=1;
@@ -24,7 +24,7 @@ make_grid; %Initialise la grille de simu (N*N) et une variable utile pour gérer 
 
 %seuil=zeros(1,length(amplist));
 
-for cpt=8:length(amplist)
+for cpt=1:length(amplist)
     amp_ec=amplist(cpt);
     [vxext,vyext,vxextf,vyextf]=ec_extern(ecoulement,param_ecexterne,N,amp_ec,x,y); % Donne l'écoulement externe et sa TF en fonction des choix de simu.*
     
@@ -383,4 +383,4 @@ for cpt=8:length(amplist)
     
 end
 
-save('E:/Clément/SimuNum/Resultats/seuilpiegvort.mat','seuil','amplist');
+save('E:/Clément/SimuNum/Resultats/seuilpiegvortdtsur2.mat','seuil','amplist','dt');

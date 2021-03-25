@@ -19,16 +19,17 @@ source0_f=fft2(source).*exp(1i*pi*kx+1i*pi*ky);
 
 % on definit le filtre dans l'espace de fourier
 gfilt_f=source0_f/sum(sum(source));
-Cstd=zeros(1,length(mxbg(:,1))/20);
+nred=20;
+Cstd=zeros(1,length(mxbg(:,1))/nred);
 cpt=1;
-for k=1:20:length(mxbg(:,1))
+for k=1:nred:length(mxbg(:,1))
     
     source_f=zeros(size(source0_f));
     for nn=1:bbg
         source_f=source_f+source0_f.*exp(-1i*mxbg(k,nn)*kx-1i*mybg(k,nn)*ky);
     end
     Cfield=real(ifft2(source_f));
-    Cstd(cpt)=std(std(Cfield));
+    Cstd(cpt)=std(std(Cfield))/mean(mean(Cfield));
     cpt=cpt+1;
     
 end
