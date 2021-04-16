@@ -4,19 +4,24 @@ if numVid>7
     figure;
     xplot=x*calibCat(numVid);
     yplot=y*calibCat(numVid);
-    
+    if numVid>9
+        xplot=x*calibCat(numVid);
+        yplot=y*calibCat(numVid);
+    end
     vmax=25;
     Umoy=Umoy*calibCat(numVid)*30;
     Vmoy=Vmoy*calibCat(numVid)*30;
     normv=sqrt(Umoy.^2+Vmoy.^2);
     Umoy(normv>vmax)=Umoy(normv>vmax)*vmax./normv(normv>vmax);
     Vmoy(normv>vmax)=Vmoy(normv>vmax)*vmax./normv(normv>vmax);
-    
-    quiverC2D(xplot,yplot,Umoy,Vmoy);%colorbar;
+    Umoy(countsu<20)=0;
+    Vmoy(countsv<20)=0;
+    n=2;
+    quiverC2D(xplot(1:n:length(Umoy),1:n:length(Umoy)),yplot(1:n:length(Umoy),1:n:length(Umoy)),Umoy(1:n:length(Umoy),1:n:length(Umoy)),Vmoy(1:n:length(Umoy),1:n:length(Umoy)));%colorbar;
     axis square;
     xlabel('x [mm]')
     ylabel('y [mm]')
-    title(strcat(sete,num2str(max(max(sqrt((Umoy).^2+(Vmoy).^2))))))
+    title(video(1:end-1))
     hold on;
     if trueCarre(numVid)==120.5
         pas=coteCarre(numVid)*calibCat(numVid)/5;
@@ -29,7 +34,7 @@ if numVid>7
                 end
             end
         end
-    elseif trueCarre(numVid)==96.4
+    elseif (trueCarre(numVid)==96.4)
         pas=coteCarre(numVid)*calibCat(numVid)/4;
         
         for i=1:4
@@ -41,7 +46,18 @@ if numVid>7
                 end
             end
         end
+    elseif (trueCarre(numVid)==108.5)
+        pas=96.4/4;
         
+        for i=1:4
+            for j=1:4
+                if mod(i,2)==mod(j,2)
+                    plot(6.05+(0.5+(j-1))*pas,6.05+(0.5+(i-1))*pas,'+r','MarkerSize',10,'LineWidth',2)
+                else
+                    plot(6.05+(0.5+(j-1))*pas,6.05+(0.5+(i-1))*pas,'xk','MarkerSize',10,'LineWidth',2)
+                end
+            end
+        end
     end
     xlim([-5,trueCarre(numVid)+5])
     ylim([-5,trueCarre(numVid)+5])
@@ -107,7 +123,7 @@ if numVid<8
     axis square;
     xlabel('x [mm]')
     ylabel('y [mm]')
-    title(strcat(sete,num2str(max(max(sqrt((Umoy).^2+(Vmoy).^2))))))
+    title(video)
     hold on;
     if trueCarre(numVid)==120.5
         pas=coteCarre(numVid)*calibCat(numVid)/5;

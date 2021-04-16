@@ -1,4 +1,4 @@
-for factelarg=[1,3,10];
+for factelarg=[1,10]%[1,3,10];
 sigbbg=factelarg*sqrt(Dbg*dt);
 N=round(64/pi*L);%Résolution de la grille de simu
 chopvec=5; %On affiche une toutes les chopvec images

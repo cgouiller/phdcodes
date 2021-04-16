@@ -178,8 +178,6 @@ L=[];
 if (exist('changes','var'))==0
     changes=zeros(1,nombreVid);
 end
-changes(591)=1;
-changes(617:620)=1;
 for i=1:nombreVid
     bbg=manipCat.bbg(i);
     fname=strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{i},'\',manipCat.set{i},'\',manipCat.video{i},'.mat');
@@ -238,39 +236,24 @@ for i=1:nombreVid
         vtmp=2.336*(manipCat.A(i)-0.52022)^0.55252;
     end
    Pe=[Pe,vtmp*sqrt(4*pi*(5/2)^2/(90)^2)/0.15];
-   M=[M,manipCat.A(i)*manipCat.asrc(i)/(4*0.15*0.15)];
+   M=[M,manipCat.A(i)*manipCat.asrc(i)/(0.15*0.15)];
 
 
        %if (((manipCat.set{i}(1)=='m') || (manipCat.set{i}(1)=='s')) || (i>91 && i<101)) && changes(i)==1
-       if manipCat.npart(i)>3 && changes(i)==1
-                   load(fname)
-
-            directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{i},'\',manipCat.set{i},'\');
-    
-            d=zeros(manipCat.npart(i),round(length(mx)*0.5));
-            for j=1:manipCat.npart(i)
-                d(j,:)=sqrt((mx(1+round(length(mx)/2):length(mx),j)-mx(1+round(length(mx)/2))).^2+(my(1+round(length(mx)/2):length(mx),j)-my(1+round(length(mx)/2))).^2)';
-            end
-            [MSD,mdx,tau]=msd(d,dt,round(logspace(0,log10(length(d)/1.5),1000)));
-            save(strcat(directoryPyt,manipCat.video{i},'_msd.mat'),'MSD','tau')
-       end
+%        if manipCat.npart(i)>3 && changes(i)==1
+%                    load(fname)
+% 
+%             directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{i},'\',manipCat.set{i},'\');
+%     
+%             d=zeros(manipCat.npart(i),round(length(mx)*0.5));
+%             for j=1:manipCat.npart(i)
+%                 d(j,:)=sqrt((mx(1+round(length(mx)/2):length(mx),j)-mx(1+round(length(mx)/2))).^2+(my(1+round(length(mx)/2):length(mx),j)-my(1+round(length(mx)/2))).^2)';
+%             end
+%             [MSD,mdx,tau]=msd(d,dt,round(logspace(0,log10(length(d)/1.5),1000)));
+%             save(strcat(directoryPyt,manipCat.video{i},'_msd.mat'),'MSD','tau')
+%        end
     changes(i)=0;
     clear Ccampmean;
 end
 save('E:\Clément\MyCore\Analyse\SimuNum\manips.mat','Nombre','AmpVortex','CoefMarangoni','TauP','Date','Set','Duree','Rayon','MasseBbg','Projet','Video','Inertie','Advection','AmpSourceCamphre','Dt','C0','Afin','M','Pe','Theta','Delai','L')
 
-% for i=
-%
-%     fname=strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{i},'\',manipCat.set{i},'\',manipCat.video{i},'.mat');
-%
-%         load(fname)
-%         directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{i},'\',manipCat.set{i},'\');
-%          if exist(directoryPyt)==0
-%              mkdir(directoryPyt);
-%          end
-%
-%          save(strcat(directoryPyt,manipCat.video{i},'.mat'),'profs','mx','my')
-%
-%
-%
-% end

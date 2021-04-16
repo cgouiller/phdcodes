@@ -11,7 +11,7 @@ Lpivbis=dir(strcat(directoryPiv,'*.mat'));
     for field=1:length(Lpiv)/2
         image_filename_1(field)={strcat(directoryPiv,Lpiv(2*field-1).name)};
         image_filename_2(field)={strcat(directoryPiv,Lpiv(2*field).name)};
-        sav_filename(field)={strcat(pathname_sav,num2str(field),'_bis.',sav_index)};
+        sav_filename(field)={strcat(pathname_sav,num2str(field),'.',sav_index)};
     end
 
 load(strcat(directoryPiv,Lpivbis(1).name))
@@ -38,7 +38,7 @@ load(strcat(directoryPiv,Lpivbis(1).name))
         imf=imfilter(im,kg);
         imf2=imfilter(im2,kg);
 
-        mask=imf<250 & imf2<250 & imf>8 & imf2>8;
+        mask=imf<250 & imf2<250 & imf>30 & imf2>30;
         for ii=1:length(x)
             for jj=1:length(y)
                 if mask(x(1,ii),y(end+1-jj,1))==0

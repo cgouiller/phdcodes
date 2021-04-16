@@ -69,16 +69,12 @@ if old_nt~=1 % Correspond à une simu à poursuivre
     if bbg>1
         mxbgb=zeros(nt,bbg);
         mybgb=zeros(nt,bbg);
-        mxbgb(1:old_nt,:)=mxbg(1:old_nt,:);
-        mybgb(1:old_nt,:)=mybg(1:old_nt,:);
-        xbg=mxbg(old_nt,:);
-        ybg=mybg(old_nt,:);
+        mxbgb(1:old_nt,:)=mxbg;
+        mybgb(1:old_nt,:)=mybg;
         mxbg=mxbgb;
         mybg=mybgb;
         clear mxbgb
         clear mybgb
-            [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A,satur);
-
     end
     t=old_nt*dt;
 end
@@ -104,8 +100,8 @@ if old_nt==1
         xp=2*pi*rand(1,npart);
         yp=2*pi*rand(1,npart);
     elseif rdomstart==2
-        xp=(pi/2-0.1)*ones(1,npart);
-        yp=(pi/2-0.1)*ones(1,npart);
+        xp=(L/2+0.0001)*ones(1,npart);
+        yp=(L/2+0.0001)*ones(1,npart);
     elseif rdomstart==0
         xp=pi/4*ones(1,npart);
         yp=pi/4*ones(1,npart);
@@ -461,125 +457,23 @@ for in=old_nt+1:nt
             mvfy{cpt,1}=real(ifft2((vyf)));
         end
     end
-    %% Affichage des champs
-    if round(in/chopvec)*chopvec==in && affichage==1
-        colormap parula(256);
-        if bbg==0
-            % Calcul du champ de camphre en t
-            Ccamp=real(ifft2(Ccamp_f));% init en dt
-            
-            figure(1);
-            pcolor(x,y,Ccamp);colorbar;shading flat;axis equal;caxis([0 1])
-            hold on
-            plot(modulo(xs,L),modulo(ys,L),'ok','markerfacecolor','r');
-            quiver(x(1:3:N,1:3:N),y(1:3:N,1:3:N),vxext(1:3:N,1:3:N),vyext(1:3:N,1:3:N),'w');
-            quiver(mod(xs,L),mod(ys,L),vxnage,vynage,'r')
-            quiver(mod(xs,L),mod(ys,L),vsx,vsy,'k')
-            [vxecext,vyecext]=vfiltnag(real(ifft2((vxextf).*gfilt_f)),real(ifft2((vyextf).*gfilt_f)),Npad,xs,ys,xpad,ypad,L);
-            quiver(mod(xs,L),mod(ys,L),vxecext,vyecext,'w')
-            title(strcat('Champ de camphre et nageurs, t=',int2str(in)));
-            hold off
-            pause(0.01) % Pour que l'affichage à l'écran soit rafraichi
-        else
-            Cbg=real(ifft2(Cbg_f));% init en dt
-            
-            figure(1);
-            pcolor(x,y,Cbg);colorbar;shading flat;axis equal;%caxis([0 1])
-            hold on
-            plot(modulo(xs,L),modulo(ys,L),'ok','markerfacecolor','r');
-            quiver(x(1:3:N,1:3:N),y(1:3:N,1:3:N),vxext(1:3:N,1:3:N),vyext(1:3:N,1:3:N),'w');
-            quiver(mod(xs,L),mod(ys,L),vxnage,vynage,'r')
-            quiver(mod(xs,L),mod(ys,L),vsx,vsy,'k')
-            [vxecext,vyecext]=vfiltnag(real(ifft2((vxextf).*gfilt_f)),real(ifft2((vyextf).*gfilt_f)),Npad,xs,ys,xpad,ypad,L);
-            quiver(mod(xs,L),mod(ys,L),vxecext,vyecext,'w')
-            
-            
-            hold off
-            title(strcat('Champ de bbg et nageurs, t=',int2str(in)));
-            pause(0.01) % Pour que l'affichage à l'écran soit rafraichi
-            
-        end
-    end
-    
-    
-    
-    
-    if autosaves==1 && mod(in*1000/nt,1)==0 % Pour faire des sauvegardes intermédiaires, au cas où par exemple l'ordi se met à jour de son propre chef pendant que ça tourne encore la nuit :P
-        if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\'))==0
-            mkdir(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\'));
-        end
-        nts=nt; % On veut sauvegarder comme nt le pas de temps où on s'est arrêté, et pas celui prévu d'où ce petit trick avec un autre nom nts
-        nt=in; %Malgré ce que dit matlab, nt est utilisé dans la sauvegarde !
-        if bbg==0
-            save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old','satur');
-        elseif bbg==1
-            save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old','satur','mstdbg','Cbg_f','Sfbg','Sfbg_old');
-        elseif bbg>1
-            save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old','satur','mxbg','mybg','vxbg','vybg','vxbg_old','vybg_old');
-        end
-        nt=nts;
-    end
-    
+ if in==10
+     Ccamp10=real(ifft2(Ccamp_f));
+ end
+ if in==43
+          Ccamp43=real(ifft2(Ccamp_f));
+
+ end
+ if in==800
+          Ccamp800=real(ifft2(Ccamp_f));
+
+ end
     
 end
 
+x=(-250:250)*L/128;
+C10=improfile(Ccamp10,[128,0],[128,0],501,'bilinear');
+C43=improfile(Ccamp43,[128,0],[128,0],501,'bilinear');
+C800=improfile(Ccamp800,[128,0],[128,0],501,'bilinear');
+save('E:\Clément\MyCore\Analyse\SimuNum\Vortex\210108\vita\11_fields012.mat','Ccamp10','Ccamp43','Ccamp800','C10','C43','C800','x')
 
-
-%% Mise en forme pour la mesure de MSD
-% Formatage des trajectoires pour l'utilisation de msdanalyzer
-% tracks = cell(npart, 1);
-%
-% for i = 1 : npart
-%
-%     % Time
-%     time = (0 : nt-1)' * dt;
-%
-%     X=mx(1:nt,i);
-%     Y=my(1:nt,i);
-%
-%     % Store
-%     tracks{i} = [time X Y];
-%
-% end
-% ma = msdanalyzer(2, 'space unit', 'time'); % Crée la classe nécessaire à l'utilisation de msd analyzer
-%
-% ma = ma.addAll(tracks); %Ajoute les trajectoires à la classe
-%
-% %ma.plotTracks;
-% ma = ma.computeMSD; %Calcule le MSD
-
-
-
-%% Calcul du spectre du champ de vitesse
-% if old_nt==1
-%     j=1;
-%     Spaddx=zeros(65,1);
-%     Spaddy=zeros(65,1);
-%     for j=1:200 %vf contient 200 champs de vitesse répartis sur la simu dont on va moyenner les spectres
-%         vfx=mvfx{j}; %On en garde qu'un à chaque fois (le numéro j)
-%         vfy=mvfy{j};
-%         for k=1:128 %Somme de chaque ligne de chaque champ de vitesse
-%             Spaddx=Spaddx+pwelch(vfx(k,:),hanning(128),round(128/2),128,1/(2*pi));
-%             Spaddy=Spaddy+pwelch(vfy(k,:),hanning(128),round(128/2),128,1/(2*pi));
-%         end
-%
-%     end
-%     Spx=Spaddx/(128*200); %Normalisation
-%     Spy=Spaddy/(128*200);
-%     Sp=(Spx+Spy)/2;
-%     [aaa,ff]=pwelch(vfy(k,:),hanning(128),round(128/2),128,1/(2*pi)); % juste pour récupérer le vecteur fréquence
-% end
-%
-% k=ff;
-%% On sauvegarde tout
-if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\'))==0
-    mkdir(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\'));
-end
-%save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'commit','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','k','Spx','Spy','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old');
-if bbg==0
-save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old','satur');
-elseif bbg==1
-save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old','satur','mstdbg','Cbg_f','Sfbg','Sfbg_old');
-elseif bbg>1
-    save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'Sfcamp','mvxnage','mvynage','muxp','muyp','mvsx','mvsy','Ccamp_f','nt','mx','my','Dnag','taup','advection','ecoulement','param_ecexterne','dt','uxp','uyp','vsx','vsy','xs','ys','Sfcamp_old','xs_old','ys_old','vsx_old','vsy_old','uxp_old','uyp_old','satur','mxbg','mybg','vxbg','vybg','vxbg_old','vybg_old');
-end
