@@ -377,6 +377,7 @@ for cpt1=5:length(alphalist)
                             
                         end
                         v=sqrt((mx(4000:end)-mx(3999:end-1)).^2+(my(4000:end)-my(3999:end-1)).^2);
+                        vdic=1e-5;
                         if sum(v<1e-4)==0
                             seuilmax=A;
                         else
@@ -397,7 +398,7 @@ end
 alphabar=xalpha.*xsig.*xsig./xDcamp;
 Mc=seuil.*xasrc./(xDcamp.*xDcamp);
 
-save('E:/Clément/SimuNum/Resultats/seuilnage3.mat','alphabar','Mc')
+save('E:/Clément/SimuNum/Resultats/seuilnage4.mat','alphabar','Mc','vdic')
 
 
 %%

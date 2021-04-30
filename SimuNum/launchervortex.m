@@ -5,7 +5,7 @@ globalcount=0; % Juste pour l'affichage de l'avancée
 videocount=0; %idem
 affichage=0; %1 si on veut tracer le champ, 0 si non
 changes=zeros(1,nombreVid);
-start=690;
+start=728;
 for ii=start:nombreVid % Pour l'affichage de l'avancée globale du programme on compte d'abord le nombre de pas de temps totaux à réaliser dans toutes les manips
     if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))~=0
         load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'nt');
@@ -72,17 +72,30 @@ for ii=start:nombreVid
         changes(ii)=1;
     end
     % mean_vfield;
-    if bbg>1
-        ii
-        load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
-        %concmoyautournag;
-        % pairMean2D_25032021;
-           % calc_std;
-        
-        %if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_msd','.mat'))==0
-        % calc_msdbbg 
-        %end
-    end
+%     if bbg>1
+%         ii
+%         load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
+         concmoyautournag;
+%         % pairMean2D_25032021;
+             calc_std;
+%         
+%         %if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_msd','.mat'))==0
+          calc_msdbbg 
+%         %end
+%     end
+  %  if (manipCat.set{ii}(1)=='m') && (manipCat.set{ii}(2)=='u')
+ %       ii
+  %  load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'mx','my');
+%  calc_p6;
+%calc_g6;
+     %   calc_msdnag;
+ %   end
+%     if bbg>1
+%         ii
+%             load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'mxbg','mybg');
+% 
+    %     calc_msdbbg;
+%     end
     %     if ((ii>34 && ii<45) || (ii>59 && ii<71)) && changes(ii)==1
     %     profiles;
     %     end

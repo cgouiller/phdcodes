@@ -2,7 +2,9 @@ run defaultfig;
 run manips;
 cols=['b','r','g','k','c','y','m'];
 cpt=0;
-for ii=[45:50,271]
+%for ii=[45:50,271]
+for ii=[45,48,50,271]
+
     load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
         old_nt=nt;
         bbg=manipCat.bbg(ii);
@@ -95,20 +97,37 @@ source0_f=asrc*source0_f; % Linéarité de la TF
   
     
     % TF du champ de vitesse du fluide dû à Marangoni en t
-    [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A,satur);
-    vx=real(ifft2(vxf));
-    vy=real(ifft2(vyf));
-    [gradx,~]=imgradient(vx);
-        [grady,~]=imgradient(vy);
-gradx=reshape(gradx,[128*128,1]);
-grady=reshape(grady,[128*128,1]);
-[counts,bins]=hist_maison([gradx;grady],0,max([gradx;grady]),100,1);
+%     [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A,satur);
+%     vx=real(ifft2(vxf));
+%     vy=real(ifft2(vyf));
+%     [gradx,~]=imgradient(vx);
+%         [grady,~]=imgradient(vy);
+% gradx=reshape(gradx,[128*128,1]);
+% grady=reshape(grady,[128*128,1]);
+% [counts,bins]=hist_maison([gradx;grady],0,max([gradx;grady]),100,1);
+
+% Cfield=real(ifft2(Ccamp_f));
+% [gradx,grady]=imgradient(Cfield);
+% grad=sqrt(gradx.^2+grady.^2);
+% grad=reshape(grad,[128*128,1]);
+% [counts,bins]=hist_maison(grad,0,max(grad),100,1);
+
+     [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A,satur);
+     vx=real(ifft2(vxf));
+     vy=real(ifft2(vyf));
+     v=sqrt(vx.^2+vy.^2);
+     v=reshape(v,[128*128,1]);
+     [counts,bins]=hist_maison(v,0,max(v),100,1);
+
 cpt=cpt+1;
 hold on;
 plot(bins,counts,cols(cpt))
 hold off;
+    directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{ii},'\',manipCat.set{ii},'\');
+    save(strcat(directoryPyt,num2str(manipCat.video{ii}),'_grads.mat'),'bins','counts');
 end
-legend({'7','15','25','45','70','100','150'})
+legend({'7','45','100','150'})
+%legend({'7','15','25','45','70','100','150'})
 xlabel('grad(c)')
 ylabel('proba')
 

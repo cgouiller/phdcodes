@@ -26,7 +26,7 @@ for k=1:nred:length(mxbg(:,1))
     
     source_f=zeros(size(source0_f));
     for nn=1:bbg
-        source_f=source_f+source0_f.*exp(-1i*mxbg(k,nn)*kx-1i*mybg(k,nn)*ky);
+        source_f=source_f+source0_f.*exp(-1i*mod(mxbg(k,nn),L)*kx-1i*mod(mybg(k,nn),L)*ky);
     end
     Cfield=real(ifft2(source_f));
     Cstd(cpt)=std(std(Cfield))/mean(mean(Cfield));

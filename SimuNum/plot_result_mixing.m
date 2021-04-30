@@ -1,19 +1,19 @@
 %% Graphs
 run manips
 run defaultfig
-% for i=1:8
-%     figure;
-%     %load(strcat('E:\Clément\SimuNum\Resultats\210309\mixd\0',num2str(i),'_cstd1.mat'))
-%     %plot(Cstd,'b')
-%     hold on;
-%     load(strcat('E:\Clément\SimuNum\Resultats\210309\mixd\0',num2str(i),'_cstd3.mat'))
-%     plot(Cstd,'r')
-%     %load(strcat('E:\Clément\SimuNum\Resultats\210309\mixd\0',num2str(i),'_cstd10.mat'))
-%     %plot(Cstd,'k')
-%     %legend({'1','3','10'})
-%     xlabel('temps')
-%     ylabel('Cstd/<C>_{spat}')
-% end
+for i=1:8
+    figure;
+    %load(strcat('E:\Clément\SimuNum\Resultats\210309\mixd\0',num2str(i),'_cstd1.mat'))
+    %plot(Cstd,'b')
+    hold on;
+    load(strcat('E:\Clément\SimuNum\Resultats\210309\mixd\0',num2str(i),'_cstd3.mat'))
+    plot(Cstd,'r')
+    %load(strcat('E:\Clément\SimuNum\Resultats\210309\mixd\0',num2str(i),'_cstd10.mat'))
+    %plot(Cstd,'k')
+    %legend({'1','3','10'})
+    xlabel('temps')
+    ylabel('Cstd/<C>_{spat}')
+end
 % for i=1:6
 %     figure;
 %     %load(strcat('E:\Clément\SimuNum\Resultats\210408\mixd\0',num2str(i),'_cstd1.mat'))
@@ -48,15 +48,15 @@ for i=1:8
     
 end
 for i=1:6
-%     load(strcat('E:\Clément\SimuNum\Resultats\210309\mixd\0',num2str(i),'_cstd1.mat'))
-%     unlist=[unlist,mean(Cstd(200:end))];
-%     unlister=[unlister,std(Cstd(200:end))/sqrt(length(Cstd(200:end)))];
+     load(strcat('E:\Clément\SimuNum\Resultats\210309\mixd\0',num2str(i),'_cstd1.mat'))
+     unlist=[unlist,mean(Cstd(200:end))];
+     unlister=[unlister,std(Cstd(200:end))/sqrt(length(Cstd(200:end)))];
     load(strcat('E:\Clément\SimuNum\Resultats\210408\mixd\0',num2str(i),'_cstd3.mat'))
     troislist=[troislist,mean(Cstd(20:end))];%200
     troislister=[troislister,std(Cstd(20:end))/sqrt(length(Cstd(20:end)))];%200
-%     load(strcat('E:\Clément\SimuNum\Resultats\210309\mixd\0',num2str(i),'_cstd10.mat'))
-%     dixlist=[dixlist,mean(Cstd(200:end))];
-%     dixlister=[dixlister,std(Cstd(200:end))/sqrt(length(Cstd(200:end)))];
+     load(strcat('E:\Clément\SimuNum\Resultats\210309\mixd\0',num2str(i),'_cstd10.mat'))
+     dixlist=[dixlist,mean(Cstd(200:end))];
+     dixlister=[dixlister,std(Cstd(200:end))/sqrt(length(Cstd(200:end)))];
     
 end
 %errorbar(nlist,unlist,unlister,'+b','MarkerSize',12)

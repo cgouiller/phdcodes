@@ -15,6 +15,7 @@ alpha=2; %Coefficient de sublimation
 sig=sqrt(4*pi*(Dnag/2)^2/(90)^2); %Calcule la largeur de gaussienne associée au diamètre des nageurs
 Dcamp=0.15;% Coeff de diffusion du camphre
 
+sig=sig*sqrt(asrc); %Prendre en compte le rayon du nageur
 
 %% Initialisation des tableaux de stockage de valeurs
 if old_nt==1 % Correspond à une simu jamais commencée

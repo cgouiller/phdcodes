@@ -1,13 +1,15 @@
-run defaultfig;
+run defaultfig;run manips;
 cols=['b','r','g','k','c','y','m'];
-for ii=45:50
+cpt=1;
+%for ii=45:50
+for ii=[45,48,50,271]
     load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
         old_nt=nt;
         bbg=manipCat.bbg(ii);
     taup=manipCat.taup(ii);
     inertie=manipCat.inertie(ii);
     amp_ec=manipCat.amp_ec(ii);
-    npart=manipCat.npart(ii);
+    npart=manipCat.npart(ii)
     A=manipCat.A(ii);
     nt=manipCat.nt(ii);
     rdomstart=manipCat.randomstart(ii);
@@ -110,10 +112,15 @@ Spmeanx=Sptotx/N;
 Spmeany=Sptoty/N;
 Spmean=(Spmeanx+Spmeany)/2;
 hold on;
-loglog(f,Spmean,cols(ii-43));
+loglog(f,Spmean,cols(cpt));
+cpt=cpt+1;
 hold off;
+    directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{ii},'\',manipCat.set{ii},'\');
+    save(strcat(directoryPyt,num2str(manipCat.video{ii}),'_Spvfield.mat'),'f','Spmean');
 end
-legend({'7','15','25','45','70','100'})
+%legend({'7','15','25','45','70','100'})
+legend({'7','45','100','150'})
+
 set(gca, 'XScale', 'log')
 set(gca, 'YScale', 'log')
 xlabel('k')
