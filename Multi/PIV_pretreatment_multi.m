@@ -10,7 +10,7 @@ angle=-mean(angles); %- parce qu'on veut tourner dans l'autre sens que celui qu'
 
 if numVid<10
     reshval=round(min([2048-centerXCat(numVid),centerXCat(numVid),centerYCat(numVid),2048-centerYCat(numVid)])-5);
-
+    
     Lbg=dir(strcat(directoryVid,'\bg\','*.tif'));
     % a typical image to get its size
     fname=Lbg(1).name;
@@ -133,16 +133,16 @@ if numVid<10
         imwrite(im,strcat(directoryPiv,'im_',number,'_b.tif'),'tif');
     end
 else
-   
+    
     Lbg=dir('Y:\cgouiller\Multi\210331\varSpeed\480\bg\*.tif');
     fname=Lbg(1).name;
     fnamecompl=strcat('Y:\cgouiller\Multi\210331\varSpeed\480\bg\',fname);
     im0=double(imread(fnamecompl));
-  %  centerval=(length(im0)+1)/2;
+    %  centerval=(length(im0)+1)/2;
     
-%     xedge2=[centerval-coteCarre(numVid)/2,centerval+coteCarre(numVid)/2,centerval+coteCarre(numVid)/2,centerval-coteCarre(numVid)/2];
-%     yedge2=[centerval-coteCarre(numVid)/2,centerval-coteCarre(numVid)/2,centerval+coteCarre(numVid)/2,centerval+coteCarre(numVid)/2];
-%    
+    %     xedge2=[centerval-coteCarre(numVid)/2,centerval+coteCarre(numVid)/2,centerval+coteCarre(numVid)/2,centerval-coteCarre(numVid)/2];
+    %     yedge2=[centerval-coteCarre(numVid)/2,centerval-coteCarre(numVid)/2,centerval+coteCarre(numVid)/2,centerval+coteCarre(numVid)/2];
+    %
     centervalx=centerXCat(numVid);
     centervaly=centerYCat(numVid);
     reshval=round(coteCarre(numVid)/2);
@@ -161,7 +161,7 @@ else
     
     ptsf(:,1)=pts2(:,2)-tt(2);
     ptsf(:,2)=pts2(:,1)-tt(1);
-       
+    
     
     L=dir(strcat(directoryVid,'\*.tif'));
     alea=randi([startImgCatalogue(numVid),length(L)-1],[200,1]);
@@ -179,25 +179,8 @@ else
         fnamesave=fname;
         fnamecompl=strcat(directoryVid,'\',fname);
         im=double(imread(fnamecompl));
-        im=im(centerYCat(numVid)-reshval:centerYCat(numVid)+reshval,centerXCat(numVid)-reshval:centerXCat(numVid)+reshval);
-        centerval=(length(im)+1)/2;
-        [X,Y]=meshgrid(1:size(im,2),1:size(im,1));
-        s=size(im,1);
-        pts=zeros(length(X).^2,2);
-        ptsf=zeros(length(X).^2,2);
-        pts(:,1)=X(:)-centerval;
-        pts(:,2)=Y(:)-centerval;
-        R=[cos(angle), sin(angle);-sin(angle) cos(angle)];
-        v=[s/2-centerval, s/2-centerval];
-        tt=v*R;
-        pts2=pts*R;
-        pts2(:,1)=pts2(:,1)+centerval;
-        pts2(:,2)=pts2(:,2)+centerval;
-        
-        ptsf(:,1)=pts2(:,2)-tt(2);
-        ptsf(:,2)=pts2(:,1)-tt(1);
-        
         [im,count]=bilinear_clement(im,ptsf);
+        im=im(centerYCat(numVid)-reshval:centerYCat(numVid)+reshval,centerXCat(numVid)-reshval:centerXCat(numVid)+reshval);
         im=uint8(im);
         imwrite(im,strcat(directoryPiv,'im_',number,'_a.tif'),'tif');
         
@@ -207,24 +190,8 @@ else
         fnamesave=fname;
         fnamecompl=strcat(directoryVid,'\',fname);
         im=double(imread(fnamecompl));
-        im=im(centerYCat(numVid)-reshval:centerYCat(numVid)+reshval,centerXCat(numVid)-reshval:centerXCat(numVid)+reshval);
-        [X,Y]=meshgrid(1:size(im,2),1:size(im,1));
-        s=size(im,1);
-        pts=zeros(length(X).^2,2);
-        ptsf=zeros(length(X).^2,2);
-        pts(:,1)=X(:)-centerval;
-        pts(:,2)=Y(:)-centerval;
-        R=[cos(angle), sin(angle);-sin(angle) cos(angle)];
-        v=[s/2-centerval, s/2-centerval];
-        tt=v*R;
-        pts2=pts*R;
-        pts2(:,1)=pts2(:,1)+centerval;
-        pts2(:,2)=pts2(:,2)+centerval;
-        
-        ptsf(:,1)=pts2(:,2)-tt(2);
-        ptsf(:,2)=pts2(:,1)-tt(1);
-        
         [im,count]=bilinear_clement(im,ptsf);
+        im=im(centerYCat(numVid)-reshval:centerYCat(numVid)+reshval,centerXCat(numVid)-reshval:centerXCat(numVid)+reshval);
         im=uint8(im);
         imwrite(im,strcat(directoryPiv,'im_',number,'_b.tif'),'tif');
     end
