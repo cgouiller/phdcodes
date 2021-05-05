@@ -1,4 +1,4 @@
-for factelarg=[1,10]%[1,3,10];
+for factelarg=[1,10,100]%[1,3,10];
 sigbbg=factelarg*sqrt(Dbg*dt);
 N=round(64/pi*L);%Résolution de la grille de simu
 chopvec=5; %On affiche une toutes les chopvec images
@@ -19,7 +19,7 @@ source0_f=fft2(source).*exp(1i*pi*kx+1i*pi*ky);
 
 % on definit le filtre dans l'espace de fourier
 gfilt_f=source0_f/sum(sum(source));
-nred=20;
+nred=200;
 Cstd=zeros(1,length(mxbg(:,1))/nred);
 cpt=1;
 for k=1:nred:length(mxbg(:,1))

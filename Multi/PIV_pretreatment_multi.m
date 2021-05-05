@@ -8,8 +8,9 @@ angles(4)=angles(4)-pi/2;
 angles(xs<0)=angles(xs<0)+pi;
 angle=-mean(angles); %- parce qu'on veut tourner dans l'autre sens que celui qu'on a mesuré!
 
-reshval=round(min([2048-centerXCat(numVid),centerXCat(numVid),centerYCat(numVid),2048-centerYCat(numVid)])-5);
 if numVid<10
+    reshval=round(min([2048-centerXCat(numVid),centerXCat(numVid),centerYCat(numVid),2048-centerYCat(numVid)])-5);
+
     Lbg=dir(strcat(directoryVid,'\bg\','*.tif'));
     % a typical image to get its size
     fname=Lbg(1).name;
@@ -133,29 +134,30 @@ if numVid<10
     end
 else
    
-    Lbg=dir('H:\Multi\210331\varSpeed\480\bg\*.tif');
+    Lbg=dir('Y:\cgouiller\Multi\210331\varSpeed\480\bg\*.tif');
     fname=Lbg(1).name;
-    fnamecompl=strcat('H:\Multi\210331\varSpeed\480\bg\',fname);
+    fnamecompl=strcat('Y:\cgouiller\Multi\210331\varSpeed\480\bg\',fname);
     im0=double(imread(fnamecompl));
-    centerval=(length(im0)+1)/2;
+  %  centerval=(length(im0)+1)/2;
     
-    xedge2=[centerval-coteCarre(numVid)/2,centerval+coteCarre(numVid)/2,centerval+coteCarre(numVid)/2,centerval-coteCarre(numVid)/2];
-    yedge2=[centerval-coteCarre(numVid)/2,centerval-coteCarre(numVid)/2,centerval+coteCarre(numVid)/2,centerval+coteCarre(numVid)/2];
-    mincrop=round(mean([xedge2(1),xedge2(4),yedge2(1),yedge2(2)]));
-    maxcrop=round(mean([xedge2(2),xedge2(3),yedge2(3),yedge2(4)]));
-    
+%     xedge2=[centerval-coteCarre(numVid)/2,centerval+coteCarre(numVid)/2,centerval+coteCarre(numVid)/2,centerval-coteCarre(numVid)/2];
+%     yedge2=[centerval-coteCarre(numVid)/2,centerval-coteCarre(numVid)/2,centerval+coteCarre(numVid)/2,centerval+coteCarre(numVid)/2];
+%    
+    centervalx=centerXCat(numVid);
+    centervaly=centerYCat(numVid);
+    reshval=round(coteCarre(numVid)/2);
     [X,Y]=meshgrid(1:size(im0,2),1:size(im0,1));
     s=size(im0,1);
     pts=zeros(length(X).^2,2);
     ptsf=zeros(length(X).^2,2);
-    pts(:,1)=X(:)-centerval;
-    pts(:,2)=Y(:)-centerval;
+    pts(:,1)=X(:)-centervalx;
+    pts(:,2)=Y(:)-centervaly;
     R=[cos(angle), sin(angle);-sin(angle) cos(angle)];
-    v=[s/2-centerval, s/2-centerval];
+    v=[s/2-centervalx, s/2-centervaly];
     tt=v*R;
     pts2=pts*R;
-    pts2(:,1)=pts2(:,1)+centerval;
-    pts2(:,2)=pts2(:,2)+centerval;
+    pts2(:,1)=pts2(:,1)+centervalx;
+    pts2(:,2)=pts2(:,2)+centervaly;
     
     ptsf(:,1)=pts2(:,2)-tt(2);
     ptsf(:,2)=pts2(:,1)-tt(1);
@@ -196,7 +198,6 @@ else
         ptsf(:,2)=pts2(:,1)-tt(1);
         
         [im,count]=bilinear_clement(im,ptsf);
-        im=im(mincrop:maxcrop,mincrop:maxcrop);
         im=uint8(im);
         imwrite(im,strcat(directoryPiv,'im_',number,'_a.tif'),'tif');
         
@@ -224,7 +225,6 @@ else
         ptsf(:,2)=pts2(:,1)-tt(1);
         
         [im,count]=bilinear_clement(im,ptsf);
-        im=im(mincrop:maxcrop,mincrop:maxcrop);
         im=uint8(im);
         imwrite(im,strcat(directoryPiv,'im_',number,'_b.tif'),'tif');
     end

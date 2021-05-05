@@ -1,10 +1,11 @@
 %% Calcule la concentration moyenne à chaque endroit autour du nageur en linéaire
 
 
+load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'mx','my','mxbg','mybg');
 
 dispstat('','init');
 dispstat(sprintf('Begining the mean trail calculation...'),'keepthis','timestamp');
-sigbbg=3*sqrt(Dbg*dt);
+sigbbg=10*sqrt(Dbg*dt);%3
 N=round(64/pi*L);%Résolution de la grille de simu
 make_grid; %Initialise la grille de simu (N*N) et une variable utile pour gérer l'aliasing
 
@@ -19,7 +20,7 @@ imtot=zeros(N,N);
 counttot=zeros(N,N);
 nnag=length(mx(1,:));
 ntot=(length(mx(1,:)))*(length(mx(:,1))-1000);
-nvoulu=10000; %*10
+nvoulu=1000; %*100
 aleat=round((rand(1,nvoulu)*(ntot-nnag))+1000*nnag);
 for jj=1:length(aleat)
     k=aleat(jj);
@@ -69,7 +70,7 @@ for jj=1:length(aleat)
     
 end
 immoy=imtot./counttot;
-save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_meanTrail.mat'),'immoy');
-save(strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_meanTrail.mat'),'immoy');
+save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_meanTrail_10.mat'),'immoy');
+save(strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_meanTrail_10.mat'),'immoy');
 
 

@@ -5,7 +5,7 @@ run('E:\Clément\phdcodes\Multi\manipspiv.m');
 
 
 
-for numVid=12%8:9%4:7%[2,1,3]%:3
+for numVid=21%8:9%4:7%[2,1,3]%:3
     numVid
 % xs=[bdxcat(numVid)-bgxcat(numVid),hdxcat(numVid)-bdxcat(numVid),hdxcat(numVid)-hgxcat(numVid),hgxcat(numVid)-bgxcat(numVid)];
 % ys=-[bdycat(numVid)-bgycat(numVid),hdycat(numVid)-bdycat(numVid),hdycat(numVid)-hgycat(numVid),hgycat(numVid)-bgycat(numVid)];
@@ -45,15 +45,15 @@ for numVid=12%8:9%4:7%[2,1,3]%:3
     sete=strjoin(setCatalogue(numVid));
     startImg=startImgCatalogue(numVid);
     date=strjoin(dateCatalogue(numVid));
-    % build paths and create directories
+    % build paths and create directori
     directoryVid=strcat(basePathVid,date,sete,video);
-    directoryPiv=strcat(directoryVid,'piv\');
+    directoryPiv=strcat(directoryVid,'piv2\');
 
     if exist(directoryPiv)==0
         mkdir(directoryPiv);
     end
-      %  PIV_pretreatment_multi;
-   %  dpiv_nappe_multi;
- %  PIV_treatment_multi_mask;
-   piv_plot;
+        PIV_pretreatment_multi;
+     dpiv_nappe_multi;
+   PIV_treatment_multi_mask;
+  % piv_plot;
 end

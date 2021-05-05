@@ -1,6 +1,6 @@
 %calc_g6
 load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_p6.mat'))
-inc=round(logspace(log10(1),log10(round(length(p6list(:,1))/3)),100));
+inc=round(logspace(log10(1),log10(round(length(p6list(:,1))/4)),300));
 Nmax=length(inc);
 g6=zeros(1,Nmax);
 tau=inc*(tlist(2)-tlist(1))*manipCat.dt(ii);

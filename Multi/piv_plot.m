@@ -59,8 +59,8 @@ if numVid>7
             end
         end
     end
-    xlim([-5,trueCarre(numVid)+5])
-    ylim([-5,trueCarre(numVid)+5])
+    %xlim([-5,trueCarre(numVid)+5])
+    %ylim([-5,trueCarre(numVid)+5])
     colormap parula(256);colorbar
 end
 

@@ -13,9 +13,12 @@ make_grid; %Initialise la grille de simu (N*N) et une variable utile pour gérer 
 
 alpha=2; %Coefficient de sublimation
 sig=sqrt(4*pi*(Dnag/2)^2/(90)^2); %Calcule la largeur de gaussienne associée au diamètre des nageurs
-Dcamp=0.15;% Coeff de diffusion du camphre
 
 sig=sig*sqrt(asrc); %Prendre en compte le rayon du nageur
+Dcamp=0.15;
+if (manipCat.set{ii}(1)=='v') && (manipCat.set{ii}(2)=='i') && (manipCat.set{ii}(t)=='t') && (manipCat.set{ii}(4)=='s')
+Dcamp=0.15*sqrt(asrc);% Coeff de diffusion du camphre
+end
 
 %% Initialisation des tableaux de stockage de valeurs
 if old_nt==1 % Correspond à une simu jamais commencée
