@@ -11,7 +11,7 @@ ImageVisu=0;   % means that no figure will be shown
 dispstat(sprintf('Begining the Piv calculation...'),'keepthis','timestamp');
 for field=1:length(Lpiv)/2
    
-          dispstat(sprintf('Progress video %d%%',round(field/length(Lpiv)/2*100)),'timestamp');
+          dispstat(sprintf('Progress video %d%%',round(field/length(Lpiv)*2*100)),'timestamp');
 
    %message=strcat('Velocity field number ','_',num2str(field),':',char(image_filename_1(field)));
    %disp(message);

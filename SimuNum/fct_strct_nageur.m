@@ -13,11 +13,14 @@ for ii=[45,48,50,271]
     inertie=manipCat.inertie(ii);
     amp_ec=manipCat.amp_ec(ii);
     npart=manipCat.npart(ii);
-    nbins=20;
+    nbins=50;
     edges=logspace(log10(0.25),log10(2*manipCat.L(ii)*sqrt(2)),nbins);
     cpts=zeros(1,length(edges));
     vals=zeros(1,length(edges));
-    for i=round(linspace(length(mx(:,1))/2,length(mx(:,1))-1,ceil(100000/npart)))
+    list=round(linspace(length(mx(:,1))/2,length(mx(:,1))-1,ceil(200000/npart)));
+    %for i=round(linspace(length(mx(:,1))/2,length(mx(:,1))-1,ceil(200000/npart)))
+    for kkk=1291:1334
+        i=list(kkk);
         mxtt=mod(mx(i,:),manipCat.L(ii));
         mytt=mod(my(i,:),manipCat.L(ii));
         vxtt=(mx(i+1,:)-mx(i-1,:))/(2*manipCat.dt(ii));
@@ -51,7 +54,7 @@ for ii=[45,48,50,271]
     S2=S2(2:end);
     bins=(edges(1:end-1)+edges(2:end))/2;
 
-    save(strcat(directoryPyt,num2str(manipCat.video{ii}),'_S2.mat'),'bins','S2');
+    save(strcat(directoryPyt,num2str(manipCat.video{ii}),'_S2_2.mat'),'bins','S2');
    % else
    %     load(strcat(directoryPyt,num2str(manipCat.video{ii}),'_S2.mat'))
    % end

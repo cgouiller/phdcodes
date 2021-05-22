@@ -1,7 +1,39 @@
 % if old_nt~=1 && exist('k')~=0
 %     ff=k; %Pour éviter le conflit entre fréquence du spectre et k utilisé comme variable pour boucle for
 % end
-
+run manips
+old_nt=1;
+ii=165;
+    %% Choix des paramètres de la simu
+    bbg=manipCat.bbg(ii);
+    taup=manipCat.taup(ii);
+    inertie=manipCat.inertie(ii);
+    amp_ec=manipCat.amp_ec(ii);
+    npart=manipCat.npart(ii);
+    A=manipCat.A(ii);
+    nt=801;
+    rdomstart=6;
+    dt=manipCat.dt(ii);
+    satur=manipCat.satur(ii);
+    theta=manipCat.theta(ii);
+    delai=manipCat.delai(ii);
+    L=manipCat.L(ii);
+    ecoulement=1;
+    marangoni=1;
+    if amp_ec==0
+        ecoulement=0;
+    end
+    if A==0
+        marangoni=0;
+    end
+    Dbg=manipCat.Dbg(ii);
+    
+    Dnag=5; %En mm, le diamètre des nageurs voulus
+    asrc=manipCat.asrc(ii); % Amplitude du flux de camphre libéré
+    advection=1; %1 si avec advection, 0 si non
+    
+    
+    param_ecexterne=manipCat.paramec(ii);
 %% Initialisations de la simu
 N=round(64/pi*L);%Résolution de la grille de simu
 chopvec=5; %On affiche une toutes les chopvec images
@@ -371,10 +403,7 @@ for in=old_nt+1:nt
         
     % Affichage du pourcentage d'avancée de la simu et de toutes celles
     % lancées
-    if (mod(in,1000)==0)
-        prcent=[round((in-(old_nt+1))*100/(nt-old_nt+1)),round(100*(videocount+in-old_nt)/globalcount)];
-        dispstat(sprintf('Progress video %d%% Progress total %d%%',prcent),'timestamp');
-    end
+
     
     Ccamp_f=expdt.*(Ccamp_f + 3/2*dt*Sfcamp)-1/2*dt*expdt2.*Sfcamp_old;% Evolution de l'équa diff pour le camphre
     Ccamp_f=Ccamp_f.*alias;%Eviter l'aliasing
@@ -471,7 +500,7 @@ for in=old_nt+1:nt
     
 end
 
-x=(-250:250)*L/128;
+x=(-250:250)/250*L/2*sqrt(2);
 C10=improfile(Ccamp10,[128,0],[128,0],501,'bilinear');
 C43=improfile(Ccamp43,[128,0],[128,0],501,'bilinear');
 C800=improfile(Ccamp800,[128,0],[128,0],501,'bilinear');

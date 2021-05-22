@@ -5,8 +5,8 @@ globalcount=0; % Juste pour l'affichage de l'avancée
 videocount=0; %idem
 affichage=0; %1 si on veut tracer le champ, 0 si non
 changes=zeros(1,nombreVid);
-start=768;%70;
-for ii=start:768%nombreVid % Pour l'affichage de l'avancée globale du programme on compte d'abord le nombre de pas de temps totaux à réaliser dans toutes les manips
+start=890;
+for ii=start:890 % Pour l'affichage de l'avancée globale du programme on compte d'abord le nombre de pas de temps totaux à réaliser dans toutes les manips
     if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))~=0
         load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'nt');
         old_nt=nt;
@@ -18,7 +18,7 @@ for ii=start:768%nombreVid % Pour l'affichage de l'avancée globale du programme 
     globalcount=globalcount+nt-old_nt;
 end
 %for ii=[526,542,558]% La boucle qui appelle le programme de simu
-for ii=[728:733,736:740]
+for ii=890
     ii
     
     if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))~=0 % si il existe déjà des data pour cette vidéo, on repart du dernier pas de temps existant
@@ -70,19 +70,27 @@ for ii=[728:733,736:740]
 
         simu;
         changes(ii)=1;
+        calc_p6;
+        calc_g6;
+       % calc_msdnag;
+        
+      %  calc_std;
+      %  calc_msdbbg;
+     %   concmoyautournag;
+       % calc_msdnag;
     end
     % mean_vfield;
    % if bbg>1
 %         ii
-       %  concmoyautournag;
+       % concmoyautournag;
 %         % pairMean2D_25032021;
 %ii
-            load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
+          %  load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'mxbg','mybg');
 
-        %     calc_std;
+           % calc_std;
 %         
 %         %if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_msd','.mat'))==0
-          calc_msdbbg 
+  %       calc_msdbbg 
 %         %end
    %  end
 %     if (manipCat.set{ii}(1)=='m') && (manipCat.set{ii}(2)=='u')
@@ -92,10 +100,10 @@ for ii=[728:733,736:740]
 %         p6list=abs(p6list);
 %         save(strcat(directoryPyt,manipCat.video{ii},'_p6time.mat'),'tlist','p6list')
 %     end
-   % load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'mx','my');
+  %  load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'mx','my');
 %  calc_p6;
 %calc_g6;
-        calc_msdnag;
+     %   calc_msdnag;
   %  end
 %     if bbg>1
 %         ii

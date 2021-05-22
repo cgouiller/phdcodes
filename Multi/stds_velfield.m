@@ -48,36 +48,17 @@ load(strcat(directoryPiv3,Lpivbis(1).name))
             end
         end
         
-        
+             u(u==0)=NaN;
+        v(v==0)=NaN;
         ucat(field,:,:)=u;
         vcat(field,:,:)=v;
-        U_tot=U_tot+u;
-        V_tot=V_tot+v;
-       u(u==0)=NaN;
-       v(v==0)=NaN;
-         countsu=countsu+(ones(size(u))-isnan(u));
-         countsv=countsv+(ones(size(v))-isnan(v));
+
 %         
     end
-    Umoy=U_tot./countsu;
-    Vmoy=-V_tot./countsv; %sinon c'est dans le mauvais sens...
-    %Umoy(countsu<20)=0;
-    %Vmoy(countsv<20)=0;
-    
-    Umed=zeros(size(Umoy));
-    Vmed=zeros(size(Vmoy));
-    Uvar=zeros(size(Umoy));
-    Vvar=zeros(size(Vmoy));
-    for i=1:length(u)
-        for j=1:length(v)
-            ul=ucat(:,i,j);
-            vl=vcat(:,i,j);
-            Umed(i,j)=median(ul(ul~=0));
-            Vmed(i,j)=-median(vl(vl~=0));
-            Uvar=var(ul(ul~=0));
-            Vvar=var(vl(vl~=0));
-    
-        end
-    end
 
-    save(strcat(directoryPiv3,'PIV_mean_mask'),'x','y','Umoy','Vmoy','countsu','countsv','Umed','Vmed','Uvar','Vvar')
+    ucat=reshape(ucat,[numel(ucat),1]);
+    vcat=reshape(vcat,[numel(vcat),1]);
+       amp=sqrt(ucat.^2+vcat.^2);
+    amp=amp(isnan(amp)==0);
+    stdfield=std(amp);
+    save(strcat(directoryPiv3,'PIV_stdvfield'),'stdfield')

@@ -29,6 +29,11 @@ if onoff==1
         vx=amplitude*sin(4*y);
         vy=0*x;
     end
+    if choix==6
+        vx=amplitude*sin(2*x).*cos(2*y);
+        vy=-amplitude*cos(2*x).*sin(2*y);
+        
+    end
 end
 
 

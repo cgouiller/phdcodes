@@ -11,8 +11,8 @@ for ii=1:length(Nnagl)
     Nnag=Nnagl(ii)
     airedepl=airesdepl(ii);
    %if exist(strcat('E:\Clément\SimuNum\Resultats\modele_4_',num2str(Nnag),'.mat'))==0
-        %lpm=L^2/(Nnag*secteff); %(version1)
-        lpm=(L^2-Nnag.*airedepl)./(Nnag*secteff); %(v2);
+        lpm=L^2/(Nnag*secteff); %(version1)
+      %  lpm=(L^2-Nnag.*airedepl)./(Nnag*secteff); %(v2);
         
         
         
@@ -40,14 +40,23 @@ for ii=1:length(Nnagl)
             mx(i)=mx(i-1)+lpm*cos(pi/180*angleact);
             my(i)=my(i-1)+lpm*sin(pi/180*angleact);
         end
-        [MeanSDx,mdx,taux]=msd(mx,dt,round(logspace(0,log10(length(mx)/3),100)));
-        [MeanSDy,mdy,tauy]=msd(my,dt,round(logspace(0,log10(length(mx)/3),100)));
+        mxtot=zeros(1,(length(mx)-1)*100);
+        mytot=zeros(1,(length(my)-1)*100);
+
+        for i=1:length(mx)-1
+            mxtot(1,(i-1)*100+1:i*100)=linspace(mx(i),mx(i+1),100);
+            mytot(1,(i-1)*100+1:i*100)=linspace(my(i),my(i+1),100);
+        end
+        [MeanSDx,mdx,taux]=msd(mxtot,dt/100,round(logspace(0,log10(length(mxtot)/3),100)));
+        [MeanSDy,mdy,tauy]=msd(mytot,dt/100,round(logspace(0,log10(length(mxtot)/3),100)));
         MeanSD=MeanSDx+MeanSDy;
         tau=taux;
-        save(strcat('E:\Clément\SimuNum\Resultats\modele_2_',num2str(Nnag),'.mat'),'tau','MeanSD')
-  % else
- %       load(strcat('E:\Clément\SimuNum\Resultats\modele_4_',num2str(Nnag),'.mat'))
-%   end
+        clear mxtot;
+        clear mytot;
+        save(strcat('E:\Clément\SimuNum\Resultats\modele_1_',num2str(Nnag),'.mat'),'tau','MeanSD')
+%    else
+%         load(strcat('E:\Clément\SimuNum\Resultats\modele_4_',num2str(Nnag),'.mat'))
+%    end
     tau=tau/(0.0985^2/0.15);
     MeanSD=MeanSD/(0.0985^2);
     hold on;
@@ -61,3 +70,5 @@ legend({'7','15','25','45','70','100','150'})
 set(gca, 'XScale', 'log')
 set(gca, 'YScale', 'log')
 figure;plot([7,15,25,45,70,100,150],Dlist,'+')
+xlabel('N')
+ylabel('Deff')

@@ -5,8 +5,8 @@ load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{i
 
 dispstat('','init');
 dispstat(sprintf('Begining the mean trail calculation...'),'keepthis','timestamp');
-sigbbg=10*sqrt(Dbg*dt);%3
-N=round(64/pi*L);%Résolution de la grille de simu
+sigbbg=sqrt((2*pi)^2/(10000*pi));%sqrt(Dbg*dt)/2;
+N=256;%Résolution de la grille de simu
 make_grid; %Initialise la grille de simu (N*N) et une variable utile pour gérer l'aliasing
 
 
@@ -14,18 +14,22 @@ make_grid; %Initialise la grille de simu (N*N) et une variable utile pour gérer 
 source=exp(-((x-pi).^2+(y-pi).^2)/2/sigbbg^2)/(2*pi*sigbbg^2);% aire normalisée à 1
 % on centre la source en (0,0), translation de -pi en x et y
 source0_f=fft2(source).*exp(1i*pi*kx+1i*pi*ky);
+nt=manipCat.nt(ii);
 
 % on definit le filtre dans l'espace de fourier
 imtot=zeros(N,N);
 counttot=zeros(N,N);
 nnag=length(mx(1,:));
-ntot=(length(mx(1,:)))*(length(mx(:,1))-1000);
-nvoulu=1000; %*100
-aleat=round((rand(1,nvoulu)*(ntot-nnag))+1000*nnag);
+ntot=nnag*(nt-10000);
+nvoulu=1000;
+aleat=round((rand(1,nvoulu)*(ntot-nnag))+10000*nnag);
+while length(aleat)~=length(unique(aleat))
+    aleat=[unique(aleat),round((rand(1,length(aleat)-length(unique(aleat)))*(ntot-nnag))+5000*nnag)];
+end
 for jj=1:length(aleat)
-    k=aleat(jj);
-    numimage=fix((k-1)/nnag)+1;
-    numnage=k-(numimage-1)*nnag;
+    kk=aleat(jj);
+    numimage=fix((kk-1)/nnag)+1;
+    numnage=kk-(numimage-1)*nnag;
     
     if mod(jj,10)==0
         dispstat(sprintf('Progress %d%%',round(jj*100/length(aleat))),'timestamp');
@@ -38,8 +42,8 @@ for jj=1:length(aleat)
     Cfield=real(ifft2(source_f));
     
     s=length(Cfield);
-    posxnag=mod(mx(numimage,numnage),L)*128/L;
-    posynag=mod(my(numimage,numnage),L)*128/L;
+    posxnag=mod(mx(numimage,numnage),L)*N/L;
+    posynag=mod(my(numimage,numnage),L)*N/L;
     angle=atan((my(numimage+1,numnage)-my(numimage-1,numnage))/(mx(numimage+1,numnage)-mx(numimage-1,numnage)));
     if mx(numimage+1,numnage)-mx(numimage-1,numnage)<0
         angle=angle+pi;
@@ -70,7 +74,15 @@ for jj=1:length(aleat)
     
 end
 immoy=imtot./counttot;
-save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_meanTrail_10.mat'),'immoy');
-save(strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_meanTrail_10.mat'),'immoy');
+ source_f=zeros(size(source0_f));
+    for nn=1:bbg
+        source_f=source_f+source0_f.*exp(-1i*mod(mxbg(nt,nn),L)*kx-1i*mod(mybg(nt,nn),L)*ky);
+    end
+    Cfield=real(ifft2(source_f));
+    immoynorm=immoy/mean(mean(Cfield));
+save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_meanTrail.mat'),'immoy','immoynorm');
+mkdir(strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii}))
+
+save(strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_meanTrail.mat'),'immoy','immoynorm');
 
 

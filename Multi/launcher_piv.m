@@ -5,7 +5,7 @@ run('E:\Clément\phdcodes\Multi\manipspiv.m');
 
 
 
-for numVid=21%8:9%4:7%[2,1,3]%:3
+for numVid=17
     numVid
 % xs=[bdxcat(numVid)-bgxcat(numVid),hdxcat(numVid)-bdxcat(numVid),hdxcat(numVid)-hgxcat(numVid),hgxcat(numVid)-bgxcat(numVid)];
 % ys=-[bdycat(numVid)-bgycat(numVid),hdycat(numVid)-bdycat(numVid),hdycat(numVid)-hgycat(numVid),hgycat(numVid)-bgycat(numVid)];
@@ -48,12 +48,23 @@ for numVid=21%8:9%4:7%[2,1,3]%:3
     % build paths and create directori
     directoryVid=strcat(basePathVid,date,sete,video);
     directoryPiv=strcat(directoryVid,'piv2\');
+    directoryPiv3=strcat(directoryVid,'piv3\');
 
-    if exist(directoryPiv)==0
-        mkdir(directoryPiv);
+%     if exist(directoryPiv)==0
+%         mkdir(directoryPiv);
+%     end
+    if exist(directoryPiv3)==0
+        mkdir(directoryPiv3);
     end
-        PIV_pretreatment_multi;
-     dpiv_nappe_multi;
-   PIV_treatment_multi_mask;
-  % piv_plot;
+      %  PIV_pretreatment_multi;
+    % dpiv_nappe_multi;
+  % PIV_treatment_multi_mask;
+  piv_plot%;pause;
+ %stds_velfield;
+ % load(strcat(directoryPiv3,'PIV_stdvfield'))
+%  hold on;
+ % plot(numVid,stdfield,'+')
+ % hold off;
 end
+ %xlabel('numVid')
+ %ylabel('stdvfield')

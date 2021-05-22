@@ -2,7 +2,7 @@ run defaultfig;run manips;
 cols=['b','r','g','k','c','y','m'];
 cpt=1;
 %for ii=[617,639,591,640,618,619,620]
-for ii=[617,640,619,620]
+for ii=[789,791:796]
 
     ii
     load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
@@ -39,8 +39,8 @@ for ii=[617,640,619,620]
     
     
     %% Initialisations de la simu
-    N=round(64/pi*L);%Résolution de la grille de simu
-    chopvec=5; %On affiche une toutes les chopvec images
+N=256;
+chopvec=5; %On affiche une toutes les chopvec images
     
     make_grid; %Initialise la grille de simu (N*N) et une variable utile pour gérer l'aliasing
     
@@ -54,8 +54,7 @@ for ii=[617,640,619,620]
     
     
     %% Début de la simu
-    sigbbg=sqrt(Dbg*dt);
-    
+sigbbg=sqrt((2*pi)^2/(10000*pi));%sqrt(Dbg*dt)/2;
     % profil source de camphre (centré en pi), qui correspond à un nageur
     source=exp(-((x-pi).^2+(y-pi).^2)/2/sigbbg^2)/(2*pi*sigbbg^2);% aire normalisée à 1
     % on centre la source en (0,0), translation de -pi en x et y

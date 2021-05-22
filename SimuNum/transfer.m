@@ -171,6 +171,7 @@ Pe=[];
 M=[];
 Theta=[];
 Delai=[];
+ParamEc=[];
 Bbg=[];
 run manips
 Afin=zeros(1,nombreVid);
@@ -230,6 +231,7 @@ for i=1:nombreVid
     Delai=[Delai,manipCat.delai(i)];
     L=[L,manipCat.L(i)];
     Bbg=[Bbg,manipCat.bbg(i)];
+    ParamEc=[ParamEc,manipCat.paramec(i)];
     if manipCat.A(i)<0.52022
         vtmp=0;
     else
@@ -255,5 +257,5 @@ for i=1:nombreVid
     changes(i)=0;
     clear Ccampmean;
 end
-save('E:\Clément\MyCore\Analyse\SimuNum\manips.mat','Nombre','AmpVortex','CoefMarangoni','TauP','Date','Set','Duree','Rayon','MasseBbg','Projet','Video','Inertie','Advection','AmpSourceCamphre','Dt','C0','Afin','M','Pe','Theta','Delai','L','Bbg')
+save('E:\Clément\MyCore\Analyse\SimuNum\manips.mat','Nombre','AmpVortex','CoefMarangoni','TauP','Date','Set','Duree','Rayon','MasseBbg','Projet','Video','Inertie','Advection','AmpSourceCamphre','Dt','C0','Afin','M','Pe','Theta','Delai','L','Bbg','ParamEc')
 

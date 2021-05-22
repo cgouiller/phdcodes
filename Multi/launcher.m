@@ -68,9 +68,10 @@ for numVid=[71,72,73,86,67,69,70,87,83,84,85,88,74,78,79,89,80,81,82,90,55,56,57
 %msd_inf;
 %msd_truetum;
 %msd_tum;
-msd_cuve;
+%msd_cuve;
 %msd_bouts;
 %msd_trueinf;
 %center_analyze
+vitmoy_bouts
 end
 

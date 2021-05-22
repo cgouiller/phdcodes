@@ -1,6 +1,7 @@
-for factelarg=[1,10,100]%[1,3,10];
-sigbbg=factelarg*sqrt(Dbg*dt);
-N=round(64/pi*L);%Résolution de la grille de simu
+load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'mxbg','mybg');
+for factelarg=1%[1,10,100]%[1,3,10];
+sigbbg=sqrt((2*pi)^2/(10000*pi));%sqrt(Dbg*dt)/2;
+N=256;%Résolution de la grille de simu
 chopvec=5; %On affiche une toutes les chopvec images
 
 make_grid; %Initialise la grille de simu (N*N) et une variable utile pour gérer l'aliasing
@@ -17,9 +18,7 @@ source=exp(-((x-pi).^2+(y-pi).^2)/2/sigbbg^2)/(2*pi*sigbbg^2);% aire normalisée 
 % on centre la source en (0,0), translation de -pi en x et y
 source0_f=fft2(source).*exp(1i*pi*kx+1i*pi*ky);
 
-% on definit le filtre dans l'espace de fourier
-gfilt_f=source0_f/sum(sum(source));
-nred=200;
+nred=100;
 Cstd=zeros(1,length(mxbg(:,1))/nred);
 cpt=1;
 for k=1:nred:length(mxbg(:,1))
@@ -29,10 +28,12 @@ for k=1:nred:length(mxbg(:,1))
         source_f=source_f+source0_f.*exp(-1i*mod(mxbg(k,nn),L)*kx-1i*mod(mybg(k,nn),L)*ky);
     end
     Cfield=real(ifft2(source_f));
-    Cstd(cpt)=std(std(Cfield))/mean(mean(Cfield));
+    Cfieldligne=reshape(Cfield,[numel(Cfield),1]);
+    Cstd(cpt)=std(Cfieldligne)/mean(mean(Cfield));
     cpt=cpt+1;
     
 end
-save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_cstd',num2str(factelarg),'.mat'),'Cstd');
+time=(1:length(Cstd))*nred*dt/(0.0985^2/0.15);
+save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_cstd',num2str(factelarg),'.mat'),'Cstd','time');
 end
     
