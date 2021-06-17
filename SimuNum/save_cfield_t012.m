@@ -10,8 +10,8 @@ ii=165;
     inertie=manipCat.inertie(ii);
     amp_ec=manipCat.amp_ec(ii);
     npart=manipCat.npart(ii);
-    A=manipCat.A(ii);
-    nt=801;
+    A=1;
+    nt=500;
     rdomstart=6;
     dt=manipCat.dt(ii);
     satur=manipCat.satur(ii);
@@ -489,20 +489,19 @@ for in=old_nt+1:nt
  if in==10
      Ccamp10=real(ifft2(Ccamp_f));
  end
- if in==43
-          Ccamp43=real(ifft2(Ccamp_f));
 
- end
- if in==800
-          Ccamp800=real(ifft2(Ccamp_f));
+ if in==200
+          Ccamp200=real(ifft2(Ccamp_f));
 
  end
     
 end
 
-x=(-250:250)/250*L/2*sqrt(2);
-C10=improfile(Ccamp10,[128,0],[128,0],501,'bilinear');
-C43=improfile(Ccamp43,[128,0],[128,0],501,'bilinear');
-C800=improfile(Ccamp800,[128,0],[128,0],501,'bilinear');
-save('E:\Clément\MyCore\Analyse\SimuNum\Vortex\210108\vita\11_fields012.mat','Ccamp10','Ccamp43','Ccamp800','C10','C43','C800','x')
+x=(-250:250)/250*63/64*L/2*sqrt(2);
+C10=improfile(Ccamp10,[128,2],[128,2],501,'bilinear');
+C200=improfile(Ccamp200,[128,2],[128,2],501,'bilinear');
+pos10=sqrt((mx(10)-mx(1))^2+(my(10)-my(1))^2);
+pos200=sqrt((mx(200)-mx(1))^2+(my(200)-my(1))^2);
+v=sqrt((mx(2:end)-mx(1:end-1)).^2+(my(2:end)-my(1:end-1)).^2)/dt;
+save('E:\Clément\MyCore\Analyse\SimuNum\Vortex\210108\vita\11_fields0122.mat','C10','C200','x','v','pos10','pos200')
 

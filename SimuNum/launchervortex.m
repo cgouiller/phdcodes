@@ -5,7 +5,7 @@ globalcount=0; % Juste pour l'affichage de l'avancée
 videocount=0; %idem
 affichage=0; %1 si on veut tracer le champ, 0 si non
 changes=zeros(1,nombreVid);
-start=890;
+start=1;
 for ii=start:890 % Pour l'affichage de l'avancée globale du programme on compte d'abord le nombre de pas de temps totaux à réaliser dans toutes les manips
     if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))~=0
         load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'nt');
@@ -18,7 +18,7 @@ for ii=start:890 % Pour l'affichage de l'avancée globale du programme on compte 
     globalcount=globalcount+nt-old_nt;
 end
 %for ii=[526,542,558]% La boucle qui appelle le programme de simu
-for ii=890
+for ii=start:890
     ii
     
     if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'))~=0 % si il existe déjà des data pour cette vidéo, on repart du dernier pas de temps existant
@@ -71,7 +71,7 @@ for ii=890
         simu;
         changes(ii)=1;
         calc_p6;
-        calc_g6;
+       % calc_g6;
        % calc_msdnag;
         
       %  calc_std;
@@ -93,15 +93,16 @@ for ii=890
   %       calc_msdbbg 
 %         %end
    %  end
-%     if (manipCat.set{ii}(1)=='m') && (manipCat.set{ii}(2)=='u')
-%         ii
+     if (manipCat.set{ii}(1)=='m') && (manipCat.set{ii}(2)=='u')
+         ii
 %         load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_p6.mat'))
 %         directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{ii},'\',manipCat.set{ii},'\');
 %         p6list=abs(p6list);
 %         save(strcat(directoryPyt,manipCat.video{ii},'_p6time.mat'),'tlist','p6list')
-%     end
+     
   %  load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'),'mx','my');
-%  calc_p6;
+  calc_p6;
+     end
 %calc_g6;
      %   calc_msdnag;
   %  end

@@ -37,8 +37,5 @@ for jj=1:length(tlist)
     
 end
 save(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'_p6.mat'),'p6list','tlist');
-        p6list=abs(p6list);
-directoryPyt=strcat('E:\Clément\MyCore\Analyse\SimuNum\Vortex\',manipCat.date{ii},'\',manipCat.set{ii},'\');
-mkdir(directoryPyt);
-        save(strcat(directoryPyt,manipCat.video{ii},'_p6time.mat'),'tlist','p6list')
+
 

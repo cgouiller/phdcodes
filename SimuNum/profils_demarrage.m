@@ -1,8 +1,8 @@
 affichage=1;
 autosaves=0;
 old_nt=1;
-nt=200;
-profiles=zeros(nt/5,200);
+nt=300;
+profiles=zeros(nt,200);
 bbg=0;
 taup=0;
 inertie=0;
@@ -445,7 +445,8 @@ for in=old_nt+1:nt
     
    profiles(in,:)=improfile(real(ifft2(Ccamp_f)),[(xs+1/2*vsx/(sqrt(vsx^2+vsy^2)))*64/pi,(xs-3/2*vsx/(sqrt(vsx^2+vsy^2)))*64/pi],[(ys+1/2*vsy/(sqrt(vsx^2+vsy^2)))*64/pi,(ys-3/2*vsy/(sqrt(vsx^2+vsy^2)))*64/pi],200); 
    
-
+ mx(in,1:npart)=xs(1,1:npart);% position x
+    my(in,1:npart)=ys(1,1:npart);% position y
    
     %% Affichage des champs
     if round(in/chopvec)*chopvec==in && affichage==1
@@ -494,5 +495,5 @@ imagesc(profiles)
 colormap parula(256)
 hold on;
 plot([50,50],[0,200],'--w')
-save('E:\Clément\MyCore\Analyse\SimuNum\Vortex\profildestab.mat','profiles')
+save('E:\Clément\MyCore\Analyse\SimuNum\Vortex\profildestab2.mat','profiles')
 
