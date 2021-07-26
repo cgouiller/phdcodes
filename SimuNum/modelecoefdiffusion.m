@@ -5,8 +5,9 @@ cpt=1;
 Dlist=[];
 airesdepl=[0.02935791,  0.0111084 , 0.00543213,   0.00311279, 0.00262451, 0.0022583 , 0.00476074]*L^2;
 Nnagl=[7,15,25,45,70,100,150];
-secteff=0.8; %taille transverse du champ de camphre pour ce M
-
+%secteff=0.8; %jusqu'au 210623!taille transverse du champ de camphre pour
+%ce M (version 1)
+secteff=26*2*pi/128; %(version f)
 for ii=1:length(Nnagl)
     Nnag=Nnagl(ii)
     airedepl=airesdepl(ii);
@@ -53,7 +54,8 @@ for ii=1:length(Nnagl)
         tau=taux;
         clear mxtot;
         clear mytot;
-        save(strcat('E:\Clément\SimuNum\Resultats\modele_1_',num2str(Nnag),'.mat'),'tau','MeanSD')
+      %  save(strcat('E:\Clément\SimuNum\Resultats\modele_1_',num2str(Nnag),'.mat'),'tau','MeanSD') 
+      save(strcat('E:\Clément\SimuNum\Resultats\modele_f_',num2str(Nnag),'.mat'),'tau','MeanSD') 
 %    else
 %         load(strcat('E:\Clément\SimuNum\Resultats\modele_4_',num2str(Nnag),'.mat'))
 %    end

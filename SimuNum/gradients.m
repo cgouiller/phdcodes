@@ -3,7 +3,7 @@ run manips;
 cols=['b','r','g','k','c','y','m'];
 cpt=0;
 %for ii=[45:50,271]
-for ii=[45,48,50,271]
+for ii=47%[45,47,48,50,271]
 
     load(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\',manipCat.video{ii},'.mat'));
         old_nt=nt;

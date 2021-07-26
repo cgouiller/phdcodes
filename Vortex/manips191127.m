@@ -27,7 +27,7 @@ setCatalogue{1}='passif\';setCatalogue{2}='passif\';setCatalogue{3}='passif\';se
 setCatalogue{11}='ellipse\';setCatalogue{12}='ellipse\';setCatalogue{13}='ellipse\';
 
 
-%Name of the folders
+%Name of the folders (nombre de nageurs / nb de tours/min de l'agitateur)
 videoCatalogue=cell(1,nombreVid);
 videoCatalogue{1}='1\0\';videoCatalogue{2}='1\120\';videoCatalogue{3}='15\0\';videoCatalogue{4}='15\120\';videoCatalogue{5}='1\0\';videoCatalogue{6}='1\120\';videoCatalogue{7}='15\0\';videoCatalogue{8}='15\120\';videoCatalogue{9}='1\0\';videoCatalogue{10}='1\120\';
 videoCatalogue{11}='15\0\';videoCatalogue{12}='15\120\';videoCatalogue{13}='15\120b\';

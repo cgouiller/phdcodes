@@ -1,7 +1,4 @@
-% if old_nt~=1 && exist('k')~=0
-%     ff=k; %Pour éviter le conflit entre fréquence du spectre et k utilisé comme variable pour boucle for
-% end
-
+firstaff=0;
 %% Initialisations de la simu
 N=round(64/pi*L);%Résolution de la grille de simu
 chopvec=5; %On affiche une toutes les chopvec images
@@ -14,11 +11,11 @@ make_grid; %Initialise la grille de simu (N*N) et une variable utile pour gérer 
 alpha=2; %Coefficient de sublimation
 sig=sqrt(4*pi*(Dnag/2)^2/(90)^2); %Calcule la largeur de gaussienne associée au diamètre des nageurs
 
-sig=sig*sqrt(asrc); %Prendre en compte le rayon du nageur
+%sig=sig*sqrt(asrc); %Prendre en compte le rayon du nageur
 Dcamp=0.15;
-if (manipCat.set{ii}(1)=='v') && (manipCat.set{ii}(2)=='i') && (manipCat.set{ii}(t)=='t') && (manipCat.set{ii}(4)=='s')
-Dcamp=0.15*sqrt(asrc);% Coeff de diffusion du camphre
-end
+% if (manipCat.set{ii}(1)=='v') && (manipCat.set{ii}(2)=='i') && (manipCat.set{ii}(t)=='t') && (manipCat.set{ii}(4)=='s')
+% Dcamp=0.15*sqrt(asrc);% Coeff de diffusion du camphre
+% end
 
 %% Initialisation des tableaux de stockage de valeurs
 if old_nt==1 % Correspond à une simu jamais commencée
@@ -135,6 +132,9 @@ if old_nt==1
     elseif rdomstart==8
         xp=0.001;
         yp=L/2+0.001;
+    elseif rdomstart==9
+        xp=pi/4-0.001;
+        yp=pi;
     end
     if bbg==1
         Cbg=zeros(N);     
@@ -208,9 +208,9 @@ if old_nt==1
         Ccamp0_f=Ccamp0_f+source0_f.*exp(-1i*xs(nn)*kx-1i*ys(nn)*ky);
     end
     Ccamp_f=Ccamp0_f;
-    if bbg==1
-        Cbg0_f=fft2(Cbg);
-    end
+%     if bbg==1
+%         Cbg0_f=fft2(Cbg);
+%     end
     % TF du champ de vitesse Marangoni du fluide en t=0
     [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A,satur);
     
@@ -360,10 +360,10 @@ dispstat(sprintf('Begining the simulation loop...'),'keepthis','timestamp');
 
 for in=old_nt+1:nt
     
-    if in==200 && bbg==1
-        %Cbg_f=fft2(ones(N));
-        Cbg_f=fft2(exp(-((x-pi).^2+(y-pi).^2)/2/sig^2)/(2*pi*sig^2));
-    end
+%     if in==200 && bbg==1
+%         %Cbg_f=fft2(ones(N));
+%         Cbg_f=fft2(exp(-((x-pi).^2+(y-pi).^2)/2/sig^2)/(2*pi*sig^2));
+%     end
     if bbg>1
         xbg=xbg+3/2*dt*vxbg-1/2*dt*vxbg_old;
         ybg=ybg+3/2*dt*vybg-1/2*dt*vybg_old;
@@ -386,10 +386,10 @@ for in=old_nt+1:nt
     
     Ccamp_f=expdt.*(Ccamp_f + 3/2*dt*Sfcamp)-1/2*dt*expdt2.*Sfcamp_old;% Evolution de l'équa diff pour le camphre
     Ccamp_f=Ccamp_f.*alias;%Eviter l'aliasing
-    if bbg==1
-        Cbg_f=expdtbg.*(Cbg_f + 3/2*dt*Sfbg)-1/2*dt*expdt2bg.*Sfbg_old;
-        Cbg_f=Cbg_f.*alias;
-    end
+%     if bbg==1
+%         Cbg_f=expdtbg.*(Cbg_f + 3/2*dt*Sfbg)-1/2*dt*expdt2bg.*Sfbg_old;
+%         Cbg_f=Cbg_f.*alias;
+%     end
     % Position et vitesse des sources
     [xsnew,ysnew,vsxnew,vsynew]=eval_posvit(1,inertie,dt,xs,ys,vsx,vsy,uxp,uyp,uxp_old,vsx_old,uyp_old,vsy_old,taup); % Evolution de vitesse et position des nageurs
     
@@ -419,11 +419,11 @@ for in=old_nt+1:nt
     Sfcamp = Sscal_adams(advection,Ccamp_f,vxext,vyext,kx,ky,alias); %advection est l'interrupteur on/off
     Sfcamp=Sfcamp+source_f;
     Sfcamp=Sfcamp.*alias;
-    if bbg==1
-        Sfbg_old=Sfbg;
-        Sfbg=Sscal_adams(advection,Cbg_f,vxext+real(ifft2(vxf)),vyext+real(ifft2(vyf)),kx,ky,alias);
-        Sfbg=Sfbg.*alias;
-    end
+%     if bbg==1
+%         Sfbg_old=Sfbg;
+%         Sfbg=Sscal_adams(advection,Cbg_f,vxext+real(ifft2(vxf)),vyext+real(ifft2(vyf)),kx,ky,alias);
+%         Sfbg=Sfbg.*alias;
+%     end
     
     % TF du champ de vitesse du fluide dû à Marangoni en t
     [vxf,vyf]=ec_marangoni(marangoni,Ccamp_f,kx,ky,A,satur);
@@ -451,39 +451,44 @@ for in=old_nt+1:nt
     my(in,1:npart)=ys(1,1:npart);% position y
     mvxnage(in,1:npart)=vxnage(1,1:npart);
     mvynage(in,1:npart)=vynage(1,1:npart);
-    if bbg==1
-        mstdbg(in,1)=std(std(real(ifft2(Cbg_f))));
-    end
+%     if bbg==1
+%         mstdbg(in,1)=std(std(real(ifft2(Cbg_f))));
+%     end
     if bbg>1
         mxbg(in,1:bbg)=xbg;
         mybg(in,1:bbg)=ybg;
     end
-    if old_nt==1 % Cette boucle que pour stocker des chps de vitesse e fluide qu'on n'utilise jamais
-        if ismember(in,list)
-            cpt=cpt+1;
-            mvfx{cpt,1}=real(ifft2((vxf)));
-            mvfy{cpt,1}=real(ifft2((vyf)));
-        end
-    end
+
     %% Affichage des champs
     if round(in/chopvec)*chopvec==in && affichage==1
         colormap parula(256);
         if bbg==0
             % Calcul du champ de camphre en t
             Ccamp=real(ifft2(Ccamp_f));% init en dt
+            x2=[x;x(1,:)];
+            y2=[y;2*pi*ones(1,128)];
+            y3=[y2,y2(:,1)];
+            x3=[x2,2*pi*ones(129,1)];
+            Ccamp=[Ccamp,Ccamp(:,1)];
+            Ccamp=[Ccamp;Ccamp(1,:)];
             
             figure(1);
-            pcolor(x,y,Ccamp);colorbar;shading flat;axis equal;caxis([0 1])
-            hold on
             plot(modulo(xs,L),modulo(ys,L),'ok','markerfacecolor','r');
-            quiver(x(1:3:N,1:3:N),y(1:3:N,1:3:N),vxext(1:3:N,1:3:N),vyext(1:3:N,1:3:N),'w');
-            quiver(mod(xs,L),mod(ys,L),vxnage,vynage,'r')
-            quiver(mod(xs,L),mod(ys,L),vsx,vsy,'k')
+            hold on
+                        pcolor(x3,y3,Ccamp);colorbar;shading flat;xlim([-0.1,2*pi+0.1]);ylim([-0.1,2*pi+0.1]);axis equal;caxis([0 1])
+
+            %quiver(x(1:3:N,1:3:N),y(1:3:N,1:3:N),vxext(1:3:N,1:3:N),vyext(1:3:N,1:3:N),'w');
+            %quiver(mod(xs,L),mod(ys,L),vxnage,vynage,'r')
+            %quiver(mod(xs,L),mod(ys,L),vsx,vsy,'k')
             [vxecext,vyecext]=vfiltnag(real(ifft2((vxextf).*gfilt_f)),real(ifft2((vyextf).*gfilt_f)),Npad,xs,ys,xpad,ypad,L);
-            quiver(mod(xs,L),mod(ys,L),vxecext,vyecext,'w')
+            %quiver(mod(xs,L),mod(ys,L),vxecext,vyecext,'w')
             title(strcat('Champ de camphre et nageurs, t=',int2str(in)));
             hold off
-            pause(0.01) % Pour que l'affichage à l'écran soit rafraichi
+            pause(0.000001) % Pour que l'affichage à l'écran soit rafraichi
+            if firstaff==0
+                pause;
+                firstaff=1;
+            end
         else
             Cbg=real(ifft2(Cbg_f));% init en dt
             
@@ -503,6 +508,64 @@ for in=old_nt+1:nt
             pause(0.01) % Pour que l'affichage à l'écran soit rafraichi
             
         end
+    end
+    if affichage==2%Pour sauvegarder les films
+Ccamp=real(ifft2(Ccamp_f));% init en dt
+                        x2=[x;x(1,:)];
+            y2=[y;2*pi*ones(1,128)];
+            y3=[y2,y2(:,1)];
+            x3=[x2,2*pi*ones(129,1)];
+            Ccamp=[Ccamp,Ccamp(:,1)];
+            Ccamp=[Ccamp;Ccamp(1,:)];
+            
+            FigH = figure('Position', get(0, 'Screensize'));
+                            colormap parula(256);
+
+            pcolor(x3,y3,Ccamp);colorbar;shading interp;axis equal;caxis([0 2.2])
+            hold on
+            %quiver(x(1:3:N,1:3:N),y(1:3:N,1:3:N),vxext(1:3:N,1:3:N),vyext(1:3:N,1:3:N),'k');
+            plot(modulo(xs,L),modulo(ys,L),'ok','markerfacecolor','r');
+            title(strcat('t=',int2str(in)));
+            hold off
+            pause(0.000001) % Pour que l'affichage à l'écran soit rafraichi
+            numstr=num2str(in);
+            while length(numstr)<5
+                numstr=strcat('0',numstr);
+            end
+            set(gca,'YTick',[])
+            set(gca,'XTick',[])
+            saveas(FigH, strcat('C:\Users\clement.gouiller\Videos\these\multiec\',numstr),'png');
+            close;
+            if bbg>1
+                sigbbg=sqrt((2*pi)^2/(3000*pi));
+                sourcebg=exp(-((x-pi).^2+(y-pi).^2)/2/sigbbg^2)/(2*pi*sigbbg^2);% aire normalisée à 1
+% on centre la source en (0,0), translation de -pi en x et y
+source0_fbg=fft2(sourcebg).*exp(1i*pi*kx+1i*pi*ky);
+                 source_fbg=zeros(size(source0_f));
+            for nn=1:bbg
+                source_fbg=source_fbg+source0_fbg.*exp(-1i*mod(mxbg(in,nn),L)*kx-1i*mod(mybg(in,nn),L)*ky);
+            end
+                Cfield=real(ifft2(source_fbg));
+                Cfield=[Cfield,Cfield(:,1)];
+                Cfield=[Cfield;Cfield(1,:)];
+                  FigH = figure('Position', get(0, 'Screensize'));
+                            colormap parula(256);
+
+            pcolor(x3,y3,Cfield);colorbar;shading interp;axis equal;caxis([0 300])
+            hold on
+            plot(modulo(xs,L),modulo(ys,L),'ok','markerfacecolor','r');
+          title(strcat('t=',int2str(in)));
+            hold off
+            pause(0.000001) % Pour que l'affichage à l'écran soit rafraichi
+            numstr=num2str(in);
+            while length(numstr)<5
+                numstr=strcat('0',numstr);
+            end
+            set(gca,'YTick',[])
+            set(gca,'XTick',[])
+            saveas(FigH, strcat('C:\Users\clement.gouiller\Videos\these\multibbgec\',numstr),'png');
+            close;
+            end
     end
     
     
@@ -528,53 +591,6 @@ for in=old_nt+1:nt
 end
 
 
-
-%% Mise en forme pour la mesure de MSD
-% Formatage des trajectoires pour l'utilisation de msdanalyzer
-% tracks = cell(npart, 1);
-%
-% for i = 1 : npart
-%
-%     % Time
-%     time = (0 : nt-1)' * dt;
-%
-%     X=mx(1:nt,i);
-%     Y=my(1:nt,i);
-%
-%     % Store
-%     tracks{i} = [time X Y];
-%
-% end
-% ma = msdanalyzer(2, 'space unit', 'time'); % Crée la classe nécessaire à l'utilisation de msd analyzer
-%
-% ma = ma.addAll(tracks); %Ajoute les trajectoires à la classe
-%
-% %ma.plotTracks;
-% ma = ma.computeMSD; %Calcule le MSD
-
-
-
-%% Calcul du spectre du champ de vitesse
-% if old_nt==1
-%     j=1;
-%     Spaddx=zeros(65,1);
-%     Spaddy=zeros(65,1);
-%     for j=1:200 %vf contient 200 champs de vitesse répartis sur la simu dont on va moyenner les spectres
-%         vfx=mvfx{j}; %On en garde qu'un à chaque fois (le numéro j)
-%         vfy=mvfy{j};
-%         for k=1:128 %Somme de chaque ligne de chaque champ de vitesse
-%             Spaddx=Spaddx+pwelch(vfx(k,:),hanning(128),round(128/2),128,1/(2*pi));
-%             Spaddy=Spaddy+pwelch(vfy(k,:),hanning(128),round(128/2),128,1/(2*pi));
-%         end
-%
-%     end
-%     Spx=Spaddx/(128*200); %Normalisation
-%     Spy=Spaddy/(128*200);
-%     Sp=(Spx+Spy)/2;
-%     [aaa,ff]=pwelch(vfy(k,:),hanning(128),round(128/2),128,1/(2*pi)); % juste pour récupérer le vecteur fréquence
-% end
-%
-% k=ff;
 %% On sauvegarde tout
 if exist(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\'))==0
     mkdir(strcat('E:\Clément\SimuNum\Resultats\',manipCat.date{ii},'\',manipCat.set{ii},'\'));

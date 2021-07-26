@@ -6,7 +6,7 @@ run('E:\Clément\phdcodes\Mixing\manipsfinales.m');
 
 %list=varM;
 %for i=1:length(list)
-for numVid=1:14;
+for numVid=25;
   
  
     load_param;
@@ -27,7 +27,7 @@ for numVid=1:14;
   
     %   corautournag;
    
-    concentration; %Evolution des différents champs scalaires, obtenus à la fois par Beer-Lambert (ConcBL.mat) et par interpolation linéaire (Conclin.mat)
+    %concentration; %Evolution des différents champs scalaires, obtenus à la fois par Beer-Lambert (ConcBL.mat) et par interpolation linéaire (Conclin.mat)
   %  constr_traject;%Se servant des positions obtenues par track_particles en déduit les trajectoires sauvegardées dans trajectories.mat
   %   filtrage_traj;%Regarde dans trajectories.mat quelles particules sont assez éloignées des bords ainsi que des autres
     % spectre; %Calcule avec pwelch le spectre moyen du champ de concentration réduit dans le carré, (C-CMoySq)/CstdSq

@@ -1,5 +1,5 @@
 clear all;
-run manipstest;
+run manips190220;
 cm=parula(256);
 %figure;
 
@@ -16,7 +16,7 @@ for numVid=1
     % build paths and create directories
     directoryVid=strcat(basePathVid,date,sete,video,'\');
     directoryAnalyse=strcat(basePathAnalyse,'\',date,sete,video,'\');
-
+    directoryBg=strcat(basePathVid,date,sete,'bg\');
     centerCellX=centerCellXCat(numVid)+radiusCellPx;
     centerCellY=centerCellYCat(numVid)+radiusCellPx;
     R_range=[floor(RCat(numVid)*0.9/calib) ceil(RCat(numVid)*1.1/calib)];

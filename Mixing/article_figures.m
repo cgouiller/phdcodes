@@ -28,7 +28,7 @@ imbg=imbg.im0;
           xlabel('X [mm]');ylabel('Y [mm]');
           
 %% Image referee 8mg
-mean(CMoy(time>55*60&time<65*60))
+%mean(CMoy(time>55*60&time<65*60))
 numVid=40;load_param;
     
     load(strcat(directoryAnalyse,'directory.mat'));
@@ -151,7 +151,7 @@ CMoyEt=[];
 c=parula(256);
 %figure;
 list=[1:3,5,7,8,10:16,29:31];%[varR,varRold];
-list=[6,9,11];
+%list=[6,9,11];
 XCat=MCat(list);
 for i=1:length(list)
     numVid=list(i);
@@ -187,7 +187,7 @@ ylim([-0.005 0.045])
 
 %% Cstd=f(N)
 
-list=varNold;
+list=varN;
 XCat=NCat(list);
 CstdCat=[];
 CstdEt=[];
@@ -293,7 +293,7 @@ ylim([0 1.05])
 % ylim([0 1.05])
 
 %% Champ de conc moyen
-numVid=25;load_param; %1
+run manipsfinales;numVid=25;load_param; %1
 
  load(strcat(directoryAnalyse,'meanTraillin2.mat'));
 immoy(isnan(immoy))=0;
@@ -387,7 +387,7 @@ figure;
    Markers = {'+','o','*','x','v','d','^','s','>','<'};
 axes('XScale','log','YScale','log');
 c=parula(256);
-list=varNold;
+list=varN;
 XCat=NCat(list);
 leg='N=';
 for i=1:length(list)
@@ -415,7 +415,7 @@ figure;
    Markers = {'+','o','*','x','v','d','^','s','>','<'};
 axes('XScale','log','YScale','log');
 c=parula(256);
-list=varRold;
+list=varR;
 XCat=RCat(list);
 leg='R=';
 for i=1:length(list)
@@ -454,7 +454,7 @@ Asub=pi*L_suba.*L_subap*10000; %en cm^2
 
 airel=[];
 
-list=[varRold];
+list=[varR];
 
 XCat=RCat(list);
 incmlist=[];
